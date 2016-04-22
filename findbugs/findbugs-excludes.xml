@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2016 Liam Williams <liam.williams@zoho.com>.
+
+    This file is part of coffee.
+
+    coffee is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    coffee is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with coffee.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<!-- This file contains global exclusions for certain bugs types -->
+<FindBugsFilter
+        xmlns="http://findbugs.sourceforge.net/filter/3.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://findbugs.sourceforge.net/filter/3.0.0 https://findbugs.googlecode.com/git/findbugs/etc/findbugsfilter.xsd">
+
+    <!-- This is supposed to replace the AssertJ interface -->
+    <Match>
+        <Class name="assertions.WithAssertions"/>
+        <BugPattern name="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
+    </Match>
+
+    <!-- Fields are read reflectively as part of the test -->
+    <Match>
+        <Class name="io.github.theangrydev.coffee.domain.base.ValueTypeTest$TestType"/>
+        <BugPattern name="URF_UNREAD_FIELD"/>
+    </Match>
+</FindBugsFilter>

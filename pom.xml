@@ -235,6 +235,7 @@
                     <effort>Max</effort>
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
+                    <excludeFilterFile>${project.basedir}/findbugs/findbugs-excludes.xml</excludeFilterFile>
                     <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
                     <maxHeap>2048</maxHeap>
                 </configuration>
@@ -254,7 +255,7 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <version>2.11</version>
                 <configuration>
-                    <header>${project.basedir}/src/license/license-header.txt</header>
+                    <header>${project.basedir}/license/license-header.txt</header>
                     <properties>
                         <copyright.owner>Liam Williams</copyright.owner>
                         <copyright.owner.email>liam.williams@zoho.com</copyright.owner.email>
