@@ -39,8 +39,8 @@ public class ValueTypeTest implements WithAssertions {
     }
 
     @Test
-    public void toStringContainsFieldNamesAndValues() {
-        assertThat(new TestType(1, "one").toString()).contains("primitive=1", "object=one");
+    public void toStringContainsTypeNameFieldNamesAndValues() {
+        assertThat(new TestType(1, "one").toString()).contains("TestType", "primitive=1", "object=one");
     }
 
     @SuppressWarnings("unused")
