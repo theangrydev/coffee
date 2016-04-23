@@ -87,14 +87,15 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.5</version>
+                    <version>3.5.1</version>
                     <configuration>
                         <source>${java.language.level}</source>
                         <target>${java.language.level}</target>
-                        <compilerArguments>
-                            <Werror/>
-                            <Xlint/>
-                        </compilerArguments>
+                        <showWarnings>true</showWarnings>
+                        <compilerArgs>
+                            <arg>-Werror</arg>
+                            <arg>-Xlint:all</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
 
@@ -223,6 +224,40 @@
                     <checkRuntimeClasspath>true</checkRuntimeClasspath>
                     <checkTestClasspath>true</checkTestClasspath>
                 </configuration>
+            </plugin>
+
+            <!-- PMD -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jxr</goal>
+                            <goal>test-jxr</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.6</version>
+                <configuration>
+                    <printFailingErrors>true</printFailingErrors>
+                    <ruleset>${project.basedir}/pmd/pmd-rules.xml</ruleset>
+                    <includeTests>true</includeTests>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- FindBugs -->
