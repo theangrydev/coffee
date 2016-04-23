@@ -291,6 +291,9 @@
                 <version>2.11</version>
                 <configuration>
                     <header>${project.basedir}/license/license-header.txt</header>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
                     <properties>
                         <copyright.owner>Liam Williams</copyright.owner>
                         <copyright.owner.email>liam.williams@zoho.com</copyright.owner.email>
