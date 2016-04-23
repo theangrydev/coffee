@@ -71,11 +71,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Fluent assertions -->
+        <!-- Fluent acceptancetests.then-->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.3.0</version>
+        </dependency>
+
+        <!-- Yatspec -->
+        <dependency>
+            <groupId>com.googlecode.yatspec</groupId>
+            <artifactId>yatspec</artifactId>
+            <version>1.23</version>
         </dependency>
     </dependencies>
 

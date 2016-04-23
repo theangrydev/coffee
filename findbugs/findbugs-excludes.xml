@@ -36,4 +36,18 @@
         <Class name="io.github.theangrydev.coffee.domain.base.ValueTypeTest$TestType"/>
         <BugPattern name="URF_UNREAD_FIELD"/>
     </Match>
+
+    <!-- java.home will always be set -->
+    <Match>
+        <Class name="infrastructure.programs.CompilerProcess"/>
+        <Method name="compile"/>
+        <BugPattern name="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
+
+    <!-- Used by JUnit -->
+    <Match>
+        <Class name="yatspec.fluent.FluentTest"/>
+        <Field name="makeSureThenIsUsed"/>
+        <BugPattern name="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Match>
 </FindBugsFilter>
