@@ -16,20 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package acceptancetests.then;
+package yatspec.fluent;
 
-import assertions.WithAssertions;
-import infrastructure.programs.ProgramOutput;
-
-public class ThenTheProgramOutput implements WithAssertions {
-
-    private final ProgramOutput programOutput;
-
-    public ThenTheProgramOutput(ProgramOutput programOutput) {
-        this.programOutput = programOutput;
-    }
-
-    public void isEqualTo(String output) {
-        assertThat(programOutput.toString()).isEqualTo(output);
-    }
+@FunctionalInterface
+public interface ThenFactory<Assertions, Response> {
+    Assertions then(Response response);
 }

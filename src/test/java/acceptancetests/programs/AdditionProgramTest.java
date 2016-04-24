@@ -25,7 +25,7 @@ public class AdditionProgramTest extends ProgramTest {
     @Test
     public void programThatAddsTwoNumbersTogether() {
         given(theCompiler).hasCompiled("AdditionProgram.java");
-        when("java").isRun().withEntryPoint("AdditionProgram").andArguments("1 2");
-        then().theOutputIs("3");
+        when(theProgram).isRun().withEntryPoint("AdditionProgram").andArguments("1 2");
+        then(theProgramOutput).isEqualTo("3");
     }
 }

@@ -68,4 +68,10 @@
         </Or>
         <BugPattern name="EQ_DOESNT_OVERRIDE_EQUALS"/>
     </Match>
+
+    <!-- Guaranteed to be non null at this point by program logic -->
+    <Match>
+        <Class name="yatspec.fluent.FluentTest"/>
+        <BugPattern name="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
 </FindBugsFilter>
