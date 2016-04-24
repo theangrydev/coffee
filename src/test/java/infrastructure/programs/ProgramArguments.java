@@ -23,7 +23,9 @@ import io.github.theangrydev.coffee.domain.base.ValueType;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProgramArguments extends ValueType {
+import static java.util.stream.Collectors.joining;
+
+public final class ProgramArguments extends ValueType {
     private final List<String> arguments;
 
     private ProgramArguments(List<String> arguments) {
@@ -36,5 +38,10 @@ public class ProgramArguments extends ValueType {
 
     public List<String> arguments() {
         return arguments;
+    }
+
+    @Override
+    public String toString() {
+        return arguments.stream().collect(joining(" "));
     }
 }

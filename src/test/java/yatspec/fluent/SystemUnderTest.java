@@ -19,6 +19,6 @@
 package yatspec.fluent;
 
 public interface SystemUnderTest<TestInfrastructure, Request, Response> {
-    Request request(TestInfrastructure testInfrastructure) throws Exception;
-    Response call(Request request, TestInfrastructure testInfrastructure) throws Exception;
+    Request request(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
+    Response call(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
 }

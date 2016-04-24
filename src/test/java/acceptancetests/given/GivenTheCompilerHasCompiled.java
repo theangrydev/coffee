@@ -19,7 +19,7 @@
 package acceptancetests.given;
 
 import infrastructure.programs.ProgramTestInfrastructure;
-import yatspec.fluent.InterestingTestItems;
+import yatspec.fluent.ReadOnlyTestItems;
 import yatspec.fluent.Primer;
 
 import java.io.File;
@@ -31,10 +31,10 @@ public class GivenTheCompilerHasCompiled implements Primer<ProgramTestInfrastruc
     private String sourceCodeFileName;
 
     @Override
-    public void prime(InterestingTestItems interestingTestItems, ProgramTestInfrastructure programTestInfrastructure) {
+    public void prime(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
         File sourceCodeFile = programTestInfrastructure.sourceCode(sourceCodeFileName);
         String code = readContent(sourceCodeFile);
-        interestingTestItems.addToCapturedInputsAndOutputs(sourceCodeFileName, code);
+        readOnlyTestItems.addToCapturedInputsAndOutputs(sourceCodeFileName, code);
 
         programTestInfrastructure.copyToCompilationDirectory(sourceCodeFile);
         programTestInfrastructure.compile(sourceCodeFileName);

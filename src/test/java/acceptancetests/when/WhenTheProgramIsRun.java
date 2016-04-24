@@ -19,6 +19,7 @@
 package acceptancetests.when;
 
 import infrastructure.programs.*;
+import yatspec.fluent.ReadOnlyTestItems;
 import yatspec.fluent.SystemUnderTest;
 
 public class WhenTheProgramIsRun implements SystemUnderTest<ProgramTestInfrastructure, ProgramExecution, ProgramOutput> {
@@ -40,12 +41,16 @@ public class WhenTheProgramIsRun implements SystemUnderTest<ProgramTestInfrastru
     }
 
     @Override
-    public ProgramExecution request(ProgramTestInfrastructure programTestInfrastructure) throws Exception {
-        return ProgramExecution.programExecution(entryPoint, arguments);
+    public ProgramExecution request(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
+        ProgramExecution programExecution = ProgramExecution.programExecution(entryPoint, arguments);
+        readOnlyTestItems.addToCapturedInputsAndOutputs("Program Execution", programExecution);
+        return programExecution;
     }
 
     @Override
-    public ProgramOutput call(ProgramExecution programExecution, ProgramTestInfrastructure programTestInfrastructure) throws Exception {
-        return programTestInfrastructure.invokeRuntime(programExecution);
+    public ProgramOutput call(ProgramExecution programExecution, ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
+        ProgramOutput programOutput = programTestInfrastructure.invokeRuntime(programExecution);
+        readOnlyTestItems.addToCapturedInputsAndOutputs("Program Output", programOutput);
+        return programOutput;
     }
 }

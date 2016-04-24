@@ -31,21 +31,42 @@
     <rule ref="rulesets/java/braces.xml"/>
     <rule ref="rulesets/java/clone.xml"/>
     <rule ref="rulesets/java/codesize.xml"/>
-    <rule ref="rulesets/java/comments.xml"/>
-    <rule ref="rulesets/java/controversial.xml"/>
-    <rule ref="rulesets/java/coupling.xml"/>
-    <rule ref="rulesets/java/design.xml"/>
+    <rule ref="rulesets/java/controversial.xml">
+        <exclude name="CallSuperInConstructor"/><!-- This is pointless when there is a zero argument super constructor -->
+        <exclude name="AtLeastOneConstructor"/><!-- This is pointless if an object has no state (e.g. ValueType) -->
+        <exclude name="OnlyOneReturn"/><!-- Multiple returns can aid readability and reduce arrow code -->
+        <exclude name="DataflowAnomalyAnalysis"/><!-- Too many false positives -->
+    </rule>
+    <rule ref="rulesets/java/coupling.xml">
+        <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->
+        <exclude name="LawOfDemeter"/><!-- The Law of Demeter is a good thing to keep in mind, but this rule triggers too many false positives with e.g. fluent interfaces -->
+    </rule>
+    <rule ref="rulesets/java/design.xml">
+        <exclude name="AbstractClassWithoutAbstractMethod"/><!-- Types such as ValueType have no abstract methods but should always be extended -->
+        <exclude name="UseUtilityClass"/><!-- Classes with all static methods are fine, adding a private constructor to each one is overkill because of the boilerplate -->
+    </rule>
     <rule ref="rulesets/java/empty.xml"/>
     <rule ref="rulesets/java/finalizers.xml"/>
     <rule ref="rulesets/java/imports.xml"/>
     <rule ref="rulesets/java/j2ee.xml"/>
-    <rule ref="rulesets/java/javabeans.xml"/>
-    <rule ref="rulesets/java/junit.xml"/>
+    <rule ref="rulesets/java/junit.xml">
+        <exclude name="TestClassWithoutTestCases"/><!-- This rule assumes test methods start with testXXX -->
+    </rule>
     <rule ref="rulesets/java/logging-java.xml"/>
-    <rule ref="rulesets/java/naming.xml"/>
-    <rule ref="rulesets/java/optimizations.xml"/>
+    <rule ref="rulesets/java/naming.xml">
+        <exclude name="LongVariable"/><!-- There is nothing wrong with long descriptive variable names! -->
+        <exclude name="GenericsNaming"/><!-- Single letter generic names are not descriptive enough, especially if there are several of them -->
+        <exclude name="AbstractNaming"/><!-- Abstract classes should be called something descriptive, not just AbstractXXX -->
+        <exclude name="AvoidFieldNameMatchingMethodName"/><!-- Field name matching method name is a good thing if they represent the same concept -->
+    </rule>
+    <rule ref="rulesets/java/optimizations.xml">
+        <exclude name="MethodArgumentCouldBeFinal"/><!-- Final method arguments are not a way to improve performance since the final keyword does not end up in the class file -->
+        <exclude name="LocalVariableCouldBeFinal"/><!-- Final variables are not a way to improve performance since the final keyword does not end up in the class file -->
+    </rule>
     <rule ref="rulesets/java/strictexception.xml"/>
-    <rule ref="rulesets/java/strings.xml"/>
+    <rule ref="rulesets/java/strings.xml">
+        <exclude name="AvoidDuplicateLiterals"/><!-- In general this is a good thing, but this rule has too many false positives -->
+    </rule>
     <rule ref="rulesets/java/sunsecure.xml"/>
     <rule ref="rulesets/java/typeresolution.xml"/>
     <rule ref="rulesets/java/unnecessary.xml"/>

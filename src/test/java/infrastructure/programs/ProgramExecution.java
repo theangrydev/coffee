@@ -20,7 +20,7 @@ package infrastructure.programs;
 
 import io.github.theangrydev.coffee.domain.base.ValueType;
 
-public class ProgramExecution extends ValueType {
+public final class ProgramExecution extends ValueType {
 
     private final ProgramEntryPoint entryPoint;
     private final ProgramArguments arguments;
@@ -40,5 +40,10 @@ public class ProgramExecution extends ValueType {
 
     public ProgramArguments arguments() {
         return arguments;
+    }
+
+    @Override
+    public String toString() {
+        return entryPoint + " " + arguments;
     }
 }

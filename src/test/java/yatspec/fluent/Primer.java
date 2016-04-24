@@ -19,5 +19,5 @@
 package yatspec.fluent;
 
 public interface Primer<TestInfrastructure> {
-    void prime(InterestingTestItems interestingTestItems, TestInfrastructure testInfrastructure);
+    void prime(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
 }

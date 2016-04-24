@@ -20,7 +20,7 @@ package infrastructure.programs;
 
 import io.github.theangrydev.coffee.domain.base.SingleValueType;
 
-public class ProgramOutput extends SingleValueType<String> {
+public final class ProgramOutput extends SingleValueType<String> {
     private ProgramOutput(String output) {
         super(output);
     }

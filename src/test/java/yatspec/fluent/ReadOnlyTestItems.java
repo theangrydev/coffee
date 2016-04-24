@@ -18,7 +18,7 @@
  */
 package yatspec.fluent;
 
-public interface InterestingTestItems {
+public interface ReadOnlyTestItems {
     void addToGivens(String key, Object instance);
     void addToCapturedInputsAndOutputs(String key, Object instance);
 }

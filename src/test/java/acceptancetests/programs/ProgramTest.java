@@ -18,12 +18,10 @@
  */
 package acceptancetests.programs;
 
-import acceptancetests.when.WhenTheProgramIsRun;
-import acceptancetests.then.ThenTheProgramOutput;
-import com.googlecode.yatspec.junit.SpecRunner;
-import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
-import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
 import acceptancetests.given.GivenTheCompilerHasCompiled;
+import acceptancetests.then.ThenTheProgramOutput;
+import acceptancetests.when.WhenTheProgramIsRun;
+import com.googlecode.yatspec.junit.SpecRunner;
 import infrastructure.programs.*;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,28 +32,13 @@ import yatspec.fluent.FluentTest;
 @RunWith(SpecRunner.class)
 public abstract class ProgramTest extends FluentTest<ProgramTestInfrastructure, WhenTheProgramIsRun, ProgramExecution, ProgramOutput, ThenTheProgramOutput> {
 
-    private final ProgramTestInfrastructure programTestInfrastructure = new ProgramTestInfrastructure(new CompilerProcess(), new RuntimeProcess());
-    private final InterestingGivens interestingGivens = new InterestingGivens();
-    private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
-
     protected final GivenTheCompilerHasCompiled theCompiler = new GivenTheCompilerHasCompiled();
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    @Override
-    protected WhenTheProgramIsRun systemUnderTest() {
-        return new WhenTheProgramIsRun();
-    }
-
-    @Override
-    protected void beforeSystemHasBeenCalled(ProgramExecution execution) {
-
-    }
-
-    @Override
-    protected void afterSystemHasBeenCalled(ProgramOutput programOutput) {
-
+    ProgramTest() {
+        super(new WhenTheProgramIsRun(), new ProgramTestInfrastructure(new CompilerProcess(), new RuntimeProcess()));
     }
 
     @Override
@@ -63,23 +46,8 @@ public abstract class ProgramTest extends FluentTest<ProgramTestInfrastructure, 
         return new ThenTheProgramOutput(programOutput);
     }
 
-    @Override
-    protected ProgramTestInfrastructure testInfrastructure() {
-        return programTestInfrastructure;
-    }
-
-    @Override
-    public CapturedInputAndOutputs capturedInputAndOutputs() {
-        return capturedInputAndOutputs;
-    }
-
-    @Override
-    public InterestingGivens interestingGivens() {
-        return interestingGivens;
-    }
-
     @Before
     public void setUp() {
-        programTestInfrastructure.setUp(temporaryFolder.getRoot().toPath());
+        testInfrastructure.setUp(temporaryFolder.getRoot().toPath());
     }
 }

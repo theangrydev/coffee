@@ -18,6 +18,8 @@
  */
 package yatspec.fluent;
 
+import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
+import com.googlecode.yatspec.state.givenwhenthen.InterestingGivens;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.Rule;
@@ -29,24 +31,33 @@ import java.util.List;
 
 import static java.lang.String.format;
 
+@SuppressWarnings("PMD.TooManyMethods") // Need lots of methods to make the interface fluent
 public abstract class FluentTest<
         TestInfrastructure,
         SystemUnderTest extends yatspec.fluent.SystemUnderTest<TestInfrastructure, Request, Response>,
         Request,
         Response,
-        Assertions> implements WithTestState, WithInterestingGivens, WithCapturedInputsAndOutputs, InterestingTestItems {
+        Assertions> implements WithTestState, ReadOnlyTestItems {
+
+    private final List<Primer<TestInfrastructure>> primers = new ArrayList<>();
+    private final InterestingGivens interestingGivens = new InterestingGivens();
+    private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
+    private final SystemUnderTest systemUnderTest;
+    protected final TestInfrastructure testInfrastructure;
+
+    private Stage stage = Stage.GIVEN;
+    private Assertions assertions;
+
+    protected FluentTest(SystemUnderTest systemUnderTest, TestInfrastructure testInfrastructure) {
+        this.systemUnderTest = systemUnderTest;
+        this.testInfrastructure = testInfrastructure;
+    }
 
     private enum Stage {
         GIVEN,
         WHEN,
         THEN
     }
-
-    private Stage stage = Stage.GIVEN;
-    private List<Primer<TestInfrastructure>> primers = new ArrayList<>();
-
-    private final SystemUnderTest systemUnderTest = systemUnderTest();
-    private Assertions assertions;
 
     @Rule
     public TestWatcher makeSureThenIsUsed = new TestWatcher() {
@@ -61,8 +72,8 @@ public abstract class FluentTest<
     @Override
     public TestState testState() {
         TestState testState = new TestState();
-        testState.interestingGivens = interestingGivens();
-        testState.capturedInputAndOutputs = capturedInputAndOutputs();
+        testState.interestingGivens = interestingGivens;
+        testState.capturedInputAndOutputs = capturedInputAndOutputs;
         return testState;
     }
 
@@ -87,7 +98,7 @@ public abstract class FluentTest<
         }
         boolean alreadyHadGiven = primers.stream().map(Object::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
         if (alreadyHadGiven) {
-            throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency.getClass().getSimpleName()));
+            throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency));
         }
         if (!primers.isEmpty()) {
             primePreviousGiven();
@@ -98,7 +109,7 @@ public abstract class FluentTest<
 
     private void primePreviousGiven() {
         if (!primers.isEmpty()) {
-            primers.get(primers.size() - 1).prime(this, testInfrastructure());
+            primers.get(primers.size() - 1).prime(this, testInfrastructure);
         }
     }
 
@@ -130,37 +141,17 @@ public abstract class FluentTest<
         if (stage == Stage.THEN) {
             throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
-        Request request = requestToSystemUnderTest();
-        beforeSystemHasBeenCalled(request);
-
-        Response response = callSystemUnderTest(request);
-        if (response == null) {
-            throw new IllegalStateException(format("%s response was null", systemUnderTestName()));
+        Request request = systemUnderTest.request(this, testInfrastructure);
+        if (request == null) {
+            throw new IllegalStateException(format("%s request was null", systemUnderTest));
         }
-        afterSystemHasBeenCalled(response);
+        Response response = systemUnderTest.call(request, this, testInfrastructure);
+        if (response == null) {
+            throw new IllegalStateException(format("%s response was null", systemUnderTest));
+        }
         stage = Stage.THEN;
         assertions = responseAssertions(response);
         return assertions;
-    }
-
-    private Request requestToSystemUnderTest() {
-        try {
-            return systemUnderTest.request(testInfrastructure());
-        } catch (Exception exception) {
-            throw new RuntimeException(format("%s threw an exception when called", systemUnderTestName()), exception);
-        }
-    }
-
-    private Response callSystemUnderTest(Request request) {
-        try {
-            return systemUnderTest.call(request, testInfrastructure());
-        } catch (Exception exception) {
-            throw new RuntimeException(format("%s threw an exception when called", systemUnderTestName()), exception);
-        }
-    }
-
-    private String systemUnderTestName() {
-        return systemUnderTest.getClass().getSimpleName();
     }
 
     protected Assertions and() {
@@ -170,19 +161,15 @@ public abstract class FluentTest<
         return assertions;
     }
 
-    protected abstract SystemUnderTest systemUnderTest();
-    protected abstract void beforeSystemHasBeenCalled(Request request);
-    protected abstract void afterSystemHasBeenCalled(Response response);
     protected abstract Assertions responseAssertions(Response response);
-    protected abstract TestInfrastructure testInfrastructure();
 
     @Override
     public void addToGivens(String key, Object instance) {
-        interestingGivens().add(key, instance);
+        interestingGivens.add(key, instance);
     }
 
     @Override
     public void addToCapturedInputsAndOutputs(String key, Object instance) {
-        capturedInputAndOutputs().add(key, instance);
+        capturedInputAndOutputs.add(key, instance);
     }
 }

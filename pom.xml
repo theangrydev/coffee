@@ -254,7 +254,9 @@
                 <version>3.6</version>
                 <configuration>
                     <printFailingErrors>true</printFailingErrors>
-                    <ruleset>${project.basedir}/pmd/pmd-rules.xml</ruleset>
+                    <rulesets>
+                        <ruleset>${project.basedir}/pmd/pmd-ruleset.xml</ruleset>
+                    </rulesets>
                     <includeTests>true</includeTests>
                 </configuration>
                 <executions>

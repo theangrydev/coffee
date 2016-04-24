@@ -20,7 +20,7 @@ package infrastructure.programs;
 
 import io.github.theangrydev.coffee.domain.base.SingleValueType;
 
-public class ProgramEntryPoint extends SingleValueType<String> {
+public final class ProgramEntryPoint extends SingleValueType<String> {
 
     private ProgramEntryPoint(String entryPoint) {
         super(entryPoint);

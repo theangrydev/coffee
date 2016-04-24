@@ -48,7 +48,7 @@ public class ValueTypeTest implements WithAssertions {
         private final int primitive;
         private final String object;
 
-        private TestType(int primitive, String object) {
+        TestType(int primitive, String object) {
             this.primitive = primitive;
             this.object = object;
         }
