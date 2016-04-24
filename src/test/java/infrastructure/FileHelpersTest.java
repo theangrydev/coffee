@@ -18,20 +18,29 @@
  */
 package infrastructure;
 
+import assertions.WithAssertions;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
 import java.io.File;
 import java.io.IOException;
 
+import static infrastructure.FileHelpers.readContent;
 import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
-import static java.lang.String.format;
-import static java.nio.file.Files.readAllBytes;
 
-public class Files {
+public class FileHelpersTest implements WithAssertions {
 
-    public static String readContent(File file) {
-        try {
-            return new String(readAllBytes(file.toPath()), CHARACTER_SET);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(format("Could not fetch content of file '%s' because it does not exist", file), e);
-        }
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
+    @Test
+    public void fileContentCanBeRead() throws IOException {
+        File file = folder.newFile();
+        String expectedContent = "Testing";
+        java.nio.file.Files.write(file.toPath(), expectedContent.getBytes(CHARACTER_SET));
+
+        String content = readContent(file);
+        assertThat(content).isEqualTo(expectedContent);
     }
 }

@@ -50,4 +50,22 @@
         <Field name="makeSureThenIsUsed"/>
         <BugPattern name="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
+
+    <!-- We know Path.getFileName exists because the paths are unit test listings -->
+    <Match>
+        <Class name="staticanalysis.UnitTestStaticAnalysisTest"/>
+        <Method name="productionFileIsMissing"/>
+        <BugPattern name="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
+
+    <!-- Types that extend ValueType do not need to override equals because ValueType has a reflective definition -->
+    <Match>
+        <Or>
+            <Class name="infrastructure.programs.ProgramArguments"/>
+            <Class name="infrastructure.programs.ProgramExecution"/>
+            <Class name="io.github.theangrydev.coffee.domain.base.SingleValueType"/>
+            <Class name="io.github.theangrydev.coffee.domain.base.ValueTypeTest$TestType"/>
+        </Or>
+        <BugPattern name="EQ_DOESNT_OVERRIDE_EQUALS"/>
+    </Match>
 </FindBugsFilter>

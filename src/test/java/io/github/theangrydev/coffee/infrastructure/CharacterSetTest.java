@@ -16,31 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure;
+package io.github.theangrydev.coffee.infrastructure;
 
 import assertions.WithAssertions;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import static infrastructure.Files.readContent;
-import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
-
-public class FilesTest implements WithAssertions {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+public class CharacterSetTest implements WithAssertions {
 
     @Test
-    public void fileContentCanBeRead() throws IOException {
-        File file = folder.newFile();
-        String expectedContent = "Testing";
-        java.nio.file.Files.write(file.toPath(), expectedContent.getBytes(CHARACTER_SET));
-
-        String content = readContent(file);
-        assertThat(content).isEqualTo(expectedContent);
+    public void characterSetUsedIsUTF8() {
+        assertThat(CharacterSet.CHARACTER_SET).isEqualTo(StandardCharsets.UTF_8);
     }
 }

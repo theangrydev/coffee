@@ -19,12 +19,12 @@
 package acceptancetests.given;
 
 import infrastructure.programs.ProgramTestInfrastructure;
-import yatspec.fluent.ReadOnlyTestItems;
 import yatspec.fluent.Primer;
+import yatspec.fluent.ReadOnlyTestItems;
 
 import java.io.File;
 
-import static infrastructure.Files.readContent;
+import static infrastructure.FileHelpers.readContent;
 
 public class GivenTheCompilerHasCompiled implements Primer<ProgramTestInfrastructure> {
 
