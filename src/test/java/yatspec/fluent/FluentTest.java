@@ -34,18 +34,15 @@ import java.util.List;
 import static java.lang.String.format;
 
 @SuppressWarnings("PMD.TooManyMethods") // Need lots of methods to make the interface fluent
-public abstract class FluentTest<
-        TestInfrastructure,
-        Request,
-        Response> implements WithTestState, ReadOnlyTestItems {
+public abstract class FluentTest<TestInfrastructure, Request, Response> implements WithTestState, ReadOnlyTestItems {
 
-    private final List<Primer<TestInfrastructure>> primers = new ArrayList<>();
     private final InterestingGivens interestingGivens = new InterestingGivens();
     private final CapturedInputAndOutputs capturedInputAndOutputs = new CapturedInputAndOutputs();
     private final TestInfrastructure testInfrastructure;
+    private final List<Given<TestInfrastructure>> givens = new ArrayList<>();
 
     private Stage stage = Stage.GIVEN;
-    private SystemUnderTest<TestInfrastructure, Request, Response> systemUnderTest;
+    private When<TestInfrastructure, Request, Response> when;
     private Response response;
 
     protected FluentTest(TestInfrastructure testInfrastructure) {
@@ -76,61 +73,61 @@ public abstract class FluentTest<
         return testState;
     }
 
-    protected <D extends Primer<TestInfrastructure>> D and(D dependency) {
+    protected <D extends Given<TestInfrastructure>> D and(D dependency) {
         return given(dependency);
     }
 
-    protected <D extends Primer<TestInfrastructure>> D given(D dependency) {
+    protected <D extends Given<TestInfrastructure>> D given(D dependency) {
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("The 'given' steps must be specified before the 'when' and 'then' steps");
 
         }
-        boolean alreadyHadGiven = primers.stream().map(Object::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
+        boolean alreadyHadGiven = givens.stream().map(Object::getClass).anyMatch(aClass -> aClass.equals(dependency.getClass()));
         if (alreadyHadGiven) {
             throw new IllegalStateException(format("The dependency '%s' has already specified a 'given' step", dependency));
         }
-        primers.add(dependency);
+        givens.add(dependency);
         return dependency;
     }
 
     private void primePreviousGiven() {
-        if (!primers.isEmpty()) {
-            primers.get(primers.size() - 1).prime(this, testInfrastructure);
+        if (!givens.isEmpty()) {
+            givens.get(givens.size() - 1).prime(this, testInfrastructure);
         }
     }
 
-    protected <T extends SystemUnderTest<TestInfrastructure, Request, Response>> T when(T systemUnderTest) {
-        this.systemUnderTest = systemUnderTest;
+    protected <T extends When<TestInfrastructure, Request, Response>> T when(T when) {
+        this.when = when;
         if (stage != Stage.GIVEN) {
             throw new IllegalStateException("There should only be one 'when', after the 'given' and before the 'then'");
         }
-        if (!primers.isEmpty()) {
+        if (!givens.isEmpty()) {
             primePreviousGiven();
         }
         stage = Stage.WHEN;
-        return systemUnderTest;
+        return when;
     }
 
-    protected <Assertions> Assertions then(ThenFactory<Assertions, Response> thenFactory) {
+    protected <Then> Then then(ThenFactory<Then, Response> thenFactory) {
         if (stage == Stage.GIVEN) {
             throw new IllegalStateException("The initial 'then' should be after the 'when'");
         }
         if (stage == Stage.THEN) {
             throw new IllegalStateException("After the first 'then' you should use 'and'");
         }
-        Request request = systemUnderTest.request(this, testInfrastructure);
+        Request request = when.request(this, testInfrastructure);
         if (request == null) {
-            throw new IllegalStateException(format("%s request was null", systemUnderTest));
+            throw new IllegalStateException(format("%s request was null", when));
         }
-        response = systemUnderTest.call(request, this, testInfrastructure);
+        response = when.response(request, this, testInfrastructure);
         if (response == null) {
-            throw new IllegalStateException(format("%s response was null", systemUnderTest));
+            throw new IllegalStateException(format("%s response was null", when));
         }
         stage = Stage.THEN;
         return thenFactory.then(response);
     }
 
-    protected <Assertions> Assertions and(ThenFactory<Assertions, Response> thenFactory) {
+    protected <Then> Then and(ThenFactory<Then, Response> thenFactory) {
         if (stage != Stage.THEN) {
             throw new IllegalStateException("All of the 'then' statements after the initial then should be 'and'");
         }

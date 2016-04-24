@@ -19,14 +19,14 @@
 package acceptancetests.given;
 
 import infrastructure.programs.ProgramTestInfrastructure;
-import yatspec.fluent.Primer;
+import yatspec.fluent.Given;
 import yatspec.fluent.ReadOnlyTestItems;
 
 import java.io.File;
 
 import static infrastructure.FileHelpers.readContent;
 
-public class GivenTheCompilerHasCompiled implements Primer<ProgramTestInfrastructure> {
+public class GivenTheCompilerHasCompiled implements Given<ProgramTestInfrastructure> {
 
     private String sourceCodeFileName;
 

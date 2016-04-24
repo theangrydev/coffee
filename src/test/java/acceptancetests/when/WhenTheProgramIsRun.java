@@ -20,9 +20,9 @@ package acceptancetests.when;
 
 import infrastructure.programs.*;
 import yatspec.fluent.ReadOnlyTestItems;
-import yatspec.fluent.SystemUnderTest;
+import yatspec.fluent.When;
 
-public class WhenTheProgramIsRun implements SystemUnderTest<ProgramTestInfrastructure, ProgramExecution, ProgramOutput> {
+public class WhenTheProgramIsRun implements When<ProgramTestInfrastructure, ProgramExecution, ProgramOutput> {
     private ProgramArguments arguments;
     private ProgramEntryPoint entryPoint;
 
@@ -48,7 +48,7 @@ public class WhenTheProgramIsRun implements SystemUnderTest<ProgramTestInfrastru
     }
 
     @Override
-    public ProgramOutput call(ProgramExecution programExecution, ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
+    public ProgramOutput response(ProgramExecution programExecution, ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
         ProgramOutput programOutput = programTestInfrastructure.invokeRuntime(programExecution);
         readOnlyTestItems.addToCapturedInputsAndOutputs("Program Output", programOutput);
         return programOutput;

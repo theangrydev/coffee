@@ -18,6 +18,8 @@
  */
 package yatspec.fluent;
 
-public interface Primer<TestInfrastructure> {
-    void prime(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
+@SuppressWarnings("PMD.ShortClassName") // In this case, the name is appropriate
+public interface When<TestInfrastructure, Request, Response> {
+    Request request(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
+    Response response(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
 }

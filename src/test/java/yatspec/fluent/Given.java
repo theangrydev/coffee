@@ -18,8 +18,6 @@
  */
 package yatspec.fluent;
 
-import com.googlecode.yatspec.state.givenwhenthen.CapturedInputAndOutputs;
-
-public interface WithCapturedInputsAndOutputs {
-    CapturedInputAndOutputs capturedInputAndOutputs();
+public interface Given<TestInfrastructure> {
+    void prime(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
 }
