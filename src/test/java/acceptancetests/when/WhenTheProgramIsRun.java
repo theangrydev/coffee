@@ -22,9 +22,18 @@ import infrastructure.programs.*;
 import yatspec.fluent.ReadOnlyTestItems;
 import yatspec.fluent.When;
 
-public class WhenTheProgramIsRun implements When<ProgramTestInfrastructure, ProgramExecution, ProgramOutput> {
+public class WhenTheProgramIsRun implements When<ProgramExecution, ProgramOutput> {
+
+    private final ReadOnlyTestItems readOnlyTestItems;
+    private final ProgramTestInfrastructure infrastructure;
+
     private ProgramArguments arguments;
     private ProgramEntryPoint entryPoint;
+
+    public WhenTheProgramIsRun(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure infrastructure) {
+        this.readOnlyTestItems = readOnlyTestItems;
+        this.infrastructure = infrastructure;
+    }
 
     public WhenTheProgramIsRun isRun() {
         return this;
@@ -41,15 +50,15 @@ public class WhenTheProgramIsRun implements When<ProgramTestInfrastructure, Prog
     }
 
     @Override
-    public ProgramExecution request(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
+    public ProgramExecution request() {
         ProgramExecution programExecution = ProgramExecution.programExecution(entryPoint, arguments);
         readOnlyTestItems.addToCapturedInputsAndOutputs("Program Execution", programExecution);
         return programExecution;
     }
 
     @Override
-    public ProgramOutput response(ProgramExecution programExecution, ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
-        ProgramOutput programOutput = programTestInfrastructure.invokeRuntime(programExecution);
+    public ProgramOutput response(ProgramExecution programExecution) {
+        ProgramOutput programOutput = infrastructure.invokeRuntime(programExecution);
         readOnlyTestItems.addToCapturedInputsAndOutputs("Program Output", programOutput);
         return programOutput;
     }

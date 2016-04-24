@@ -23,33 +23,32 @@ import acceptancetests.then.ThenTheProgramOutput;
 import acceptancetests.when.WhenTheProgramIsRun;
 import com.googlecode.yatspec.junit.SpecRunner;
 import infrastructure.programs.*;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import yatspec.fluent.ThenFactory;
 import yatspec.fluent.FluentTest;
+import yatspec.fluent.ThenFactory;
 
 @RunWith(SpecRunner.class)
-public abstract class ProgramTest extends FluentTest<ProgramTestInfrastructure, ProgramExecution, ProgramOutput> {
+public abstract class ProgramTest extends FluentTest<ProgramExecution, ProgramOutput> {
 
-    protected final GivenTheCompilerHasCompiled theCompiler = new GivenTheCompilerHasCompiled();
-    protected final WhenTheProgramIsRun theProgram = new WhenTheProgramIsRun();
+    protected final ProgramTestInfrastructure infrastructure = new ProgramTestInfrastructure(new CompilerProcess(), new RuntimeProcess());
+    protected final GivenTheCompilerHasCompiled theCompiler = new GivenTheCompilerHasCompiled(this, infrastructure);
+    protected final WhenTheProgramIsRun theProgram = new WhenTheProgramIsRun(this, infrastructure);
     protected final ThenFactory<ThenTheProgramOutput, ProgramOutput> theProgramOutput = ThenTheProgramOutput::new;
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    ProgramTest() {
-        super(new ProgramTestInfrastructure(new CompilerProcess(), new RuntimeProcess()));
+    @Before
+    public void setUp() {
+        infrastructure.setUp(temporaryFolder.getRoot().toPath());
     }
 
-    @Override
-    protected void setUp(ProgramTestInfrastructure programTestInfrastructure) {
-        programTestInfrastructure.setUp(temporaryFolder.getRoot().toPath());
-    }
-
-    @Override
-    protected void tearDown(ProgramTestInfrastructure programTestInfrastructure) {
+    @After
+    public void tearDown() {
         temporaryFolder.delete();
     }
 }

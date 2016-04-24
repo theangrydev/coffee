@@ -26,18 +26,26 @@ import java.io.File;
 
 import static infrastructure.FileHelpers.readContent;
 
-public class GivenTheCompilerHasCompiled implements Given<ProgramTestInfrastructure> {
+public class GivenTheCompilerHasCompiled implements Given {
+
+    private final ReadOnlyTestItems readOnlyTestItems;
+    private final ProgramTestInfrastructure infrastructure;
 
     private String sourceCodeFileName;
 
+    public GivenTheCompilerHasCompiled(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure infrastructure) {
+        this.readOnlyTestItems = readOnlyTestItems;
+        this.infrastructure = infrastructure;
+    }
+
     @Override
-    public void prime(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure programTestInfrastructure) {
-        File sourceCodeFile = programTestInfrastructure.sourceCode(sourceCodeFileName);
+    public void prime() {
+        File sourceCodeFile = infrastructure.sourceCode(sourceCodeFileName);
         String code = readContent(sourceCodeFile);
         readOnlyTestItems.addToCapturedInputsAndOutputs(sourceCodeFileName, code);
 
-        programTestInfrastructure.copyToCompilationDirectory(sourceCodeFile);
-        programTestInfrastructure.compile(sourceCodeFileName);
+        infrastructure.copyToCompilationDirectory(sourceCodeFile);
+        infrastructure.compile(sourceCodeFileName);
     }
 
     public GivenTheCompilerHasCompiled hasCompiled(String sourceCodeFileName) {

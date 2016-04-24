@@ -18,6 +18,6 @@
  */
 package yatspec.fluent;
 
-public interface Given<TestInfrastructure> {
-    void prime(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
+public interface Given {
+    void prime();
 }

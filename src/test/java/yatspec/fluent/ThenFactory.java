@@ -19,6 +19,6 @@
 package yatspec.fluent;
 
 @FunctionalInterface
-public interface ThenFactory<Assertions, Response> {
-    Assertions then(Response response);
+public interface ThenFactory<Then, Response> {
+    Then then(Response response);
 }

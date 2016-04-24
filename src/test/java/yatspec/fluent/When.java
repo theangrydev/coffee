@@ -18,8 +18,8 @@
  */
 package yatspec.fluent;
 
-@SuppressWarnings("PMD.ShortClassName") // In this case, the name is appropriate
-public interface When<TestInfrastructure, Request, Response> {
-    Request request(ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
-    Response response(Request request, ReadOnlyTestItems readOnlyTestItems, TestInfrastructure testInfrastructure);
+@SuppressWarnings("PMD.ShortClassName") // This is the most appropriate name in this case
+public interface When<Request, Response> {
+    Request request();
+    Response response(Request request);
 }
