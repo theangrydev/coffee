@@ -16,11 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.domain.base;
+package io.github.theangrydev.coffee.infrastructure;
 
-public interface BinaryOutput {
-    void writeByte(int byteToWrite);
-    void writeShort(int shortToWrite);
-    void writeInt(int intToWrite);
-    void writeUTF8(String string);
+public interface BinaryWriter {
+    void writeTo(BinaryOutput binaryOutput);
 }

@@ -18,8 +18,6 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import io.github.theangrydev.coffee.domain.base.BinaryOutput;
-
 import java.io.*;
 
 import static java.lang.String.format;

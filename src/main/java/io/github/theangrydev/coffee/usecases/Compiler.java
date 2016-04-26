@@ -18,7 +18,7 @@
  */
 package io.github.theangrydev.coffee.usecases;
 
-import io.github.theangrydev.coffee.domain.base.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.BinaryWriter;
 import io.github.theangrydev.coffee.infrastructure.ClassFileWriter;
 
 public class Compiler {

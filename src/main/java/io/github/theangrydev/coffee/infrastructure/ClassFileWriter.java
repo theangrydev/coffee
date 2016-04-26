@@ -18,9 +18,6 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import io.github.theangrydev.coffee.domain.base.BinaryOutput;
-import io.github.theangrydev.coffee.domain.base.BinaryWriter;
-
 @SuppressWarnings("PMD.TooManyMethods") // Will refactor when green
 public class ClassFileWriter implements BinaryWriter {
 
