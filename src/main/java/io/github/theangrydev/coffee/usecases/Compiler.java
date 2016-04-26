@@ -19,10 +19,10 @@
 package io.github.theangrydev.coffee.usecases;
 
 import io.github.theangrydev.coffee.infrastructure.BinaryWriter;
-import io.github.theangrydev.coffee.infrastructure.ClassFileWriter;
+import io.github.theangrydev.coffee.infrastructure.AdditionProgramWriter;
 
 public class Compiler {
     public BinaryWriter compile(String codeToCompile) {
-        return new ClassFileWriter();
+        return new AdditionProgramWriter();
     }
 }

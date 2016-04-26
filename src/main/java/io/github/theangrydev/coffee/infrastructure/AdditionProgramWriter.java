@@ -19,7 +19,7 @@
 package io.github.theangrydev.coffee.infrastructure;
 
 @SuppressWarnings("PMD.TooManyMethods") // Will refactor when green
-public class ClassFileWriter implements BinaryWriter {
+public class AdditionProgramWriter implements BinaryWriter {
 
     private static final int CLASS_PUBLIC_FLAG = 0x0001;
     private static final int CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG = 0x0020;
