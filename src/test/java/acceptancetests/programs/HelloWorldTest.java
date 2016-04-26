@@ -18,10 +18,8 @@
  */
 package acceptancetests.programs;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore // TODO: fix this test
 public class HelloWorldTest extends ProgramTest {
 
     @Test

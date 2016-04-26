@@ -19,7 +19,7 @@
 package io.github.theangrydev.coffee.infrastructure;
 
 @SuppressWarnings("PMD.TooManyMethods") // Will refactor when green
-public class AdditionProgramWriter implements BinaryWriter {
+public class HelloWorldWriter implements BinaryWriter {
 
     private static final int CLASS_PUBLIC_FLAG = 0x0001;
     private static final int CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG = 0x0020;
@@ -29,17 +29,17 @@ public class AdditionProgramWriter implements BinaryWriter {
 
     private BinaryOutput binaryOutput;
     private int constantCount;
-    private int objectConstructor;
-    private int systemOutField;
-    private int integerParseInt;
-    private int printStreamPrintln;
-    private int additionClass;
-    private int main;
-    private int stringArrayToVoid;
-    private int code;
     private int objectClass;
     private int init;
     private int noArgumentVoid;
+    private int objectConstructor;
+    private int code;
+    private int helloWorldClass;
+    private int main;
+    private int stringArrayToVoid;
+    private int printStreamPrintln;
+    private int systemOutField;
+    private int helloWorldString;
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
@@ -56,13 +56,49 @@ public class AdditionProgramWriter implements BinaryWriter {
         writeClassAttributes();
     }
 
-    private void writeClassAttributes() {
-        binaryOutput.writeShort(0);
+    private void writeConstantPool() {
+        writeConstantPoolCount(25);
+        int javaLangObject = writeUTF8("java/lang/Object");
+        objectClass = writeClass(javaLangObject);
+        init = writeUTF8("<init>");
+        noArgumentVoid = writeUTF8("()V");
+        int voidConstructor = writeNameAndType(init, noArgumentVoid);
+        objectConstructor = writeMethodReference(objectClass, voidConstructor);
+
+        int javaLangSystem = writeUTF8("java/lang/System");
+        int systemClass = writeClass(javaLangSystem);
+        int out = writeUTF8("out");
+        int printStreamType = writeUTF8("Ljava/io/PrintStream;");
+        int outPrintStream = writeNameAndType(out, printStreamType);
+        systemOutField = writeFieldReference(systemClass, outPrintStream);
+
+        int javaIoPrintStream = writeUTF8("java/io/PrintStream");
+        int printStreamClass = writeClass(javaIoPrintStream);
+        int println = writeUTF8("println");
+        int stringToVoid = writeUTF8("(Ljava/lang/String;)V");
+        int printlnStringToVoid = writeNameAndType(println, stringToVoid);
+        printStreamPrintln = writeMethodReference(printStreamClass, printlnStringToVoid);
+
+        helloWorldString = writeString(writeUTF8("Hello World!"));
+        helloWorldClass = writeClass(writeUTF8("HelloWorld"));
+
+        main = writeUTF8("main");
+        stringArrayToVoid = writeUTF8("([Ljava/lang/String;)V");
+
+        code = writeUTF8("Code");
+    }
+
+    private void writeThisIndex() {
+        writeConstantPoolIndex(helloWorldClass);
+    }
+
+    private void writeSuperIndex() {
+        writeConstantPoolIndex(objectClass);
     }
 
     private void writeClassMethods() {
         writeNumberOfMethods(2);
-        writeAdditonProgramConstructorMethod();
+        writeConstructorMethod();
         writeMainMethod();
     }
 
@@ -76,9 +112,9 @@ public class AdditionProgramWriter implements BinaryWriter {
 
     private void writeMainMethodAttribute() {
         writeAttributeName(code);
-        int instructionSizeInBytes = 3 + 1 + 1 + 1 + 3 + 1 + 1 + 1 + 3 + 1 + 3 + 1;
+        int instructionSizeInBytes = 3 + 2 + 3 + 1;
         writeAttributeSizeInBytes(2 + 2 + 4 + instructionSizeInBytes + 2 + 2);
-        writeMaxStackDepth(4);
+        writeMaxStackDepth(2);
         writeMaxLocalVariables(1);
         writeMainMethodInstructions(instructionSizeInBytes);
         writeEmptyExceptionTable();
@@ -88,17 +124,14 @@ public class AdditionProgramWriter implements BinaryWriter {
     private void writeMainMethodInstructions(int sizeInBytes) {
         writeSizeOfInstructions(sizeInBytes);
         writeGetstatic(systemOutField);
-        writeAload0();
-        writeIconst0();
-        writeAaload();
-        writeInvokestatic(integerParseInt);
-        writeAload0();
-        writeIConst1();
-        writeAaload();
-        writeInvokestatic(integerParseInt);
-        writeIadd();
+        writeLdc(helloWorldString);
         writeInvokevirtual(printStreamPrintln);
         writeVoidReturn();
+    }
+
+    private void writeLdc(int constantIndex) {
+        binaryOutput.writeByte(0x12);
+        binaryOutput.writeByte(constantIndex);
     }
 
     private void writeInvokevirtual(int methodIndex) {
@@ -106,41 +139,20 @@ public class AdditionProgramWriter implements BinaryWriter {
         writeConstantPoolIndex(methodIndex);
     }
 
-    private void writeIadd() {
-        binaryOutput.writeByte(0x60);
-    }
-
-    private void writeIConst1() {
-        binaryOutput.writeByte(0x4);
-    }
-
-    private void writeInvokestatic(int methodIndex) {
-        binaryOutput.writeByte(0xb8);
-        writeConstantPoolIndex(methodIndex);
-    }
-
-    private void writeAaload() {
-        binaryOutput.writeByte(0x32);
-    }
-
-    private void writeIconst0() {
-        binaryOutput.writeByte(0x3);
-    }
-
     private void writeGetstatic(int fieldIndex) {
         binaryOutput.writeByte(0xb2);
         writeConstantPoolIndex(fieldIndex);
     }
 
-    private void writeAdditonProgramConstructorMethod() {
+    private void writeConstructorMethod() {
         writeMethodFlags(METHOD_PUBLIC_FLAG);
         writeMethodName(init);
         writeMethodTypeSignature(noArgumentVoid);
         writeMethodAttributeSize(1);
-        writeAdditionProgramConstructorAttribute();
+        writeConstructorCodeAttribute();
     }
 
-    private void writeAdditionProgramConstructorAttribute() {
+    private void writeConstructorCodeAttribute() {
         writeAttributeName(code);
         int instructionSizeInBytes = 1 + 3 + 1;
         writeAttributeSizeInBytes(2 + 2 + 4 + instructionSizeInBytes + 2 + 2);
@@ -149,22 +161,6 @@ public class AdditionProgramWriter implements BinaryWriter {
         writeAdditionProgramConstructorInstructions(instructionSizeInBytes);
         writeEmptyExceptionTable();
         writeEmptyAttributes();
-    }
-
-    private void writeEmptyAttributes() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeEmptyExceptionTable() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeAttributeSizeInBytes(int sizeInBytes) {
-        binaryOutput.writeInt(sizeInBytes);
-    }
-
-    private void writeAttributeName(int attributeNameIndex) {
-        writeConstantPoolIndex(attributeNameIndex);
     }
 
     private void writeAdditionProgramConstructorInstructions(int sizeInBytes) {
@@ -185,6 +181,22 @@ public class AdditionProgramWriter implements BinaryWriter {
 
     private void writeAload0() {
         binaryOutput.writeByte(0x2a);
+    }
+
+    private void writeAttributeSizeInBytes(int sizeInBytes) {
+        binaryOutput.writeInt(sizeInBytes);
+    }
+
+    private void writeAttributeName(int attributeNameIndex) {
+        writeConstantPoolIndex(attributeNameIndex);
+    }
+
+    private void writeEmptyAttributes() {
+        binaryOutput.writeShort(0);
+    }
+
+    private void writeEmptyExceptionTable() {
+        binaryOutput.writeShort(0);
     }
 
     private void writeSizeOfInstructions(int sizeInBytes) {
@@ -211,71 +223,16 @@ public class AdditionProgramWriter implements BinaryWriter {
         binaryOutput.writeShort(methodFlags);
     }
 
-    private void writeNumberOfMethods(int numberOfMethods) {
-        binaryOutput.writeShort(numberOfMethods);
-    }
-
     private void writeMaxStackDepth(int maxStackDepth) {
         binaryOutput.writeShort(maxStackDepth);
     }
 
-    private void writeClassFields() {
-        binaryOutput.writeShort(0);
+    private void writeNumberOfMethods(int numberOfMethods) {
+        binaryOutput.writeShort(numberOfMethods);
     }
 
-    private void writeClassInterfaces() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeSuperIndex() {
-        writeConstantPoolIndex(objectClass);
-    }
-
-    private void writeThisIndex() {
-        writeConstantPoolIndex(additionClass);
-    }
-
-    private void writeAccessFlags() {
-        binaryOutput.writeShort(CLASS_PUBLIC_FLAG | CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG);
-    }
-
-    private void writeConstantPool() {
-        writeConstantPoolCount(29);
-        int javaLangObject = writeUTF8("java/lang/Object");
-        objectClass = writeClass(javaLangObject);
-        init = writeUTF8("<init>");
-        noArgumentVoid = writeUTF8("()V");
-        int voidConstructor = writeNameAndType(init, noArgumentVoid);
-        objectConstructor = writeMethodReference(objectClass, voidConstructor);
-
-        int javaLangSystem = writeUTF8("java/lang/System");
-        int systemClass = writeClass(javaLangSystem);
-        int out = writeUTF8("out");
-        int printStreamType = writeUTF8("Ljava/io/PrintStream;");
-        int outPrintStream = writeNameAndType(out, printStreamType);
-        systemOutField = writeFieldReference(systemClass, outPrintStream);
-
-        int javaLangInteger = writeUTF8("java/lang/Integer");
-        int integerClass = writeClass(javaLangInteger);
-        int parseInt = writeUTF8("parseInt");
-        int stringToInt = writeUTF8("(Ljava/lang/String;)I");
-        int parseIntStringToInt = writeNameAndType(parseInt, stringToInt);
-        integerParseInt = writeMethodReference(integerClass, parseIntStringToInt);
-
-        int javaIoPrintStream = writeUTF8("java/io/PrintStream");
-        int printStreamClass = writeClass(javaIoPrintStream);
-        int println = writeUTF8("println");
-        int intToVoid = writeUTF8("(I)V");
-        int printlnIntToVoid = writeNameAndType(println, intToVoid);
-        printStreamPrintln = writeMethodReference(printStreamClass, printlnIntToVoid);
-
-        int additionProgram = writeUTF8("AdditionProgram");
-        additionClass = writeClass(additionProgram);
-
-        main = writeUTF8("main");
-        stringArrayToVoid = writeUTF8("([Ljava/lang/String;)V");
-
-        code = writeUTF8("Code");
+    private void writeConstantPoolCount(int numberOfEntries) {
+        binaryOutput.writeShort(numberOfEntries + 1);
     }
 
     private int writeFieldReference(int classIndex, int fieldNameAndTypIndex) {
@@ -305,6 +262,12 @@ public class AdditionProgramWriter implements BinaryWriter {
         return registerConstant();
     }
 
+    private int writeString(int constantIndex) {
+        binaryOutput.writeByte(8);
+        writeConstantPoolIndex(constantIndex);
+        return registerConstant();
+    }
+
     private int writeUTF8(String string) {
         binaryOutput.writeByte(1);
         binaryOutput.writeUTF8(string);
@@ -320,8 +283,16 @@ public class AdditionProgramWriter implements BinaryWriter {
         binaryOutput.writeShort(classIndex);
     }
 
-    private void writeConstantPoolCount(int numberOfEntries) {
-        binaryOutput.writeShort(numberOfEntries + 1);
+    private void writeClassFields() {
+        binaryOutput.writeShort(0);
+    }
+
+    private void writeClassInterfaces() {
+        binaryOutput.writeShort(0);
+    }
+
+    private void writeAccessFlags() {
+        binaryOutput.writeShort(CLASS_PUBLIC_FLAG | CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG);
     }
 
     private void writeVersion() {
@@ -334,5 +305,9 @@ public class AdditionProgramWriter implements BinaryWriter {
         binaryOutput.writeByte(0xFE);
         binaryOutput.writeByte(0xBA);
         binaryOutput.writeByte(0xBE);
+    }
+
+    private void writeClassAttributes() {
+        binaryOutput.writeShort(0);
     }
 }
