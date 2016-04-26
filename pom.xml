@@ -247,6 +247,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
+                    <systemProperties>
+                        <run.compiler.jar>true</run.compiler.jar>
+                    </systemProperties>
                     <includes>
                         <include>${acceptance.tests}</include>
                     </includes>

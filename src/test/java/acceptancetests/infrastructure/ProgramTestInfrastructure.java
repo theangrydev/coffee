@@ -18,6 +18,8 @@
  */
 package acceptancetests.infrastructure;
 
+import io.github.theangrydev.coffee.entrypoint.CommandLine;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -57,7 +59,16 @@ public class ProgramTestInfrastructure {
     }
 
     public void compile(String sourceCode) {
-        compilerProcess.compile(compilationDirectory.resolve(sourceCode));
+        Path sourceCodeFile = compilationDirectory.resolve(sourceCode);
+        if (runCompilerJar()) {
+            compilerProcess.compile(sourceCodeFile);
+        } else {
+            CommandLine.main(sourceCodeFile.toString());
+        }
+    }
+
+    private boolean runCompilerJar() {
+        return "true".equals(System.getProperty("run.compiler.jar"));
     }
 
     public File sourceCode(String fileName) {

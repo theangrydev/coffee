@@ -18,14 +18,16 @@
  */
 package acceptancetests.programs;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class AdditionProgramTest extends ProgramTest {
+@Ignore // TODO: fix this test
+public class HelloWorldTest extends ProgramTest {
 
     @Test
-    public void programThatAddsTwoNumbersTogether() {
-        given(theCompiler.hasCompiled("AdditionProgram.coffee"));
-        when(theProgram.isRun().withEntryPoint("AdditionProgram").andArguments("1 2"));
-        then(theProgramOutput).isEqualTo("3");
+    public void programThatPrintsHelloWorld() {
+        given(theCompiler.hasCompiled("HelloWorld.coffee"));
+        when(theProgram.isRun().withEntryPoint("HelloWorld"));
+        then(theProgramOutput).isEqualTo("Hello World!");
     }
 }

@@ -22,12 +22,14 @@ import acceptancetests.infrastructure.*;
 import yatspec.fluent.ReadOnlyTestItems;
 import yatspec.fluent.When;
 
+import static acceptancetests.infrastructure.ProgramArguments.programArguments;
+
 public class WhenTheProgramIsRun implements When<ProgramExecution, ProgramOutput> {
 
     private final ReadOnlyTestItems readOnlyTestItems;
     private final ProgramTestInfrastructure infrastructure;
 
-    private ProgramArguments arguments;
+    private ProgramArguments arguments = programArguments("");
     private ProgramEntryPoint entryPoint;
 
     public WhenTheProgramIsRun(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure infrastructure) {
@@ -45,7 +47,7 @@ public class WhenTheProgramIsRun implements When<ProgramExecution, ProgramOutput
     }
 
     public WhenTheProgramIsRun andArguments(String arguments) {
-        this.arguments = ProgramArguments.programArguments(arguments);
+        this.arguments = programArguments(arguments);
         return this;
     }
 
