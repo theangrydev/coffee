@@ -16,20 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package acceptancetests.then;
+package acceptancetests.infrastructure;
 
-import assertions.WithAssertions;
-import acceptancetests.infrastructure.ProgramOutput;
+import java.io.InputStream;
+import java.util.Scanner;
 
-public class ThenTheProgramOutput implements WithAssertions {
+import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
 
-    private final ProgramOutput programOutput;
-
-    public ThenTheProgramOutput(ProgramOutput programOutput) {
-        this.programOutput = programOutput;
-    }
-
-    public void isEqualTo(String output) {
-        assertThat(programOutput.toString()).isEqualTo(output);
+public class InputStreams {
+    public static String readInputStream(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream, CHARACTER_SET.name()).useDelimiter("\\Z");
+        if (scanner.hasNext()) {
+            return scanner.next();
+        } else {
+            return "";
+        }
     }
 }

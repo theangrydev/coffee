@@ -16,19 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure.programs;
-
-import infrastructure.ProcessExecutor;
+package acceptancetests.infrastructure;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
-public class CompilerProcess {
+import static acceptancetests.infrastructure.ProgramOutput.programOutput;
+import static acceptancetests.infrastructure.Streams.concat;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+
+public class RuntimeProcess {
 
     private final ProcessExecutor processExecutor = new ProcessExecutor();
 
-    public void compile(Path sourceCode) {
-        String javac = Paths.get(System.getProperty("java.home")).getParent().resolve("bin").resolve("javac").toString();
-        processExecutor.execute(javac, "\"" + sourceCode.toAbsolutePath().toString() + "\"");
+    public ProgramOutput run(Path classPath, ProgramExecution execution) {
+        String java = Paths.get(System.getProperty("java.home")).resolve("bin").resolve("java").toString();
+        List<String> commandLine = concat(asList(java, "-cp", "\"" + classPath + "\"", execution.entryPoint().toString()), execution.arguments().arguments()).collect(toList());
+        return programOutput(processExecutor.execute(commandLine));
     }
 }

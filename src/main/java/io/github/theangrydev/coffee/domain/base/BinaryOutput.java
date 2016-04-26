@@ -16,23 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure;
+package io.github.theangrydev.coffee.domain.base;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import static java.util.stream.Stream.empty;
-
-public class Streams {
-
-    @SuppressWarnings("varargs")
-    @SafeVarargs
-    public static <T> Stream<T> concat(Iterable<T>... streams) {
-        return Arrays.stream(streams).map(Streams::stream).reduce(empty(), Stream::concat);
-    }
-
-    public static <T> Stream<T> stream(Iterable<T> iterable) {
-        return StreamSupport.stream(iterable.spliterator(), false);
-    }
+public interface BinaryOutput {
+    void writeByte(int byteToWrite);
+    void writeShort(int shortToWrite);
+    void writeInt(int intToWrite);
+    void writeUTF8(String string);
 }

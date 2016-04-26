@@ -16,29 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure;
+package acceptancetests.infrastructure;
 
-import assertions.WithAssertions;
-import org.junit.Test;
+import java.util.Arrays;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import java.io.ByteArrayInputStream;
+import static java.util.stream.Stream.empty;
 
-import static infrastructure.InputStreams.readInputStream;
-import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
+public class Streams {
 
-public class InputStreamsTest implements WithAssertions {
-
-    @Test
-    public void readsInputStreamThatIsNotEmpty() {
-        String content = readInputStream(new ByteArrayInputStream("Hello World".getBytes(CHARACTER_SET)));
-
-        assertThat(content).isEqualTo("Hello World");
+    @SuppressWarnings("varargs")
+    @SafeVarargs
+    public static <T> Stream<T> concat(Iterable<T>... streams) {
+        return Arrays.stream(streams).map(Streams::stream).reduce(empty(), Stream::concat);
     }
 
-    @Test
-    public void readsInputStreamThatIsEmpty() {
-        String content = readInputStream(new ByteArrayInputStream("".getBytes(CHARACTER_SET)));
-
-        assertThat(content).isEmpty();
+    public static <T> Stream<T> stream(Iterable<T> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false);
     }
 }

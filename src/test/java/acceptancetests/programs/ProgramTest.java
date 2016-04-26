@@ -19,10 +19,10 @@
 package acceptancetests.programs;
 
 import acceptancetests.given.GivenTheCompilerHasCompiled;
+import acceptancetests.infrastructure.*;
 import acceptancetests.then.ThenTheProgramOutput;
 import acceptancetests.when.WhenTheProgramIsRun;
 import com.googlecode.yatspec.junit.SpecRunner;
-import infrastructure.programs.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

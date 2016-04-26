@@ -16,31 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure;
+package acceptancetests.infrastructure;
 
 import assertions.WithAssertions;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 
-import static infrastructure.FileHelpers.readContent;
+import static acceptancetests.infrastructure.InputStreams.readInputStream;
 import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
 
-public class FileHelpersTest implements WithAssertions {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+public class InputStreamsTest implements WithAssertions {
 
     @Test
-    public void fileContentCanBeRead() throws IOException {
-        File file = folder.newFile();
-        String expectedContent = "Testing";
-        java.nio.file.Files.write(file.toPath(), expectedContent.getBytes(CHARACTER_SET));
+    public void readsInputStreamThatIsNotEmpty() {
+        String content = readInputStream(new ByteArrayInputStream("Hello World".getBytes(CHARACTER_SET)));
 
-        String content = readContent(file);
-        assertThat(content).isEqualTo(expectedContent);
+        assertThat(content).isEqualTo("Hello World");
+    }
+
+    @Test
+    public void readsInputStreamThatIsEmpty() {
+        String content = readInputStream(new ByteArrayInputStream("".getBytes(CHARACTER_SET)));
+
+        assertThat(content).isEmpty();
     }
 }

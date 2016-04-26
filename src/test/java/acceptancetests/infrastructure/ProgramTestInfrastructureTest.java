@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure.programs;
+package acceptancetests.infrastructure;
 
 import assertions.WithAssertions;
 import org.junit.Before;
@@ -26,8 +26,8 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 
-import static infrastructure.programs.ProgramEntryPoint.entryPoint;
-import static infrastructure.programs.ProgramExecution.programExecution;
+import static acceptancetests.infrastructure.ProgramEntryPoint.entryPoint;
+import static acceptancetests.infrastructure.ProgramExecution.programExecution;
 
 public class ProgramTestInfrastructureTest implements WithAssertions {
 
@@ -38,21 +38,21 @@ public class ProgramTestInfrastructureTest implements WithAssertions {
 
     @Test
     public void sourceCodeLoadsFilesFromTestResources() {
-        File file = infrastructure.sourceCode("HelloWorld.code");
+        File file = infrastructure.sourceCode("AdditionProgram.coffee");
 
-        assertThat(file).isEqualTo(new File("src/test/resources/code/HelloWorld.code"));
+        assertThat(file).isEqualTo(new File("src/test/resources/code/AdditionProgram.coffee"));
     }
 
     @Test
     public void compilationProducesAFileThatCanBeRun() {
-        File sourceCode = infrastructure.sourceCode("HelloWorld.java");
+        File sourceCode = infrastructure.sourceCode("AdditionProgram.coffee");
         infrastructure.copyToCompilationDirectory(sourceCode);
-        infrastructure.compile("HelloWorld.java");
+        infrastructure.compile("AdditionProgram.coffee");
 
-        ProgramExecution execution = programExecution(entryPoint("HelloWorld"), ProgramArguments.programArguments(""));
+        ProgramExecution execution = programExecution(entryPoint("AdditionProgram"), ProgramArguments.programArguments("3 4"));
         ProgramOutput programOutput = infrastructure.invokeRuntime(execution);
 
-        assertThat(programOutput).hasToString("Hello World");
+        assertThat(programOutput).hasToString("7");
     }
 
     @Before

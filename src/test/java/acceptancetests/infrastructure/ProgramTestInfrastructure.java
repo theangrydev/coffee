@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure.programs;
+package acceptancetests.infrastructure;
 
 import java.io.File;
 import java.io.FileInputStream;

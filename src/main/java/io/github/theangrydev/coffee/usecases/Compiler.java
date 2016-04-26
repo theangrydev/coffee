@@ -16,20 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure;
+package io.github.theangrydev.coffee.usecases;
 
-import java.io.InputStream;
-import java.util.Scanner;
+import io.github.theangrydev.coffee.domain.base.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.ClassFileWriter;
 
-import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
-
-public class InputStreams {
-    public static String readInputStream(InputStream inputStream) {
-        Scanner scanner = new Scanner(inputStream, CHARACTER_SET.name()).useDelimiter("\\Z");
-        if (scanner.hasNext()) {
-            return scanner.next();
-        } else {
-            return "";
-        }
+public class Compiler {
+    public BinaryWriter compile(String codeToCompile) {
+        return new ClassFileWriter();
     }
 }

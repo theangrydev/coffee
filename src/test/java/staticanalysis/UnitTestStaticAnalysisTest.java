@@ -26,7 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static infrastructure.FileHelpers.listDirectory;
+import static io.github.theangrydev.coffee.infrastructure.FileHelpers.listDirectory;
 import static java.util.stream.Collectors.toList;
 
 public class UnitTestStaticAnalysisTest implements WithAssertions {

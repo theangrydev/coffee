@@ -16,34 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure.programs;
+package acceptancetests.infrastructure;
 
 import io.github.theangrydev.coffee.domain.base.ValueType;
 
-public final class ProgramExecution extends ValueType {
+import java.util.Arrays;
+import java.util.List;
 
-    private final ProgramEntryPoint entryPoint;
-    private final ProgramArguments arguments;
+import static java.util.stream.Collectors.joining;
 
-    private ProgramExecution(ProgramEntryPoint entryPoint, ProgramArguments arguments) {
-        this.entryPoint = entryPoint;
+public final class ProgramArguments extends ValueType {
+    private final List<String> arguments;
+
+    private ProgramArguments(List<String> arguments) {
         this.arguments = arguments;
     }
 
-    public static ProgramExecution programExecution(ProgramEntryPoint entryPoint, ProgramArguments arguments) {
-        return new ProgramExecution(entryPoint, arguments);
+    public static ProgramArguments programArguments(String arguments) {
+        return new ProgramArguments(Arrays.asList(arguments.split("\\s")));
     }
 
-    public ProgramEntryPoint entryPoint() {
-        return entryPoint;
-    }
-
-    public ProgramArguments arguments() {
+    public List<String> arguments() {
         return arguments;
     }
 
     @Override
     public String toString() {
-        return entryPoint + " " + arguments;
+        return arguments.stream().collect(joining(" "));
     }
 }

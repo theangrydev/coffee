@@ -18,13 +18,13 @@
  */
 package acceptancetests.given;
 
-import infrastructure.programs.ProgramTestInfrastructure;
+import acceptancetests.infrastructure.ProgramTestInfrastructure;
 import yatspec.fluent.Given;
 import yatspec.fluent.ReadOnlyTestItems;
 
 import java.io.File;
 
-import static infrastructure.FileHelpers.readContent;
+import static io.github.theangrydev.coffee.infrastructure.FileHelpers.readContent;
 
 public class GivenTheCompilerHasCompiled implements Given {
 

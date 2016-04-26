@@ -16,22 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure;
+package acceptancetests.infrastructure;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
-import static infrastructure.InputStreams.readInputStream;
+import static acceptancetests.infrastructure.InputStreams.readInputStream;
 import static java.lang.ProcessBuilder.Redirect.INHERIT;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 
 public class ProcessExecutor {
-
-    public String execute(String... commandLine) {
-        return execute(Arrays.asList(commandLine));
-    }
 
     public String execute(List<String> commandLine) {
         ProcessBuilder processBuilder = new ProcessBuilder(commandLine);

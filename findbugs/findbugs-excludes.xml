@@ -39,7 +39,7 @@
 
     <!-- java.home will always be set -->
     <Match>
-        <Class name="infrastructure.programs.CompilerProcess"/>
+        <Class name="acceptancetests.infrastructure.CompilerProcess"/>
         <Method name="compile"/>
         <BugPattern name="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
     </Match>
@@ -61,8 +61,8 @@
     <!-- Types that extend ValueType do not need to override equals because ValueType has a reflective definition -->
     <Match>
         <Or>
-            <Class name="infrastructure.programs.ProgramArguments"/>
-            <Class name="infrastructure.programs.ProgramExecution"/>
+            <Class name="acceptancetests.infrastructure.ProgramArguments"/>
+            <Class name="acceptancetests.infrastructure.ProgramExecution"/>
             <Class name="io.github.theangrydev.coffee.domain.base.SingleValueType"/>
             <Class name="io.github.theangrydev.coffee.domain.base.ValueTypeTest$TestType"/>
         </Or>

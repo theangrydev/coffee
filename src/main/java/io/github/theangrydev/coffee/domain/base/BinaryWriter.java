@@ -16,16 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure.programs;
+package io.github.theangrydev.coffee.domain.base;
 
-import io.github.theangrydev.coffee.domain.base.SingleValueType;
-
-public final class ProgramOutput extends SingleValueType<String> {
-    private ProgramOutput(String output) {
-        super(output);
-    }
-
-    public static ProgramOutput programOutput(String output) {
-        return new ProgramOutput(output);
-    }
+public interface BinaryWriter {
+    void writeTo(BinaryOutput binaryOutput);
 }

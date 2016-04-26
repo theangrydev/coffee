@@ -16,17 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package infrastructure.programs;
+package acceptancetests.infrastructure;
 
 import io.github.theangrydev.coffee.domain.base.SingleValueType;
 
-public final class ProgramEntryPoint extends SingleValueType<String> {
-
-    private ProgramEntryPoint(String entryPoint) {
-        super(entryPoint);
+public final class ProgramOutput extends SingleValueType<String> {
+    private ProgramOutput(String output) {
+        super(output);
     }
 
-    public static ProgramEntryPoint entryPoint(String entryPoint) {
-        return new ProgramEntryPoint(entryPoint);
+    public static ProgramOutput programOutput(String output) {
+        return new ProgramOutput(output);
     }
 }
