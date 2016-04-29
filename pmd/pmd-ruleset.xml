@@ -36,6 +36,7 @@
         <exclude name="AtLeastOneConstructor"/><!-- This is pointless if an object has no state (e.g. ValueType) -->
         <exclude name="OnlyOneReturn"/><!-- Multiple returns can aid readability and reduce arrow code -->
         <exclude name="DataflowAnomalyAnalysis"/><!-- Too many false positives -->
+        <exclude name="AvoidUsingShortType"/><!-- Shorts will be used when e.g. writing class files -->
     </rule>
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->
@@ -48,9 +49,10 @@
     <rule ref="rulesets/java/empty.xml"/>
     <rule ref="rulesets/java/finalizers.xml"/>
     <rule ref="rulesets/java/imports.xml"/>
-    <rule ref="rulesets/java/j2ee.xml"/>
     <rule ref="rulesets/java/junit.xml">
         <exclude name="TestClassWithoutTestCases"/><!-- This rule assumes test methods start with testXXX -->
+        <exclude name="JUnitTestContainsTooManyAsserts"/><!-- Multiple asserts can form one logical assertion -->
+        <exclude name="JUnitTestsShouldIncludeAssert"/><!-- This rule doesn't consider verification an assertion -->
     </rule>
     <rule ref="rulesets/java/logging-java.xml"/>
     <rule ref="rulesets/java/naming.xml">

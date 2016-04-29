@@ -18,10 +18,19 @@
  */
 package assertions;
 
-public interface WithAssertions extends org.assertj.core.api.WithAssertions {
+import org.assertj.core.api.AbstractByteArrayAssert;
 
-    @Override
-    default ByteArrayAssert assertThat(byte[] bytes) {
-        return new ByteArrayAssert(bytes);
+public class ByteArrayAssert extends AbstractByteArrayAssert<ByteArrayAssert> {
+
+    public ByteArrayAssert(byte[] bytes) {
+        super(bytes, ByteArrayAssert.class);
+    }
+
+    public ByteArrayAssert containsExactly(int... values) {
+        byte[] bytes = new byte[values.length];
+        for (int i = 0; i < values.length; i++) {
+            bytes[i] = (byte) values[i];
+        }
+        return containsExactly(bytes);
     }
 }

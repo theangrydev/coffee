@@ -35,15 +35,15 @@ public class UnitTestStaticAnalysisTest implements WithAssertions {
     public void checkThatUnitTestsAreInTheSamePackageAsTheProductionClasses() throws IOException {
         List<Path> violations = listDirectory(Paths.get("src/test/java/io/github/theangrydev/coffee"))
                 .stream()
-                .filter(this::isJavaFile)
+                .filter(this::isUnitTest)
                 .filter(this::productionFileIsMissing)
                 .collect(toList());
 
         assertThat(violations).describedAs("The following unit tests were not in the same package as the production code").isEmpty();
     }
 
-    private boolean isJavaFile(Path file) {
-        return file.toString().endsWith("java");
+    private boolean isUnitTest(Path file) {
+        return file.toString().endsWith("Test.java");
     }
 
     private boolean productionFileIsMissing(Path unitTest) {

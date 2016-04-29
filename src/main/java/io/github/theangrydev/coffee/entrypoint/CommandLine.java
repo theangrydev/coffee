@@ -23,7 +23,7 @@ import io.github.theangrydev.coffee.usecases.Compiler;
 
 import java.io.File;
 
-import static io.github.theangrydev.coffee.infrastructure.FileBinaryOutput.fileBinaryOutput;
+import static io.github.theangrydev.coffee.infrastructure.BinaryOutput.fileBinaryOutput;
 import static io.github.theangrydev.coffee.infrastructure.FileHelpers.readContent;
 
 public class CommandLine {

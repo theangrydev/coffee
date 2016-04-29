@@ -16,12 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package assertions;
+package io.github.theangrydev.coffee.infrastructure;
 
-public interface WithAssertions extends org.assertj.core.api.WithAssertions {
+public class ClassFileMagicNumber implements BinaryWriter {
 
     @Override
-    default ByteArrayAssert assertThat(byte[] bytes) {
-        return new ByteArrayAssert(bytes);
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(0xCA);
+        binaryOutput.writeByte(0xFE);
+        binaryOutput.writeByte(0xBA);
+        binaryOutput.writeByte(0xBE);
     }
 }

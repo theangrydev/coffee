@@ -301,10 +301,7 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private void writeMagicHeader() {
-        binaryOutput.writeByte(0xCA);
-        binaryOutput.writeByte(0xFE);
-        binaryOutput.writeByte(0xBA);
-        binaryOutput.writeByte(0xBE);
+        new ClassFileMagicNumber().writeTo(binaryOutput);
     }
 
     private void writeClassAttributes() {

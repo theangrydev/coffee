@@ -18,9 +18,65 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-public interface BinaryOutput {
-    void writeByte(int byteToWrite);
-    void writeShort(int shortToWrite);
-    void writeInt(int intToWrite);
-    void writeUTF8(String string);
+import com.google.common.base.Preconditions;
+
+import java.io.*;
+
+import static java.lang.String.format;
+
+public final class BinaryOutput {
+
+    private static final int UNSIGNED_SHORT_MAX_VALUE = 65535;
+    private static final int UNSIGNED_BYTE_MAX_VALUE = 255;
+
+    private final DataOutput dataOutput;
+
+    public BinaryOutput(DataOutput dataOutput) {
+        this.dataOutput = dataOutput;
+    }
+
+    public static BinaryOutput fileBinaryOutput(String file) {
+        try {
+            return new BinaryOutput(new DataOutputStream(new FileOutputStream(file)));
+        } catch (FileNotFoundException e) {
+            throw new IllegalStateException(format("Could not write to file '%s'", file), e);
+        }
+    }
+
+    public void writeByte(int byteToWrite) {
+		Preconditions.checkArgument(byteToWrite >= 0, "byte must not be negative but was %s", byteToWrite);
+		Preconditions.checkArgument(byteToWrite <= UNSIGNED_BYTE_MAX_VALUE, "byte can be at most %s but was %s", 255, byteToWrite);
+        try {
+            dataOutput.writeByte(byteToWrite);
+        } catch (IOException e) {
+            throw new IllegalStateException("Problem writing byte", e);
+        }
+    }
+
+    public void writeShort(int shortToWrite) {
+        Preconditions.checkArgument(shortToWrite >= 0, "short must not be negative but was %s", shortToWrite);
+        Preconditions.checkArgument(shortToWrite <= UNSIGNED_SHORT_MAX_VALUE, "short can be at most %s but was %s", UNSIGNED_SHORT_MAX_VALUE, shortToWrite);
+        try {
+            dataOutput.writeShort(shortToWrite);
+        } catch (IOException e) {
+            throw new IllegalStateException("Problem writing short", e);
+        }
+    }
+
+    public void writeInt(int intToWrite) {
+        Preconditions.checkArgument(intToWrite >= 0, "int must not be negative but was %s", intToWrite);
+        try {
+            dataOutput.writeInt(intToWrite);
+        } catch (IOException e) {
+            throw new IllegalStateException("Problem writing int", e);
+        }
+    }
+
+    public void writeUTF8(String string) {
+        try {
+            dataOutput.writeUTF(string);
+        } catch (IOException e) {
+            throw new IllegalStateException("Problem writing UTF8", e);
+        }
+    }
 }

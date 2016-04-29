@@ -16,12 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package assertions;
+package io.github.theangrydev.coffee.infrastructure;
 
-public interface WithAssertions extends org.assertj.core.api.WithAssertions {
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 
-    @Override
-    default ByteArrayAssert assertThat(byte[] bytes) {
-        return new ByteArrayAssert(bytes);
+public interface WithByteArrayBinaryWriter {
+    default byte[] bytesWrittenBy(BinaryWriter... classFileWriters) {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        BinaryOutput binaryOutput = new BinaryOutput(new DataOutputStream(byteStream));
+        for (BinaryWriter classFileWriter : classFileWriters) {
+            classFileWriter.writeTo(binaryOutput);
+        }
+        return byteStream.toByteArray();
     }
 }
