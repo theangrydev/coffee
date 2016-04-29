@@ -248,6 +248,7 @@
                 <version>2.19.1</version>
                 <configuration>
                     <systemProperties>
+                        <yatspec.output.dir>${project.build.directory}/failsafe-reports/yatspec</yatspec.output.dir>
                         <run.compiler.jar>true</run.compiler.jar>
                     </systemProperties>
                     <includes>
