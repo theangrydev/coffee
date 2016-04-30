@@ -236,9 +236,7 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private int writeFieldReference(int classIndex, int fieldNameAndTypIndex) {
-        binaryOutput.writeByte(9);
-        writeConstantPoolIndex(classIndex);
-        writeConstantPoolIndex(fieldNameAndTypIndex);
+        new CONSTANT_Fieldref_info(classIndex, fieldNameAndTypIndex).writeTo(binaryOutput);
         return registerConstant();
     }
 
