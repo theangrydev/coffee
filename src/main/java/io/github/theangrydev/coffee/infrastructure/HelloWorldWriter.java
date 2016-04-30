@@ -256,8 +256,7 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private int writeString(int constantIndex) {
-        binaryOutput.writeByte(8);
-        writeConstantPoolIndex(constantIndex);
+        new CONSTANT_String_info(constantIndex).writeTo(binaryOutput);
         return registerConstant();
     }
 
