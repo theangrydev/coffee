@@ -18,23 +18,25 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import org.junit.Test;
-
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6
  */
-public class CONSTANT_Class_infoTest extends TestCase {
+public class CONSTANT_NameAndType_info implements BinaryWriter {
 
-    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private static final int TAG = 12;
 
-    @Test
-    public void writesTagThenNameIndex() {
-        int tag = 7;
-        int nameIndex = someShort();
+    private final int nameIndex;
+    private final int descriptorIndex;
 
-        new CONSTANT_Class_info(nameIndex).writeTo(binaryOutput);
+    public CONSTANT_NameAndType_info(int nameIndex, int descriptorIndex) {
+        this.nameIndex = nameIndex;
+        this.descriptorIndex = descriptorIndex;
+    }
 
-        verify(binaryOutput).writeByte(tag);
-        verify(binaryOutput).writeShort(nameIndex);
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(TAG);
+        binaryOutput.writeShort(nameIndex);
+        binaryOutput.writeShort(descriptorIndex);
     }
 }

@@ -21,20 +21,22 @@ package io.github.theangrydev.coffee.infrastructure;
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6
  */
-public class CONSTANT_Class_infoTest extends TestCase {
+public class CONSTANT_NameAndType_infoTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
-    public void writesTagThenNameIndex() {
-        int tag = 7;
+    public void writesTagThenNameIndexThenDescriptorIndex() {
+        int tag = 12;
         int nameIndex = someShort();
+        int descriptorIndex = someShort();
 
-        new CONSTANT_Class_info(nameIndex).writeTo(binaryOutput);
+        new CONSTANT_NameAndType_info(nameIndex, descriptorIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(tag);
         verify(binaryOutput).writeShort(nameIndex);
+        verify(binaryOutput).writeShort(descriptorIndex);
     }
 }

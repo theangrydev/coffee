@@ -22,6 +22,8 @@ package io.github.theangrydev.coffee.infrastructure;
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
  */
 public class CONSTANT_Class_info implements BinaryWriter {
+    private static final int TAG = 7;
+
     private final int nameIndex;
 
     public CONSTANT_Class_info(int nameIndex) {
@@ -30,7 +32,7 @@ public class CONSTANT_Class_info implements BinaryWriter {
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(7);
+        binaryOutput.writeByte(TAG);
         binaryOutput.writeShort(nameIndex);
     }
 }

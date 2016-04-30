@@ -243,9 +243,7 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private int writeNameAndType(int nameIndex, int descriptorIndex) {
-        binaryOutput.writeByte(12);
-        writeConstantPoolIndex(nameIndex);
-        writeConstantPoolIndex(descriptorIndex);
+        new CONSTANT_NameAndType_info(nameIndex, descriptorIndex).writeTo(binaryOutput);
         return registerConstant();
     }
 

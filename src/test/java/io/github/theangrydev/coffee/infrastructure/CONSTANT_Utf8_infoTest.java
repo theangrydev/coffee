@@ -29,11 +29,12 @@ public class CONSTANT_Utf8_infoTest extends TestCase {
 
     @Test
     public void writesTagThenLengthByesThenUtf8Bytes() {
+        int tag = 1;
         String string = someString();
 
         new CONSTANT_Utf8_info(string).writeTo(binaryOutput);
 
-        verify(binaryOutput).writeByte(1);
+        verify(binaryOutput).writeByte(tag);
         verify(binaryOutput).writeUTF8(string);
     }
 }

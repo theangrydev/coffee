@@ -22,6 +22,7 @@ package io.github.theangrydev.coffee.infrastructure;
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.7
  */
 public class CONSTANT_Utf8_info implements BinaryWriter {
+    private static final int TAG = 1;
 
     private final String string;
 
@@ -31,7 +32,7 @@ public class CONSTANT_Utf8_info implements BinaryWriter {
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(1);
+        binaryOutput.writeByte(TAG);
         binaryOutput.writeUTF8(string);
     }
 }
