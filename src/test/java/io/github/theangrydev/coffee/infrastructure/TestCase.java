@@ -21,6 +21,7 @@ package io.github.theangrydev.coffee.infrastructure;
 import assertions.WithAssertions;
 import assertions.WithMockito;
 import examples.WithExamples;
+import org.junit.After;
 import org.junit.Before;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -38,6 +39,13 @@ public class TestCase implements WithMockito, WithAssertions, WithExamples {
     @Before
     public void setUp() {
         inOrder = Mockito.inOrder(allMocks());
+    }
+
+    @After
+    public void tearDown() {
+        if (inOrder != null) {
+            inOrder.verifyNoMoreInteractions();
+        }
     }
 
     private Object[] allMocks() {

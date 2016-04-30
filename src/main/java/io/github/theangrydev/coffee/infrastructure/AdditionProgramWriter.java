@@ -76,61 +76,20 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private void writeMainMethodAttribute() {
-        writeAttributeName(code);
-        int instructionSizeInBytes = 3 + 1 + 1 + 1 + 3 + 1 + 1 + 1 + 3 + 1 + 3 + 1;
-        writeAttributeSizeInBytes(2 + 2 + 4 + instructionSizeInBytes + 2 + 2);
-        writeMaxStackDepth(4);
-        writeMaxLocalVariables(1);
-        writeMainMethodInstructions(instructionSizeInBytes);
-        writeEmptyExceptionTable();
-        writeEmptyAttributes();
-    }
-
-    private void writeMainMethodInstructions(int sizeInBytes) {
-        writeSizeOfInstructions(sizeInBytes);
-        writeGetstatic(systemOutField);
-        writeAload0();
-        writeIconst0();
-        writeAaload();
-        writeInvokestatic(integerParseInt);
-        writeAload0();
-        writeIConst1();
-        writeAaload();
-        writeInvokestatic(integerParseInt);
-        writeIadd();
-        writeInvokevirtual(printStreamPrintln);
-        writeVoidReturn();
-    }
-
-    private void writeInvokevirtual(int methodIndex) {
-        binaryOutput.writeByte(0xb6);
-        writeConstantPoolIndex(methodIndex);
-    }
-
-    private void writeIadd() {
-        binaryOutput.writeByte(0x60);
-    }
-
-    private void writeIConst1() {
-        binaryOutput.writeByte(0x4);
-    }
-
-    private void writeInvokestatic(int methodIndex) {
-        binaryOutput.writeByte(0xb8);
-        writeConstantPoolIndex(methodIndex);
-    }
-
-    private void writeAaload() {
-        binaryOutput.writeByte(0x32);
-    }
-
-    private void writeIconst0() {
-        binaryOutput.writeByte(0x3);
-    }
-
-    private void writeGetstatic(int fieldIndex) {
-        binaryOutput.writeByte(0xb2);
-        writeConstantPoolIndex(fieldIndex);
+        Code_attribute codeAttribute = new Code_attribute(code);
+        codeAttribute.getstatic(systemOutField);
+        codeAttribute.aload0();
+        codeAttribute.iconst0();
+        codeAttribute.aaload();
+        codeAttribute.invokestatic(integerParseInt, 1, true);
+        codeAttribute.aload0();
+        codeAttribute.iconst1();
+        codeAttribute.aaload();
+        codeAttribute.invokestatic(integerParseInt, 1, true);
+        codeAttribute.iadd();
+        codeAttribute.invokevirtual(printStreamPrintln, 1, false);
+        codeAttribute.returnvoid();
+        codeAttribute.writeTo(binaryOutput);
     }
 
     private void writeAdditonProgramConstructorMethod() {
@@ -142,58 +101,11 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private void writeAdditionProgramConstructorAttribute() {
-        writeAttributeName(code);
-        int instructionSizeInBytes = 1 + 3 + 1;
-        writeAttributeSizeInBytes(2 + 2 + 4 + instructionSizeInBytes + 2 + 2);
-        writeMaxStackDepth(1);
-        writeMaxLocalVariables(1);
-        writeAdditionProgramConstructorInstructions(instructionSizeInBytes);
-        writeEmptyExceptionTable();
-        writeEmptyAttributes();
-    }
-
-    private void writeEmptyAttributes() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeEmptyExceptionTable() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeAttributeSizeInBytes(int sizeInBytes) {
-        binaryOutput.writeInt(sizeInBytes);
-    }
-
-    private void writeAttributeName(int attributeNameIndex) {
-        writeConstantPoolIndex(attributeNameIndex);
-    }
-
-    private void writeAdditionProgramConstructorInstructions(int sizeInBytes) {
-        writeSizeOfInstructions(sizeInBytes);
-        writeAload0();
-        writeInvokespecial(objectConstructor);
-        writeVoidReturn();
-    }
-
-    private void writeVoidReturn() {
-        binaryOutput.writeByte(0xb1);
-    }
-
-    private void writeInvokespecial(int objectConstructor) {
-        binaryOutput.writeByte(0xb7);
-        writeConstantPoolIndex(objectConstructor);
-    }
-
-    private void writeAload0() {
-        binaryOutput.writeByte(0x2a);
-    }
-
-    private void writeSizeOfInstructions(int sizeInBytes) {
-        binaryOutput.writeInt(sizeInBytes);
-    }
-
-    private void writeMaxLocalVariables(int maxLocalVariables) {
-        binaryOutput.writeShort(maxLocalVariables);
+        Code_attribute codeAttribute = new Code_attribute(code);
+        codeAttribute.aload0();
+        codeAttribute.invokespecial(objectConstructor, 1);
+        codeAttribute.returnvoid();
+        codeAttribute.writeTo(binaryOutput);
     }
 
     private void writeMethodAttributeSize(int numberOfAttributes) {
@@ -214,10 +126,6 @@ public class AdditionProgramWriter implements BinaryWriter {
 
     private void writeNumberOfMethods(int numberOfMethods) {
         binaryOutput.writeShort(numberOfMethods);
-    }
-
-    private void writeMaxStackDepth(int maxStackDepth) {
-        binaryOutput.writeShort(maxStackDepth);
     }
 
     private void writeClassFields() {

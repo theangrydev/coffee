@@ -114,37 +114,12 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private void writeMainMethodAttribute() {
-        writeAttributeName(code);
-        int instructionSizeInBytes = 3 + 2 + 3 + 1;
-        writeAttributeSizeInBytes(2 + 2 + 4 + instructionSizeInBytes + 2 + 2);
-        writeMaxStackDepth(2);
-        writeMaxLocalVariables(1);
-        writeMainMethodInstructions(instructionSizeInBytes);
-        writeEmptyExceptionTable();
-        writeEmptyAttributes();
-    }
-
-    private void writeMainMethodInstructions(int sizeInBytes) {
-        writeSizeOfInstructions(sizeInBytes);
-        writeGetstatic(systemOutField);
-        writeLdc(helloWorldString);
-        writeInvokevirtual(printStreamPrintln);
-        writeVoidReturn();
-    }
-
-    private void writeLdc(int constantIndex) {
-        binaryOutput.writeByte(0x12);
-        binaryOutput.writeByte(constantIndex);
-    }
-
-    private void writeInvokevirtual(int methodIndex) {
-        binaryOutput.writeByte(0xb6);
-        writeConstantPoolIndex(methodIndex);
-    }
-
-    private void writeGetstatic(int fieldIndex) {
-        binaryOutput.writeByte(0xb2);
-        writeConstantPoolIndex(fieldIndex);
+        Code_attribute codeAttribute = new Code_attribute(code);
+        codeAttribute.getstatic(systemOutField);
+        codeAttribute.ldc(helloWorldString);
+        codeAttribute.invokevirtual(printStreamPrintln, 1, false);
+        codeAttribute.returnvoid();
+        codeAttribute.writeTo(binaryOutput);
     }
 
     private void writeConstructorMethod() {

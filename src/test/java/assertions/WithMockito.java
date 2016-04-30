@@ -20,6 +20,8 @@ package assertions;
 
 import org.mockito.BDDMockito;
 import org.mockito.InOrder;
+import org.mockito.Mockito;
+import org.mockito.verification.VerificationMode;
 
 @SuppressWarnings("PMD.TooManyMethods") // Intentional to contain lots of helpers
 public interface WithMockito {
@@ -39,13 +41,21 @@ public interface WithMockito {
         }
     }
 
-    default <T> T verify(T mock) {
+    default <T> T verify(T mock, VerificationMode verificationMode) {
         InOrder inOrder = inOrder();
         if (inOrder == null) {
-            return BDDMockito.verify(mock);
+            return BDDMockito.verify(mock, verificationMode);
         } else {
-            return inOrder.verify(mock);
+            return inOrder.verify(mock, verificationMode);
         }
+    }
+
+    default <T> T verify(T mock) {
+        return verify(mock, times(1));
+    }
+
+    default VerificationMode times(int number) {
+        return Mockito.times(number);
     }
 
     default <T> GivenAction<T> given(T mock, BDDMockito.BDDStubber action) {
