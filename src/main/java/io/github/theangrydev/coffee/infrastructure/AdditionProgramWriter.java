@@ -26,10 +26,10 @@ public class AdditionProgramWriter implements BinaryWriter {
 
     private static final int METHOD_PUBLIC_FLAG = 0x0001;
     private static final int METHOD_STATIC_FLAG = 0x0008;
+    private final ConstantPool constantPool = new ConstantPool();
     private final Magic magic = new Magic();
 
     private BinaryOutput binaryOutput;
-    private int constantCount;
     private int objectConstructor;
     private int systemOutField;
     private int integerParseInt;
@@ -241,80 +241,46 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private void writeConstantPool() {
-        writeConstantPoolCount(29);
-        int javaLangObject = writeUTF8("java/lang/Object");
-        objectClass = writeClass(javaLangObject);
-        init = writeUTF8("<init>");
-        noArgumentVoid = writeUTF8("()V");
-        int voidConstructor = writeNameAndType(init, noArgumentVoid);
-        objectConstructor = writeMethodReference(objectClass, voidConstructor);
+        int javaLangObject = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Object"));
+        objectClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangObject));
+        init = constantPool.addConstant(new CONSTANT_Utf8_info("<init>"));
+        noArgumentVoid = constantPool.addConstant(new CONSTANT_Utf8_info("()V"));
+        int voidConstructor = constantPool.addConstant(new CONSTANT_NameAndType_info(init, noArgumentVoid));
+        objectConstructor = constantPool.addConstant(new CONSTANT_Methodref_info(objectClass, voidConstructor));
 
-        int javaLangSystem = writeUTF8("java/lang/System");
-        int systemClass = writeClass(javaLangSystem);
-        int out = writeUTF8("out");
-        int printStreamType = writeUTF8("Ljava/io/PrintStream;");
-        int outPrintStream = writeNameAndType(out, printStreamType);
-        systemOutField = writeFieldReference(systemClass, outPrintStream);
+        int javaLangSystem = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/System"));
+        int systemClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangSystem));
+        int out = constantPool.addConstant(new CONSTANT_Utf8_info("out"));
+        int printStreamType = constantPool.addConstant(new CONSTANT_Utf8_info("Ljava/io/PrintStream;"));
+        int outPrintStream = constantPool.addConstant(new CONSTANT_NameAndType_info(out, printStreamType));
+        systemOutField = constantPool.addConstant(new CONSTANT_Fieldref_info(systemClass, outPrintStream));
 
-        int javaLangInteger = writeUTF8("java/lang/Integer");
-        int integerClass = writeClass(javaLangInteger);
-        int parseInt = writeUTF8("parseInt");
-        int stringToInt = writeUTF8("(Ljava/lang/String;)I");
-        int parseIntStringToInt = writeNameAndType(parseInt, stringToInt);
-        integerParseInt = writeMethodReference(integerClass, parseIntStringToInt);
+        int javaLangInteger = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Integer"));
+        int integerClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangInteger));
+        int parseInt = constantPool.addConstant(new CONSTANT_Utf8_info("parseInt"));
+        int stringToInt = constantPool.addConstant(new CONSTANT_Utf8_info("(Ljava/lang/String;)I"));
+        int parseIntStringToInt = constantPool.addConstant(new CONSTANT_NameAndType_info(parseInt, stringToInt));
+        integerParseInt = constantPool.addConstant(new CONSTANT_Methodref_info(integerClass, parseIntStringToInt));
 
-        int javaIoPrintStream = writeUTF8("java/io/PrintStream");
-        int printStreamClass = writeClass(javaIoPrintStream);
-        int println = writeUTF8("println");
-        int intToVoid = writeUTF8("(I)V");
-        int printlnIntToVoid = writeNameAndType(println, intToVoid);
-        printStreamPrintln = writeMethodReference(printStreamClass, printlnIntToVoid);
+        int javaIoPrintStream = constantPool.addConstant(new CONSTANT_Utf8_info("java/io/PrintStream"));
+        int printStreamClass = constantPool.addConstant(new CONSTANT_Class_info(javaIoPrintStream));
+        int println = constantPool.addConstant(new CONSTANT_Utf8_info("println"));
+        int intToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("(I)V"));
+        int printlnIntToVoid = constantPool.addConstant(new CONSTANT_NameAndType_info(println, intToVoid));
+        printStreamPrintln = constantPool.addConstant(new CONSTANT_Methodref_info(printStreamClass, printlnIntToVoid));
 
-        int additionProgram = writeUTF8("AdditionProgram");
-        additionClass = writeClass(additionProgram);
+        int additionProgram = constantPool.addConstant(new CONSTANT_Utf8_info("AdditionProgram"));
+        additionClass = constantPool.addConstant(new CONSTANT_Class_info(additionProgram));
 
-        main = writeUTF8("main");
-        stringArrayToVoid = writeUTF8("([Ljava/lang/String;)V");
+        main = constantPool.addConstant(new CONSTANT_Utf8_info("main"));
+        stringArrayToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("([Ljava/lang/String;)V"));
 
-        code = writeUTF8("Code");
-    }
-
-    private int writeFieldReference(int classIndex, int fieldNameAndTypIndex) {
-        new CONSTANT_Fieldref_info(classIndex, fieldNameAndTypIndex).writeTo(binaryOutput);
-        return registerConstant();
-    }
-
-    private int writeNameAndType(int nameIndex, int descriptorIndex) {
-        new CONSTANT_NameAndType_info(nameIndex, descriptorIndex).writeTo(binaryOutput);
-        return registerConstant();
-    }
-
-    private int writeMethodReference(int classIndex, int methodNameAndTypeIndex) {
-        new CONSTANT_Methodref_info(classIndex, methodNameAndTypeIndex).writeTo(binaryOutput);
-        return registerConstant();
-    }
-
-    private int writeClass(int nameIndex) {
-        new CONSTANT_Class_info(nameIndex).writeTo(binaryOutput);
-        return registerConstant();
-    }
-
-    private int writeUTF8(String string) {
-        new CONSTANT_Utf8_info(string).writeTo(binaryOutput);
-        return registerConstant();
-    }
-
-    private int registerConstant() {
-        constantCount = constantCount + 1;
-        return constantCount;
+        code = constantPool.addConstant(new CONSTANT_Utf8_info("Code"));
+        constantPool.writeTo(binaryOutput);
     }
 
     private void writeConstantPoolIndex(int classIndex) {
         binaryOutput.writeShort(classIndex);
-    }
-
-    private void writeConstantPoolCount(int numberOfEntries) {
-        binaryOutput.writeShort(numberOfEntries + 1);
     }
 
     private void writeVersion() {
