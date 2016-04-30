@@ -23,17 +23,17 @@ import org.junit.Test;
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.2
  */
-public class CONSTANT_Fieldref_infoTest extends TestCase {
+public class CONSTANT_Methodref_infoTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
     public void writesTagThenClassIndexThenNameAndTypeIndex() {
-        int tag = 9;
+        int tag = 10;
         int classIndex = someShort();
         int nameAndTypeIndex = someShort();
 
-        new CONSTANT_Fieldref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
+        new CONSTANT_Methodref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(tag);
         verify(binaryOutput).writeShort(classIndex);

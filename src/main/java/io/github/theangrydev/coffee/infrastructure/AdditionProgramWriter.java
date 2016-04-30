@@ -290,9 +290,7 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private int writeMethodReference(int classIndex, int methodNameAndTypeIndex) {
-        binaryOutput.writeByte(10);
-        writeConstantPoolIndex(classIndex);
-        writeConstantPoolIndex(methodNameAndTypeIndex);
+        new CONSTANT_Methodref_info(classIndex, methodNameAndTypeIndex).writeTo(binaryOutput);
         return registerConstant();
     }
 
