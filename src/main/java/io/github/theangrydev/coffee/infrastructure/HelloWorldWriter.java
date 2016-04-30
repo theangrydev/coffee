@@ -269,8 +269,7 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private int writeUTF8(String string) {
-        binaryOutput.writeByte(1);
-        binaryOutput.writeUTF8(string);
+        new CONSTANT_Utf8_info(string).writeTo(binaryOutput);
         return registerConstant();
     }
 
@@ -301,7 +300,7 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private void writeMagicHeader() {
-        new ClassFileMagicNumber().writeTo(binaryOutput);
+        new Magic().writeTo(binaryOutput);
     }
 
     private void writeClassAttributes() {

@@ -26,9 +26,8 @@ import org.junit.Test;
 import java.io.DataOutput;
 import java.io.IOException;
 
-
 /**
- * See https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4
  */
 public class BinaryOutputTest implements WithAssertions, WithMockito, WithExamples {
 

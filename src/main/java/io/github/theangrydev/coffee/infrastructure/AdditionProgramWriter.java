@@ -26,6 +26,7 @@ public class AdditionProgramWriter implements BinaryWriter {
 
     private static final int METHOD_PUBLIC_FLAG = 0x0001;
     private static final int METHOD_STATIC_FLAG = 0x0008;
+    private final Magic magic = new Magic();
 
     private BinaryOutput binaryOutput;
     private int constantCount;
@@ -306,8 +307,7 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private int writeUTF8(String string) {
-        binaryOutput.writeByte(1);
-        binaryOutput.writeUTF8(string);
+        new CONSTANT_Utf8_info(string).writeTo(binaryOutput);
         return registerConstant();
     }
 
@@ -330,6 +330,6 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private void writeMagicHeader() {
-        new ClassFileMagicNumber().writeTo(binaryOutput);
+        magic.writeTo(binaryOutput);
     }
 }

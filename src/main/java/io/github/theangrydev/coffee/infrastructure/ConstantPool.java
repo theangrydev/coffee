@@ -18,13 +18,25 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-public class ClassFileMagicNumber implements BinaryWriter {
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4
+ */
+public class ConstantPool implements BinaryWriter {
+    private final List<BinaryWriter> constants = new ArrayList<>();
+
+    public int addConstant(BinaryWriter constant) {
+        constants.add(constant);
+        return constants.size();
+    }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0xCA);
-        binaryOutput.writeByte(0xFE);
-        binaryOutput.writeByte(0xBA);
-        binaryOutput.writeByte(0xBE);
+        binaryOutput.writeShort(constants.size() + 1);
+        for (BinaryWriter constant : constants) {
+            constant.writeTo(binaryOutput);
+        }
     }
 }

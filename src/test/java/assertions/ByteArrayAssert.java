@@ -18,6 +18,7 @@
  */
 package assertions;
 
+import com.google.common.primitives.Bytes;
 import org.assertj.core.api.AbstractByteArrayAssert;
 
 public class ByteArrayAssert extends AbstractByteArrayAssert<ByteArrayAssert> {
@@ -32,5 +33,9 @@ public class ByteArrayAssert extends AbstractByteArrayAssert<ByteArrayAssert> {
             bytes[i] = (byte) values[i];
         }
         return containsExactly(bytes);
+    }
+
+    public ByteArrayAssert containsExactly(int first, int second, int third, byte[]... byteArrays) {
+        return containsExactly(Bytes.concat(new byte[]{(byte) first, (byte) second, (byte) third}, Bytes.concat(byteArrays)));
     }
 }

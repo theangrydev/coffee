@@ -19,15 +19,26 @@
 package io.github.theangrydev.coffee.infrastructure;
 
 import assertions.WithAssertions;
+import com.googlecode.yatspec.junit.Row;
+import com.googlecode.yatspec.junit.Table;
+import com.googlecode.yatspec.junit.TableRunner;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class ClassFileMagicNumberTest implements WithByteArrayBinaryWriter, WithAssertions {
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-    /**
-     * See https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1
-     */
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.7
+ */
+@RunWith(TableRunner.class)
+public class CONSTANT_Utf8_infoTest implements WithByteArrayBinaryWriter, WithAssertions {
+
+    @Table({
+        @Row(""),
+        @Row("non empty string")
+    })
     @Test
-    public void writesTheMagicBytes() {
-        assertThat(bytesWrittenBy(new ClassFileMagicNumber())).containsExactly(0xCA, 0xFE, 0xBA, 0xBE);
+    public void writesTagThenLengthBytesThenUtf8Bytes(String string) {
+        assertThat(bytesWrittenBy(new CONSTANT_Utf8_info(string))).containsExactly(1, string.length() >> 8, string.length(), string.getBytes(UTF_8));
     }
 }
