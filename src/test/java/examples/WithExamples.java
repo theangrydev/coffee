@@ -18,6 +18,9 @@
  */
 package examples;
 
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Shorts;
+
 import java.util.Random;
 
 import static java.lang.System.currentTimeMillis;
@@ -27,58 +30,24 @@ public interface WithExamples {
     Random RANDOM = new Random(currentTimeMillis());
 
     default byte someByte() {
-        if (someBoolean()) {
-            return somePositiveByte();
-        } else {
-            return someNegativeByte();
-        }
-    }
-
-    default byte someNegativeByte() {
-        return (byte) -somePositiveByte();
-    }
-
-    default byte somePositiveByte() {
-        return (byte) RANDOM.nextInt(Byte.MAX_VALUE);
+        byte[] bytes = new byte[1];
+        RANDOM.nextBytes(bytes);
+        return bytes[0];
     }
 
     default short someShort() {
-        if (someBoolean()) {
-            return somePositiveShort();
-        } else {
-            return someNegativeShort();
-        }
-    }
-
-    default boolean someBoolean() {
-        return RANDOM.nextBoolean();
-    }
-
-    default short someNegativeShort() {
-        return (short) -somePositiveShort();
-    }
-
-    default short somePositiveShort() {
-        return (short) RANDOM.nextInt(Short.MAX_VALUE);
+        byte[] bytes = new byte[Shorts.BYTES];
+        RANDOM.nextBytes(bytes);
+        return Shorts.fromByteArray(bytes);
     }
 
     default int someInt() {
-        if (someBoolean()) {
-            return somePositiveInt();
-        } else {
-            return someNegativeInt();
-        }
-    }
-
-    default int someNegativeInt() {
-        return -somePositiveInt();
-    }
-
-    default int somePositiveInt() {
-        return RANDOM.nextInt();
+        byte[] bytes = new byte[Ints.BYTES];
+        RANDOM.nextBytes(bytes);
+        return Ints.fromByteArray(bytes);
     }
 
     default String someString() {
-        return "someString" + somePositiveInt();
+        return "someString" + someInt();
     }
 }

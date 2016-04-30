@@ -18,16 +18,19 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
+ */
+public class CONSTANT_Class_info implements BinaryWriter {
+    private final int nameIndex;
 
-public interface WithByteArrayBinaryWriter {
-    default byte[] bytesWrittenBy(BinaryWriter... classFileWriters) {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        BinaryOutput binaryOutput = new BinaryOutput(new DataOutputStream(byteStream));
-        for (BinaryWriter classFileWriter : classFileWriters) {
-            classFileWriter.writeTo(binaryOutput);
-        }
-        return byteStream.toByteArray();
+    public CONSTANT_Class_info(int nameIndex) {
+        this.nameIndex = nameIndex;
+    }
+
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(7);
+        binaryOutput.writeShort(nameIndex);
     }
 }

@@ -18,27 +18,22 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import assertions.WithAssertions;
-import com.googlecode.yatspec.junit.Row;
-import com.googlecode.yatspec.junit.Table;
-import com.googlecode.yatspec.junit.TableRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.7
  */
-@RunWith(TableRunner.class)
-public class CONSTANT_Utf8_infoTest implements WithByteArrayBinaryWriter, WithAssertions {
+public class CONSTANT_Utf8_infoTest extends TestCase {
 
-    @Table({
-        @Row(""),
-        @Row("non empty string")
-    })
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+
     @Test
-    public void writesTagThenLengthBytesThenUtf8Bytes(String string) {
-        assertThat(bytesWrittenBy(new CONSTANT_Utf8_info(string))).containsExactly(1, string.length() >> 8, string.length(), string.getBytes(UTF_8));
+    public void writesTagThenLengthByesThenUtf8Bytes() {
+        String string = someString();
+
+        new CONSTANT_Utf8_info(string).writeTo(binaryOutput);
+
+        verify(binaryOutput).writeByte(1);
+        verify(binaryOutput).writeUTF8(string);
     }
 }

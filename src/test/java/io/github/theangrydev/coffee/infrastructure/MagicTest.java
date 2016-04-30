@@ -18,16 +18,22 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1
  */
-public class MagicTest implements WithByteArrayBinaryWriter, WithAssertions {
+public class MagicTest extends TestCase {
+
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
     public void writesTheMagicBytes() {
-        assertThat(bytesWrittenBy(new Magic())).containsExactly(0xCA, 0xFE, 0xBA, 0xBE);
+        new Magic().writeTo(binaryOutput);
+
+        verify(binaryOutput).writeByte(0xCA);
+        verify(binaryOutput).writeByte(0xFE);
+        verify(binaryOutput).writeByte(0xBA);
+        verify(binaryOutput).writeByte(0xBE);
     }
 }

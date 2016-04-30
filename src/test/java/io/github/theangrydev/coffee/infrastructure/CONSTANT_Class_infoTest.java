@@ -16,8 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package assertions;
+package io.github.theangrydev.coffee.infrastructure;
 
-public interface WithAssertions extends org.assertj.core.api.WithAssertions {
+import org.junit.Test;
 
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
+ */
+public class CONSTANT_Class_infoTest extends TestCase {
+
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+
+    @Test
+    public void writesTagThenLengthByesThenUtf8Bytes() {
+        int nameIndex = someShort();
+
+        new CONSTANT_Class_info(nameIndex).writeTo(binaryOutput);
+
+        verify(binaryOutput).writeByte(7);
+        verify(binaryOutput).writeShort(nameIndex);
+    }
 }

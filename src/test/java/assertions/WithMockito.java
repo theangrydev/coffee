@@ -19,6 +19,7 @@
 package assertions;
 
 import org.mockito.BDDMockito;
+import org.mockito.InOrder;
 
 @SuppressWarnings("PMD.TooManyMethods") // Intentional to contain lots of helpers
 public interface WithMockito {
@@ -38,16 +39,13 @@ public interface WithMockito {
         }
     }
 
-    default <T> T willMake(T mock) {
-        return verify(mock);
-    }
-
     default <T> T verify(T mock) {
-        return BDDMockito.verify(mock);
-    }
-
-    default <T> BDDMockito.BDDMyOngoingStubbing<T> given(T mock) {
-        return BDDMockito.given(mock);
+        InOrder inOrder = inOrder();
+        if (inOrder == null) {
+            return BDDMockito.verify(mock);
+        } else {
+            return inOrder.verify(mock);
+        }
     }
 
     default <T> GivenAction<T> given(T mock, BDDMockito.BDDStubber action) {
@@ -81,12 +79,16 @@ public interface WithMockito {
     class GivenAction<T> {
         private final T mock;
 
-        public GivenAction(T mock) {
+        GivenAction(T mock) {
             this.mock = mock;
         }
 
         public T when() {
             return mock;
         }
+    }
+
+    default InOrder inOrder() {
+        return null;
     }
 }
