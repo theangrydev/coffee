@@ -18,13 +18,13 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-public enum MethodAccessFlag implements Flag {
+public enum ClassAccessFlag implements Flag {
     ACC_PUBLIC(0x0001),
-    ACC_STATIC(0x0008);
+    ACC_SUPER(0x0020);
 
-    private final int value;
+    private final int value ;
 
-    MethodAccessFlag(int value) {
+    ClassAccessFlag(int value) {
         this.value = value;
     }
 

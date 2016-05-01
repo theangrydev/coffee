@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.*;
+import static io.github.theangrydev.coffee.infrastructure.Flag.combine;
 import static java.lang.Integer.parseInt;
 
 @RunWith(TableRunner.class)

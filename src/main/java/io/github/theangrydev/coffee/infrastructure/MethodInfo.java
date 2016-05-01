@@ -34,7 +34,7 @@ public class MethodInfo implements BinaryWriter {
     }
 
     public static MethodInfo methodInfo(Set<MethodAccessFlag> accessFlags, int nameIndex, int descriptorIndex, Code_attribute codeAttribute) {
-        return new MethodInfo(MethodAccessFlag.combine(accessFlags), nameIndex, descriptorIndex, codeAttribute);
+        return new MethodInfo(Flag.combine(accessFlags), nameIndex, descriptorIndex, codeAttribute);
     }
 
     @Override
