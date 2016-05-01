@@ -18,37 +18,30 @@
  */
 package examples;
 
-import com.google.common.primitives.Ints;
-import com.google.common.primitives.Shorts;
-
 import java.util.Random;
 
+import static io.github.theangrydev.coffee.infrastructure.BinaryOutput.UNSIGNED_BYTE_MAX_VALUE;
+import static io.github.theangrydev.coffee.infrastructure.BinaryOutput.UNSIGNED_SHORT_MAX_VALUE;
 import static java.lang.System.currentTimeMillis;
 
 @SuppressWarnings("PMD.TooManyMethods") // Intentional to contain lots of helpers
 public interface WithExamples {
     Random RANDOM = new Random(currentTimeMillis());
 
-    default byte someByte() {
-        byte[] bytes = new byte[1];
-        RANDOM.nextBytes(bytes);
-        return bytes[0];
+    default int someUnsignedByte() {
+        return RANDOM.nextInt(UNSIGNED_BYTE_MAX_VALUE + 1);
     }
 
-    default short someShort() {
-        byte[] bytes = new byte[Shorts.BYTES];
-        RANDOM.nextBytes(bytes);
-        return Shorts.fromByteArray(bytes);
+    default int someUnsignedShort() {
+        return RANDOM.nextInt(UNSIGNED_SHORT_MAX_VALUE + 1);
     }
 
-    default int someInt() {
-        byte[] bytes = new byte[Ints.BYTES];
-        RANDOM.nextBytes(bytes);
-        return Ints.fromByteArray(bytes);
+    default int someUnsignedInt() {
+        return Math.abs(RANDOM.nextInt(Integer.MAX_VALUE));
     }
 
     default String someString() {
-        return "someString" + someInt();
+        return "someString" + someUnsignedInt();
     }
 
     default boolean someBoolean() {

@@ -30,8 +30,8 @@ public class CONSTANT_Fieldref_infoTest extends TestCase {
     @Test
     public void writesTagThenClassIndexThenNameAndTypeIndex() {
         int tag = 9;
-        int classIndex = someShort();
-        int nameAndTypeIndex = someShort();
+        int classIndex = someUnsignedShort();
+        int nameAndTypeIndex = someUnsignedShort();
 
         new CONSTANT_Fieldref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
 

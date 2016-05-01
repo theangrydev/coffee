@@ -58,6 +58,10 @@ public interface WithMockito {
         return Mockito.times(number);
     }
 
+    default <T> BDDMockito.BDDMyOngoingStubbing<T> given(T methodCall) {
+        return BDDMockito.given(methodCall);
+    }
+
     default <T> GivenAction<T> given(T mock, BDDMockito.BDDStubber action) {
         return new GivenAction<>(action.given(mock));
     }

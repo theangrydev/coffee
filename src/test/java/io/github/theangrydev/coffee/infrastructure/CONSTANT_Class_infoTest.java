@@ -30,7 +30,7 @@ public class CONSTANT_Class_infoTest extends TestCase {
     @Test
     public void writesTagThenNameIndex() {
         int tag = 7;
-        int nameIndex = someShort();
+        int nameIndex = someUnsignedShort();
 
         new CONSTANT_Class_info(nameIndex).writeTo(binaryOutput);
 

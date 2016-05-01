@@ -30,7 +30,7 @@ public class CONSTANT_String_infoTest extends TestCase {
     @Test
     public void writesTagThenLengthByesThenUtf8Bytes() {
         int tag = 8;
-        int stringIndex = someShort();
+        int stringIndex = someUnsignedShort();
 
         new CONSTANT_String_info(stringIndex).writeTo(binaryOutput);
 

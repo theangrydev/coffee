@@ -30,8 +30,8 @@ public class CONSTANT_NameAndType_infoTest extends TestCase {
     @Test
     public void writesTagThenNameIndexThenDescriptorIndex() {
         int tag = 12;
-        int nameIndex = someShort();
-        int descriptorIndex = someShort();
+        int nameIndex = someUnsignedShort();
+        int descriptorIndex = someUnsignedShort();
 
         new CONSTANT_NameAndType_info(nameIndex, descriptorIndex).writeTo(binaryOutput);
 

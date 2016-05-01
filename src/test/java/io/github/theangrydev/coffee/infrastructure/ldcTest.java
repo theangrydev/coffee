@@ -29,7 +29,7 @@ public class ldcTest extends TestCase {
 
     @Test
     public void writesOpCode0x12AndConstantIndex() {
-        int constantIndex = someByte();
+        int constantIndex = someUnsignedByte();
 
         new ldc(constantIndex).writeTo(binaryOutput);
 
@@ -39,16 +39,16 @@ public class ldcTest extends TestCase {
 
     @Test
     public void isTwoBytesLong() {
-        assertThat(new ldc(someByte()).lengthInBytes()).isEqualTo(2);
+        assertThat(new ldc(someUnsignedByte()).lengthInBytes()).isEqualTo(2);
     }
 
     @Test
     public void hasNoOperands() {
-        assertThat(new ldc(someByte()).operandSizeInBytes()).isEqualTo(0);
+        assertThat(new ldc(someUnsignedByte()).operandSizeInBytes()).isEqualTo(0);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new ldc(someByte()).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new ldc(someUnsignedByte()).resultSizeInBytes()).isEqualTo(1);
     }
 }

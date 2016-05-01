@@ -29,7 +29,7 @@ public class getstaticTest extends TestCase {
 
     @Test
     public void writesOpCode0xb2AndFieldIndex() {
-        int fieldIndex = someShort();
+        int fieldIndex = someUnsignedShort();
 
         new getstatic(fieldIndex).writeTo(binaryOutput);
 
@@ -39,16 +39,16 @@ public class getstaticTest extends TestCase {
 
     @Test
     public void isThreeBytesLong() {
-        assertThat(new getstatic(someShort()).lengthInBytes()).isEqualTo(3);
+        assertThat(new getstatic(someUnsignedShort()).lengthInBytes()).isEqualTo(3);
     }
 
     @Test
     public void hasNoOperands() {
-        assertThat(new getstatic(someShort()).operandSizeInBytes()).isEqualTo(0);
+        assertThat(new getstatic(someUnsignedShort()).operandSizeInBytes()).isEqualTo(0);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new getstatic(someShort()).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new getstatic(someUnsignedShort()).resultSizeInBytes()).isEqualTo(1);
     }
 }

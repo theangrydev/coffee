@@ -29,9 +29,9 @@ public class invokespecialtest extends TestCase {
 
     @Test
     public void writesOpCode0xb7AndMethodIndex() {
-        int methodIndex = someShort();
+        int methodIndex = someUnsignedShort();
 
-        new invokespecial(methodIndex, someInt()).writeTo(binaryOutput);
+        new invokespecial(methodIndex, someUnsignedInt()).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(0xb7);
         verify(binaryOutput).writeShort(methodIndex);
@@ -39,20 +39,20 @@ public class invokespecialtest extends TestCase {
 
     @Test
     public void isThreeBytesLong() {
-        assertThat(new invokespecial(someShort(), someInt()).lengthInBytes()).isEqualTo(3);
+        assertThat(new invokespecial(someUnsignedShort(), someUnsignedInt()).lengthInBytes()).isEqualTo(3);
     }
 
     @Test
     public void hasNumberOfOperandsEqualToConstructorArgument() {
-        int numberOfArguments = someInt();
+        int numberOfArguments = someUnsignedInt();
 
-        invokespecial invokespecial = new invokespecial(someShort(), numberOfArguments);
+        invokespecial invokespecial = new invokespecial(someUnsignedShort(), numberOfArguments);
 
         assertThat(invokespecial.operandSizeInBytes()).isEqualTo(numberOfArguments);
     }
 
     @Test
     public void hasNoResult() {
-        assertThat(new invokespecial(someShort(), someInt()).resultSizeInBytes()).isEqualTo(0);
+        assertThat(new invokespecial(someUnsignedShort(), someUnsignedInt()).resultSizeInBytes()).isEqualTo(0);
     }
 }

@@ -30,8 +30,8 @@ public class CONSTANT_Methodref_infoTest extends TestCase {
     @Test
     public void writesTagThenClassIndexThenNameAndTypeIndex() {
         int tag = 10;
-        int classIndex = someShort();
-        int nameAndTypeIndex = someShort();
+        int classIndex = someUnsignedShort();
+        int nameAndTypeIndex = someUnsignedShort();
 
         new CONSTANT_Methodref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
 

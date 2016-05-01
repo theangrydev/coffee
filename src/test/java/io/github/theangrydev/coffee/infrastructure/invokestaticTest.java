@@ -29,9 +29,9 @@ public class invokestaticTest extends TestCase {
 
     @Test
     public void writesOpCode0xb8AndMethodIndex() {
-        int methodIndex = someShort();
+        int methodIndex = someUnsignedShort();
 
-        new invokestatic(methodIndex, someInt(), someBoolean()).writeTo(binaryOutput);
+        new invokestatic(methodIndex, someUnsignedInt(), someBoolean()).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(0xb8);
         verify(binaryOutput).writeShort(methodIndex);
@@ -39,21 +39,21 @@ public class invokestaticTest extends TestCase {
 
     @Test
     public void isThreeBytesLong() {
-        assertThat(new invokestatic(someShort(), someInt(), someBoolean()).lengthInBytes()).isEqualTo(3);
+        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), someBoolean()).lengthInBytes()).isEqualTo(3);
     }
 
     @Test
     public void hasNumberOfOperandsEqualToConstructorArgument() {
-        int numberOfArguments = someInt();
+        int numberOfArguments = someUnsignedInt();
 
-        invokestatic invokestatic = new invokestatic(someShort(), numberOfArguments, someBoolean());
+        invokestatic invokestatic = new invokestatic(someUnsignedShort(), numberOfArguments, someBoolean());
 
         assertThat(invokestatic.operandSizeInBytes()).isEqualTo(numberOfArguments);
     }
 
     @Test
     public void hasResultWhenResultFlagIsPresent() {
-        assertThat(new invokestatic(someShort(), someInt(), true).resultSizeInBytes()).isEqualTo(1);
-        assertThat(new invokestatic(someShort(), someInt(), false).resultSizeInBytes()).isEqualTo(0);
+        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), true).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), false).resultSizeInBytes()).isEqualTo(0);
     }
 }

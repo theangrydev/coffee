@@ -61,13 +61,13 @@ public class BinaryOutputTest implements WithAssertions, WithMockito, WithExampl
     @Test
     public void exceptionsAreRethrownAsRuntimeExceptions() throws IOException {
         given(dataOutput, willThrow(new IOException())).when().writeByte(anyByte());
-        assertThatThrownBy(() -> binaryOutput.writeByte(someByte())).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> binaryOutput.writeByte(someUnsignedByte())).isInstanceOf(RuntimeException.class);
 
         given(dataOutput, willThrow(new IOException())).when().writeShort(anyShort());
-        assertThatThrownBy(() -> binaryOutput.writeShort(someShort())).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> binaryOutput.writeShort(someUnsignedShort())).isInstanceOf(RuntimeException.class);
 
         given(dataOutput, willThrow(new IOException())).when().writeInt(anyInt());
-        assertThatThrownBy(() -> binaryOutput.writeInt(someInt())).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> binaryOutput.writeInt(someUnsignedInt())).isInstanceOf(RuntimeException.class);
 
         given(dataOutput, willThrow(new IOException())).when().writeUTF(anyString());
         assertThatThrownBy(() -> binaryOutput.writeUTF8(someString())).isInstanceOf(RuntimeException.class);

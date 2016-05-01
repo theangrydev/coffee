@@ -26,8 +26,8 @@ import static java.lang.String.format;
 
 public class BinaryOutput {
 
-    private static final int UNSIGNED_SHORT_MAX_VALUE = 65535;
-    private static final int UNSIGNED_BYTE_MAX_VALUE = 255;
+    public static final int UNSIGNED_SHORT_MAX_VALUE = 65535;
+    public static final int UNSIGNED_BYTE_MAX_VALUE = 255;
 
     private final DataOutput dataOutput;
 
