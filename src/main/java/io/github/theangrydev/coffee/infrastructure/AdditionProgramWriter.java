@@ -78,11 +78,11 @@ public class AdditionProgramWriter implements BinaryWriter {
     private void writeMainMethodAttribute() {
         Code_attribute codeAttribute = new Code_attribute(code);
         codeAttribute.getstatic(systemOutField);
-        codeAttribute.aload0();
+        codeAttribute.addInstruction(new aload0());
         codeAttribute.iconst0();
         codeAttribute.aaload();
         codeAttribute.invokestatic(integerParseInt, 1, true);
-        codeAttribute.aload0();
+        codeAttribute.addInstruction(new aload0());
         codeAttribute.iconst1();
         codeAttribute.aaload();
         codeAttribute.invokestatic(integerParseInt, 1, true);
@@ -102,7 +102,7 @@ public class AdditionProgramWriter implements BinaryWriter {
 
     private void writeAdditionProgramConstructorAttribute() {
         Code_attribute codeAttribute = new Code_attribute(code);
-        codeAttribute.aload0();
+        codeAttribute.addInstruction(new aload0());
         codeAttribute.invokespecial(objectConstructor, 1);
         codeAttribute.returnvoid();
         codeAttribute.writeTo(binaryOutput);

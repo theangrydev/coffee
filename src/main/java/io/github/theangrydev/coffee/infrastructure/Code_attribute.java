@@ -59,13 +59,11 @@ public class Code_attribute implements BinaryWriter {
         this.attributeNameIndex = attributeNameIndex;
     }
 
-    /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aload_n
-     */
-    public void aload0() {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0x2a));
-        codeLength++;
-        operandStackSize.push(1);
+    public void addInstruction(Instruction instruction) {
+        instructions.add(instruction);
+        codeLength+= instruction.lengthInBytes();
+        operandStackSize.pop(instruction.operandSizeInBytes());
+        operandStackSize.push(instruction.resultSizeInBytes());
     }
 
     /**
