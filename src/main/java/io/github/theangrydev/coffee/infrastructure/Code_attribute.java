@@ -66,19 +66,6 @@ public class Code_attribute implements BinaryWriter {
         operandStackSize.push(instruction.resultSizeInBytes());
     }
 
-    /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokevirtual
-     */
-    public void invokevirtual(int methodIndex, int numberOfArguments, boolean hasResult) {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0xb6));
-        instructions.add(binaryOutput -> binaryOutput.writeShort(methodIndex));
-        codeLength+= 3;
-        operandStackSize.pop(numberOfArguments);
-        if (hasResult) {
-            operandStackSize.push(1);
-        }
-    }
-
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeShort(attributeNameIndex);
@@ -92,5 +79,4 @@ public class Code_attribute implements BinaryWriter {
         binaryOutput.writeShort(EXCEPTION_TABLE_LENGTH);
         binaryOutput.writeShort(ATTRIBUTE_COUNT);
     }
-
 }
