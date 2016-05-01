@@ -41,14 +41,12 @@ public class Code_attribute implements BinaryWriter {
     /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.2
      */
-    private int operandStackSize = 0;
-    private int maxOperandStackSize = operandStackSize;
+    private final StackSize operandStackSize = new StackSize(0);
 
     /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1
      */
-    private int localStackSize = 1;
-    private int maxLocalStackSize = localStackSize;
+    private final StackSize localStackSize = new StackSize(1);
 
     /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.9
@@ -67,7 +65,7 @@ public class Code_attribute implements BinaryWriter {
     public void aload0() {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0x2a));
         codeLength++;
-        incrementOperandStackSize(1);
+        operandStackSize.push(1);
     }
 
     /**
@@ -76,8 +74,8 @@ public class Code_attribute implements BinaryWriter {
     public void aaload() {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0x32));
         codeLength++;
-        operandStackSize-=2;
-        incrementOperandStackSize(1);
+        operandStackSize.pop(2);
+        operandStackSize.push(1);
     }
 
     /**
@@ -86,7 +84,7 @@ public class Code_attribute implements BinaryWriter {
     public void iconst0() {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0x3));
         codeLength++;
-        incrementOperandStackSize(1);
+        operandStackSize.push(1);
     }
 
     /**
@@ -95,7 +93,7 @@ public class Code_attribute implements BinaryWriter {
     public void iconst1() {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0x4));
         codeLength++;
-        incrementOperandStackSize(1);
+        operandStackSize.push(1);
     }
 
     /**
@@ -105,7 +103,7 @@ public class Code_attribute implements BinaryWriter {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0xb7));
         instructions.add(binaryOutput -> binaryOutput.writeShort(methodIndex));
         codeLength+= 3;
-        operandStackSize-=numberOfArguments;
+        operandStackSize.pop(numberOfArguments);
     }
 
     /**
@@ -115,9 +113,9 @@ public class Code_attribute implements BinaryWriter {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0xb8));
         instructions.add(binaryOutput -> binaryOutput.writeShort(methodIndex));
         codeLength+= 3;
-        operandStackSize-=numberOfArguments;
+        operandStackSize.pop(numberOfArguments);
         if (hasResult) {
-            incrementOperandStackSize(1);
+            operandStackSize.push(1);
         }
     }
 
@@ -128,9 +126,9 @@ public class Code_attribute implements BinaryWriter {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0xb6));
         instructions.add(binaryOutput -> binaryOutput.writeShort(methodIndex));
         codeLength+= 3;
-        operandStackSize-=numberOfArguments;
+        operandStackSize.pop(numberOfArguments);
         if (hasResult) {
-            incrementOperandStackSize(1);
+            operandStackSize.push(1);
         }
     }
 
@@ -141,7 +139,7 @@ public class Code_attribute implements BinaryWriter {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0xb2));
         instructions.add(binaryOutput -> binaryOutput.writeShort(fieldIndex));
         codeLength+= 3;
-        incrementOperandStackSize(1);
+        operandStackSize.push(1);
     }
 
     /**
@@ -158,8 +156,8 @@ public class Code_attribute implements BinaryWriter {
     public void iadd() {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0x60));
         codeLength++;
-        operandStackSize-=2;
-        incrementOperandStackSize(1);
+        operandStackSize.pop(2);
+        operandStackSize.push(1);
     }
 
     /**
@@ -169,24 +167,19 @@ public class Code_attribute implements BinaryWriter {
         instructions.add(binaryOutput -> binaryOutput.writeByte(0x12));
         instructions.add(binaryOutput -> binaryOutput.writeByte(constantIndex));
         codeLength+=2;
-        incrementOperandStackSize(1);
-    }
-
-    private void incrementOperandStackSize(int increment) {
-        operandStackSize+= increment;
-        if (operandStackSize > maxOperandStackSize) {
-            maxOperandStackSize = operandStackSize;
-        }
+        operandStackSize.push(1);
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeShort(attributeNameIndex);
         binaryOutput.writeInt(BASE_ATTRIBUTE_LENGTH + codeLength);
-        binaryOutput.writeShort(maxOperandStackSize);
-        binaryOutput.writeShort(maxLocalStackSize);
+        binaryOutput.writeShort(operandStackSize.max());
+        binaryOutput.writeShort(localStackSize.max());
         binaryOutput.writeInt(codeLength);
-        instructions.forEach(binaryWriter -> binaryWriter.writeTo(binaryOutput));
+        for (BinaryWriter instruction : instructions) {
+            instruction.writeTo(binaryOutput);
+        }
         binaryOutput.writeShort(EXCEPTION_TABLE_LENGTH);
         binaryOutput.writeShort(ATTRIBUTE_COUNT);
     }
