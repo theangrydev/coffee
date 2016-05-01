@@ -113,16 +113,6 @@ public class Code_attribute implements BinaryWriter {
     }
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iadd
-     */
-    public void iadd() {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0x60));
-        codeLength++;
-        operandStackSize.pop(2);
-        operandStackSize.push(1);
-    }
-
-    /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
      */
     public void ldc(int constantIndex) {
@@ -145,4 +135,5 @@ public class Code_attribute implements BinaryWriter {
         binaryOutput.writeShort(EXCEPTION_TABLE_LENGTH);
         binaryOutput.writeShort(ATTRIBUTE_COUNT);
     }
+
 }
