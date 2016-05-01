@@ -49,7 +49,9 @@
     </rule>
     <rule ref="rulesets/java/empty.xml"/>
     <rule ref="rulesets/java/finalizers.xml"/>
-    <rule ref="rulesets/java/imports.xml"/>
+    <rule ref="rulesets/java/imports.xml">
+        <exclude name="TooManyStaticImports"/><!-- Importing e.g. enum values is a sane thing to do -->
+    </rule>
     <rule ref="rulesets/java/junit.xml">
         <exclude name="TestClassWithoutTestCases"/><!-- This rule assumes test methods start with testXXX -->
         <exclude name="JUnitTestContainsTooManyAsserts"/><!-- Multiple asserts can form one logical assertion -->

@@ -21,14 +21,17 @@ package io.github.theangrydev.coffee.infrastructure;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Sets.newHashSet;
+import static io.github.theangrydev.coffee.infrastructure.Code_attribute.code;
+import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.ACC_PUBLIC;
+import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.ACC_STATIC;
+import static io.github.theangrydev.coffee.infrastructure.MethodInfo.*;
+
 @SuppressWarnings("PMD.TooManyMethods") // TODO: refactor
 public class HelloWorldWriter implements BinaryWriter {
 
     private static final int CLASS_PUBLIC_FLAG = 0x0001;
     private static final int CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG = 0x0020;
-
-    private static final int METHOD_PUBLIC_FLAG = 0x0001;
-    private static final int METHOD_STATIC_FLAG = 0x0008;
 
     private final ConstantPool constantPool = new ConstantPool();
     private final Magic magic = new Magic();
@@ -109,104 +112,26 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private void writeMainMethod() {
-        writeMethodFlags(METHOD_PUBLIC_FLAG | METHOD_STATIC_FLAG);
-        writeMethodName(main);
-        writeMethodTypeSignature(stringArrayToVoid);
-        writeMethodAttributeSize(1);
-        writeMainMethodAttribute();
-    }
-
-    private void writeMainMethodAttribute() {
         List<Instruction> instructions = new ArrayList<>();
         instructions.add(new getstatic(systemOutField));
         instructions.add(new ldc(helloWorldString));
         instructions.add(new invokevirtual(printStreamPrintln, 1, false));
         instructions.add(new returnvoid());
-        Code_attribute codeAttribute = Code_attribute.code(code, instructions);
-        codeAttribute.writeTo(binaryOutput);
+        Code_attribute codeAttribute = code(code, instructions);
+
+        MethodInfo mainMethod = methodInfo(newHashSet(ACC_PUBLIC, ACC_STATIC), main, stringArrayToVoid, codeAttribute);
+
+        mainMethod.writeTo(binaryOutput);
     }
 
     private void writeConstructorMethod() {
-        writeMethodFlags(METHOD_PUBLIC_FLAG);
-        writeMethodName(init);
-        writeMethodTypeSignature(noArgumentVoid);
-        writeMethodAttributeSize(1);
-        writeConstructorCodeAttribute();
-    }
-
-    private void writeConstructorCodeAttribute() {
-        writeAttributeName(code);
-        int instructionSizeInBytes = 1 + 3 + 1;
-        writeAttributeSizeInBytes(2 + 2 + 4 + instructionSizeInBytes + 2 + 2);
-        writeMaxStackDepth(1);
-        writeMaxLocalVariables(1);
-        writeAdditionProgramConstructorInstructions(instructionSizeInBytes);
-        writeEmptyExceptionTable();
-        writeEmptyAttributes();
-    }
-
-    private void writeAdditionProgramConstructorInstructions(int sizeInBytes) {
-        writeSizeOfInstructions(sizeInBytes);
-        writeAload0();
-        writeInvokespecial(objectConstructor);
-        writeVoidReturn();
-    }
-
-    private void writeVoidReturn() {
-        binaryOutput.writeByte(0xb1);
-    }
-
-    private void writeInvokespecial(int objectConstructor) {
-        binaryOutput.writeByte(0xb7);
-        writeConstantPoolIndex(objectConstructor);
-    }
-
-    private void writeAload0() {
-        binaryOutput.writeByte(0x2a);
-    }
-
-    private void writeAttributeSizeInBytes(int sizeInBytes) {
-        binaryOutput.writeInt(sizeInBytes);
-    }
-
-    private void writeAttributeName(int attributeNameIndex) {
-        writeConstantPoolIndex(attributeNameIndex);
-    }
-
-    private void writeEmptyAttributes() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeEmptyExceptionTable() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeSizeOfInstructions(int sizeInBytes) {
-        binaryOutput.writeInt(sizeInBytes);
-    }
-
-    private void writeMaxLocalVariables(int maxLocalVariables) {
-        binaryOutput.writeShort(maxLocalVariables);
-    }
-
-    private void writeMethodAttributeSize(int numberOfAttributes) {
-        binaryOutput.writeShort(numberOfAttributes);
-    }
-
-    private void writeMethodTypeSignature(int typeSignatureIndex) {
-        writeConstantPoolIndex(typeSignatureIndex);
-    }
-
-    private void writeMethodName(int methodNameIndex) {
-        writeConstantPoolIndex(methodNameIndex);
-    }
-
-    private void writeMethodFlags(int methodFlags) {
-        binaryOutput.writeShort(methodFlags);
-    }
-
-    private void writeMaxStackDepth(int maxStackDepth) {
-        binaryOutput.writeShort(maxStackDepth);
+        List<Instruction> instructions = new ArrayList<>();
+        instructions.add(new aload0());
+        instructions.add(new invokespecial(objectConstructor, 1));
+        instructions.add(new returnvoid());
+        Code_attribute codeAttribute = code(code, instructions);
+        MethodInfo constructor = methodInfo(newHashSet(ACC_PUBLIC), init, noArgumentVoid, codeAttribute);
+        constructor.writeTo(binaryOutput);
     }
 
     private void writeNumberOfMethods(int numberOfMethods) {

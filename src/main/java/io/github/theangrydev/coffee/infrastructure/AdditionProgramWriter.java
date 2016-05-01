@@ -21,7 +21,11 @@ package io.github.theangrydev.coffee.infrastructure;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static io.github.theangrydev.coffee.infrastructure.Code_attribute.code;
+import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.ACC_PUBLIC;
+import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.ACC_STATIC;
+import static io.github.theangrydev.coffee.infrastructure.MethodInfo.methodInfo;
 
 @SuppressWarnings("PMD.TooManyMethods") // TODO: refactor
 public class AdditionProgramWriter implements BinaryWriter {
@@ -29,8 +33,6 @@ public class AdditionProgramWriter implements BinaryWriter {
     private static final int CLASS_PUBLIC_FLAG = 0x0001;
     private static final int CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG = 0x0020;
 
-    private static final int METHOD_PUBLIC_FLAG = 0x0001;
-    private static final int METHOD_STATIC_FLAG = 0x0008;
     private final ConstantPool constantPool = new ConstantPool();
     private final Magic magic = new Magic();
 
@@ -73,14 +75,6 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private void writeMainMethod() {
-        writeMethodFlags(METHOD_PUBLIC_FLAG | METHOD_STATIC_FLAG);
-        writeMethodName(main);
-        writeMethodTypeSignature(stringArrayToVoid);
-        writeMethodAttributeSize(1);
-        writeMainMethodAttribute();
-    }
-
-    private void writeMainMethodAttribute() {
         List<Instruction> instructions = new ArrayList<>();
         instructions.add(new getstatic(systemOutField));
         instructions.add(new aload0());
@@ -95,40 +89,20 @@ public class AdditionProgramWriter implements BinaryWriter {
         instructions.add(new invokevirtual(printStreamPrintln, 1, false));
         instructions.add(new returnvoid());
         Code_attribute codeAttribute = code(code, instructions);
-        codeAttribute.writeTo(binaryOutput);
+
+        MethodInfo mainMethod = methodInfo(newHashSet(ACC_PUBLIC, ACC_STATIC), main, stringArrayToVoid, codeAttribute);
+
+        mainMethod.writeTo(binaryOutput);
     }
 
     private void writeAdditonProgramConstructorMethod() {
-        writeMethodFlags(METHOD_PUBLIC_FLAG);
-        writeMethodName(init);
-        writeMethodTypeSignature(noArgumentVoid);
-        writeMethodAttributeSize(1);
-        writeAdditionProgramConstructorAttribute();
-    }
-
-    private void writeAdditionProgramConstructorAttribute() {
         List<Instruction> instructions = new ArrayList<>();
         instructions.add(new aload0());
         instructions.add(new invokespecial(objectConstructor, 1));
         instructions.add(new returnvoid());
         Code_attribute codeAttribute = code(code, instructions);
-        codeAttribute.writeTo(binaryOutput);
-    }
-
-    private void writeMethodAttributeSize(int numberOfAttributes) {
-        binaryOutput.writeShort(numberOfAttributes);
-    }
-
-    private void writeMethodTypeSignature(int typeSignatureIndex) {
-        writeConstantPoolIndex(typeSignatureIndex);
-    }
-
-    private void writeMethodName(int methodNameIndex) {
-        writeConstantPoolIndex(methodNameIndex);
-    }
-
-    private void writeMethodFlags(int methodFlags) {
-        binaryOutput.writeShort(methodFlags);
+        MethodInfo constructor = methodInfo(newHashSet(ACC_PUBLIC), init, noArgumentVoid, codeAttribute);
+        constructor.writeTo(binaryOutput);
     }
 
     private void writeNumberOfMethods(int numberOfMethods) {
