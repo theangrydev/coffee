@@ -112,16 +112,6 @@ public class Code_attribute implements BinaryWriter {
         operandStackSize.push(1);
     }
 
-    /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
-     */
-    public void ldc(int constantIndex) {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0x12));
-        instructions.add(binaryOutput -> binaryOutput.writeByte(constantIndex));
-        codeLength+=2;
-        operandStackSize.push(1);
-    }
-
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeShort(attributeNameIndex);
