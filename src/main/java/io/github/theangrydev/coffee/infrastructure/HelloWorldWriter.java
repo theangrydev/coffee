@@ -18,7 +18,10 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-@SuppressWarnings("PMD.TooManyMethods") // Will refactor when green
+import java.util.ArrayList;
+import java.util.List;
+
+@SuppressWarnings("PMD.TooManyMethods") // TODO: refactor
 public class HelloWorldWriter implements BinaryWriter {
 
     private static final int CLASS_PUBLIC_FLAG = 0x0001;
@@ -114,11 +117,12 @@ public class HelloWorldWriter implements BinaryWriter {
     }
 
     private void writeMainMethodAttribute() {
-        Code_attribute codeAttribute = new Code_attribute(code);
-        codeAttribute.addInstruction(new getstatic(systemOutField));
-        codeAttribute.addInstruction(new ldc(helloWorldString));
-        codeAttribute.addInstruction(new invokevirtual(printStreamPrintln, 1, false));
-        codeAttribute.addInstruction(new returnvoid());
+        List<Instruction> instructions = new ArrayList<>();
+        instructions.add(new getstatic(systemOutField));
+        instructions.add(new ldc(helloWorldString));
+        instructions.add(new invokevirtual(printStreamPrintln, 1, false));
+        instructions.add(new returnvoid());
+        Code_attribute codeAttribute = Code_attribute.code(code, instructions);
         codeAttribute.writeTo(binaryOutput);
     }
 

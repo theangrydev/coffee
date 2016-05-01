@@ -20,6 +20,8 @@ package io.github.theangrydev.coffee.infrastructure;
 
 import org.junit.Test;
 
+import java.util.Collections;
+
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.3
  */
@@ -40,7 +42,7 @@ public class Code_attributeTest extends TestCase {
         int maxLocalStackSize = 1;
         int codeLength = 0;
 
-        Code_attribute code = new Code_attribute(attributeNameIndex);
+        Code_attribute code = Code_attribute.code(attributeNameIndex, Collections.emptyList());
 
         code.writeTo(binaryOutput);
 

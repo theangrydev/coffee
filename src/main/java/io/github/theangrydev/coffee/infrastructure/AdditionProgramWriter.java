@@ -18,7 +18,12 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-@SuppressWarnings("PMD.TooManyMethods") // Will refactor when green
+import java.util.ArrayList;
+import java.util.List;
+
+import static io.github.theangrydev.coffee.infrastructure.Code_attribute.code;
+
+@SuppressWarnings("PMD.TooManyMethods") // TODO: refactor
 public class AdditionProgramWriter implements BinaryWriter {
 
     private static final int CLASS_PUBLIC_FLAG = 0x0001;
@@ -76,19 +81,20 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private void writeMainMethodAttribute() {
-        Code_attribute codeAttribute = new Code_attribute(code);
-        codeAttribute.addInstruction(new getstatic(systemOutField));
-        codeAttribute.addInstruction(new aload0());
-        codeAttribute.addInstruction(new iconst0());
-        codeAttribute.addInstruction(new aaload());
-        codeAttribute.addInstruction(new invokestatic(integerParseInt, 1, true));
-        codeAttribute.addInstruction(new aload0());
-        codeAttribute.addInstruction(new iconst1());
-        codeAttribute.addInstruction(new aaload());
-        codeAttribute.addInstruction(new invokestatic(integerParseInt, 1, true));
-        codeAttribute.addInstruction(new iadd());
-        codeAttribute.addInstruction(new invokevirtual(printStreamPrintln, 1, false));
-        codeAttribute.addInstruction(new returnvoid());
+        List<Instruction> instructions = new ArrayList<>();
+        instructions.add(new getstatic(systemOutField));
+        instructions.add(new aload0());
+        instructions.add(new iconst0());
+        instructions.add(new aaload());
+        instructions.add(new invokestatic(integerParseInt, 1, true));
+        instructions.add(new aload0());
+        instructions.add(new iconst1());
+        instructions.add(new aaload());
+        instructions.add(new invokestatic(integerParseInt, 1, true));
+        instructions.add(new iadd());
+        instructions.add(new invokevirtual(printStreamPrintln, 1, false));
+        instructions.add(new returnvoid());
+        Code_attribute codeAttribute = code(code, instructions);
         codeAttribute.writeTo(binaryOutput);
     }
 
@@ -101,10 +107,11 @@ public class AdditionProgramWriter implements BinaryWriter {
     }
 
     private void writeAdditionProgramConstructorAttribute() {
-        Code_attribute codeAttribute = new Code_attribute(code);
-        codeAttribute.addInstruction(new aload0());
-        codeAttribute.addInstruction(new invokespecial(objectConstructor, 1));
-        codeAttribute.addInstruction(new returnvoid());
+        List<Instruction> instructions = new ArrayList<>();
+        instructions.add(new aload0());
+        instructions.add(new invokespecial(objectConstructor, 1));
+        instructions.add(new returnvoid());
+        Code_attribute codeAttribute = code(code, instructions);
         codeAttribute.writeTo(binaryOutput);
     }
 

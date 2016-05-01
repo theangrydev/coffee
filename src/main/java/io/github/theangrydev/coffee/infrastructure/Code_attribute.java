@@ -18,13 +18,11 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.3
  */
-@SuppressWarnings("PMD") // TODO: refactor
 public class Code_attribute implements BinaryWriter {
     private static final int MAX_OPERAND_STACK_SIZE_LENGTH = 2;
     private static final int MAX_LOCAL_STACK_SIZE_LENGTH = 2;
@@ -39,39 +37,57 @@ public class Code_attribute implements BinaryWriter {
     private final int attributeNameIndex;
 
     /**
+     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.9
+     */
+    private final int codeLength;
+
+    private final List<Instruction> instructions;
+
+    /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.2
      */
-    private final StackSize operandStackSize = new StackSize(0);
+    private final int maxOperandStackSize;
 
     /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1
      */
-    private final StackSize localStackSize = new StackSize(1);
+    private final int maxLocalStackSize;
 
-    /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.9
-     */
-    private int codeLength;
-
-    private List<BinaryWriter> instructions = new ArrayList<>();
-
-    public Code_attribute(int attributeNameIndex) {
+    private Code_attribute(int attributeNameIndex, int codeLength, List<Instruction> instructions, int maxOperandStackSize, int maxLocalStackSize) {
         this.attributeNameIndex = attributeNameIndex;
+        this.codeLength = codeLength;
+        this.instructions = instructions;
+        this.maxOperandStackSize = maxOperandStackSize;
+        this.maxLocalStackSize = maxLocalStackSize;
     }
 
-    public void addInstruction(Instruction instruction) {
-        instructions.add(instruction);
-        codeLength+= instruction.lengthInBytes();
-        operandStackSize.pop(instruction.operandSizeInBytes());
-        operandStackSize.push(instruction.resultSizeInBytes());
+    public static Code_attribute code(int attributeNameIndex, List<Instruction> instructions) {
+        int codeLength = instructions.stream().mapToInt(Instruction::lengthInBytes).sum();
+        int maxOperandStackSize = maxOperandStackSize(instructions);
+        int maxLocalStackSize = maxLocalStackSize();
+        return new Code_attribute(attributeNameIndex, codeLength, instructions, maxOperandStackSize, maxLocalStackSize);
+    }
+
+    private static int maxLocalStackSize() {
+        StackSize localStackSize = new StackSize(1);
+        return localStackSize.max();
+    }
+
+    private static int maxOperandStackSize(List<Instruction> instructions) {
+        StackSize operandStackSize = new StackSize(0);
+        for (Instruction instruction : instructions) {
+            operandStackSize.pop(instruction.operandSizeInBytes());
+            operandStackSize.push(instruction.resultSizeInBytes());
+        }
+        return operandStackSize.max();
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeShort(attributeNameIndex);
         binaryOutput.writeInt(BASE_ATTRIBUTE_LENGTH + codeLength);
-        binaryOutput.writeShort(operandStackSize.max());
-        binaryOutput.writeShort(localStackSize.max());
+        binaryOutput.writeShort(maxOperandStackSize);
+        binaryOutput.writeShort(maxLocalStackSize);
         binaryOutput.writeInt(codeLength);
         for (BinaryWriter instruction : instructions) {
             instruction.writeTo(binaryOutput);

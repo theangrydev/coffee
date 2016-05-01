@@ -45,6 +45,7 @@
     <rule ref="rulesets/java/design.xml">
         <exclude name="AbstractClassWithoutAbstractMethod"/><!-- Types such as ValueType have no abstract methods but should always be extended -->
         <exclude name="UseUtilityClass"/><!-- Classes with all static methods are fine, adding a private constructor to each one is overkill because of the boilerplate -->
+        <exclude name="ClassWithOnlyPrivateConstructorsShouldBeFinal"/><!-- final classes are hard to mock -->
     </rule>
     <rule ref="rulesets/java/empty.xml"/>
     <rule ref="rulesets/java/finalizers.xml"/>
