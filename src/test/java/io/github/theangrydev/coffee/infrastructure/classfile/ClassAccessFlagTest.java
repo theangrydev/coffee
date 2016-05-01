@@ -25,18 +25,18 @@ import com.googlecode.yatspec.junit.TableRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.valueOf;
+import static io.github.theangrydev.coffee.infrastructure.classfile.ClassAccessFlag.valueOf;
 import static java.lang.Integer.parseInt;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6-200-A.1
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1-200-E.1
  */
 @RunWith(TableRunner.class)
-public class MethodAccessFlagTest implements WithAssertions {
+public class ClassAccessFlagTest implements WithAssertions {
 
     @Table({
         @Row({"ACC_PUBLIC", "0x0001"}),
-        @Row({"ACC_STATIC", "0x0008"})
+        @Row({"ACC_SUPER", "0x0020"})
     })
     @Test
     public void flagValues(String flag, String hexValue) {

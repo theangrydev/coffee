@@ -18,6 +18,9 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1-200-E.1
+ */
 public enum ClassAccessFlag implements Flag {
     ACC_PUBLIC(0x0001),
     ACC_SUPER(0x0020);

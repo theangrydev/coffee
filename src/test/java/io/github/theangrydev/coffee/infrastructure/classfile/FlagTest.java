@@ -18,21 +18,18 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
-/**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6-200-A.1
- */
-public enum MethodAccessFlag implements Flag {
-    ACC_PUBLIC(0x0001),
-    ACC_STATIC(0x0008);
+import assertions.WithAssertions;
+import org.junit.Test;
 
-    private final int value;
+import static com.google.common.collect.Sets.newHashSet;
+import static io.github.theangrydev.coffee.infrastructure.classfile.Flag.combine;
+import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.ACC_PUBLIC;
+import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.ACC_STATIC;
 
-    MethodAccessFlag(int value) {
-        this.value = value;
-    }
+public class FlagTest implements WithAssertions {
 
-    @Override
-    public int value() {
-        return value;
+    @Test
+    public void combineOrsTheValues() {
+        assertThat(combine(newHashSet(ACC_PUBLIC, ACC_STATIC))).isEqualTo(ACC_PUBLIC.value() | ACC_STATIC.value());
     }
 }
