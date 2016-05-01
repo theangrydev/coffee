@@ -23,9 +23,13 @@ import java.util.Set;
 
 import static io.github.theangrydev.coffee.infrastructure.Flag.combine;
 
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1
+ */
 public class ClassFile implements BinaryWriter {
-    private static final Magic MAGIC = new Magic();
-    private static final Version VERSION = new Version();
+    private static final int MINOR_VERSION = 0;
+    private static final int MAJOR_VERSION = 52;
+
     private static final int NUMBER_OF_CLASS_INTERFACES = 0;
     private static final int NUMBER_OF_CLASS_FIELDS = 0;
     private static final int NUMBER_OF_CLASS_ATTRIBUTES = 0;
@@ -50,8 +54,8 @@ public class ClassFile implements BinaryWriter {
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        MAGIC.writeTo(binaryOutput);
-        VERSION.writeTo(binaryOutput);
+        writeMagic(binaryOutput);
+        writeVersion(binaryOutput);
         constantPool.writeTo(binaryOutput);
         binaryOutput.writeShort(accessFlags);
         binaryOutput.writeShort(thisIndex);
@@ -63,5 +67,17 @@ public class ClassFile implements BinaryWriter {
             method.writeTo(binaryOutput);
         }
         binaryOutput.writeShort(NUMBER_OF_CLASS_ATTRIBUTES);
+    }
+
+    private void writeVersion(BinaryOutput binaryOutput) {
+        binaryOutput.writeShort(MINOR_VERSION);
+        binaryOutput.writeShort(MAJOR_VERSION);
+    }
+
+    private void writeMagic(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(0xCA);
+        binaryOutput.writeByte(0xFE);
+        binaryOutput.writeByte(0xBA);
+        binaryOutput.writeByte(0xBE);
     }
 }
