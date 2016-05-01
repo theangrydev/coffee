@@ -25,137 +25,75 @@ import static com.google.common.collect.Sets.newHashSet;
 import static io.github.theangrydev.coffee.infrastructure.Code_attribute.code;
 import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.ACC_PUBLIC;
 import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.ACC_STATIC;
-import static io.github.theangrydev.coffee.infrastructure.MethodInfo.*;
+import static io.github.theangrydev.coffee.infrastructure.MethodInfo.methodInfo;
 
-@SuppressWarnings("PMD.TooManyMethods") // TODO: refactor
 public class HelloWorld implements BinaryWriter {
 
-    private static final int CLASS_PUBLIC_FLAG = 0x0001;
-    private static final int CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG = 0x0020;
+    private final ClassFile classFile;
 
-    private final ConstantPool constantPool = new ConstantPool();
-    private static final Magic MAGIC = new Magic();
-    private static final Version VERSION = new Version();
-
-    private BinaryOutput binaryOutput;
-    private int objectClass;
-    private int init;
-    private int noArgumentVoid;
-    private int objectConstructor;
-    private int code;
-    private int helloWorldClass;
-    private int main;
-    private int stringArrayToVoid;
-    private int printStreamPrintln;
-    private int systemOutField;
-    private int helloWorldString;
-
-    @Override
-    public void writeTo(BinaryOutput binaryOutput) {
-        this.binaryOutput = binaryOutput;
-        MAGIC.writeTo(binaryOutput);
-        VERSION.writeTo(binaryOutput);
-        writeConstantPool();
-        writeAccessFlags();
-        writeThisIndex();
-        writeSuperIndex();
-        writeClassInterfaces();
-        writeClassFields();
-        writeClassMethods();
-        writeClassAttributes();
+    private HelloWorld(ClassFile classFile) {
+        this.classFile = classFile;
     }
 
-    private void writeConstantPool() {
+    public static HelloWorld helloWorld() {
+        ConstantPool constantPool = new ConstantPool();
         int javaLangObject = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Object"));
-        objectClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangObject));
-        init = constantPool.addConstant(new CONSTANT_Utf8_info("<init>"));
-        noArgumentVoid = constantPool.addConstant(new CONSTANT_Utf8_info("()V"));
+        int objectClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangObject));
+        int init = constantPool.addConstant(new CONSTANT_Utf8_info("<init>"));
+        int noArgumentVoid = constantPool.addConstant(new CONSTANT_Utf8_info("()V"));
         int voidConstructor = constantPool.addConstant(new CONSTANT_NameAndType_info(init, noArgumentVoid));
-        objectConstructor = constantPool.addConstant(new CONSTANT_Methodref_info(objectClass, voidConstructor));
+        int objectConstructor = constantPool.addConstant(new CONSTANT_Methodref_info(objectClass, voidConstructor));
 
         int javaLangSystem = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/System"));
         int systemClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangSystem));
         int out = constantPool.addConstant(new CONSTANT_Utf8_info("out"));
         int printStreamType = constantPool.addConstant(new CONSTANT_Utf8_info("Ljava/io/PrintStream;"));
         int outPrintStream = constantPool.addConstant(new CONSTANT_NameAndType_info(out, printStreamType));
-        systemOutField = constantPool.addConstant(new CONSTANT_Fieldref_info(systemClass, outPrintStream));
+        int systemOutField = constantPool.addConstant(new CONSTANT_Fieldref_info(systemClass, outPrintStream));
 
         int javaIoPrintStream = constantPool.addConstant(new CONSTANT_Utf8_info("java/io/PrintStream"));
         int printStreamClass = constantPool.addConstant(new CONSTANT_Class_info(javaIoPrintStream));
         int println = constantPool.addConstant(new CONSTANT_Utf8_info("println"));
         int stringToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("(Ljava/lang/String;)V"));
         int printlnStringToVoid = constantPool.addConstant(new CONSTANT_NameAndType_info(println, stringToVoid));
-        printStreamPrintln = constantPool.addConstant(new CONSTANT_Methodref_info(printStreamClass, printlnStringToVoid));
+        int printStreamPrintln = constantPool.addConstant(new CONSTANT_Methodref_info(printStreamClass, printlnStringToVoid));
 
-        helloWorldString = constantPool.addConstant(new CONSTANT_String_info(constantPool.addConstant(new CONSTANT_Utf8_info("Hello World!"))));
-        helloWorldClass = constantPool.addConstant(new CONSTANT_Class_info(constantPool.addConstant(new CONSTANT_Utf8_info("HelloWorld"))));
+        int helloWorldString = constantPool.addConstant(new CONSTANT_String_info(constantPool.addConstant(new CONSTANT_Utf8_info("Hello World!"))));
+        int helloWorldClass = constantPool.addConstant(new CONSTANT_Class_info(constantPool.addConstant(new CONSTANT_Utf8_info("HelloWorld"))));
 
-        main = constantPool.addConstant(new CONSTANT_Utf8_info("main"));
-        stringArrayToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("([Ljava/lang/String;)V"));
+        int main = constantPool.addConstant(new CONSTANT_Utf8_info("main"));
+        int stringArrayToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("([Ljava/lang/String;)V"));
 
-        code = constantPool.addConstant(new CONSTANT_Utf8_info("Code"));
+        int code = constantPool.addConstant(new CONSTANT_Utf8_info("Code"));
 
-        constantPool.writeTo(binaryOutput);
+        List<MethodInfo> methods = new ArrayList<>();
+        methods.add(mainMethod(systemOutField, printStreamPrintln, helloWorldString, main, stringArrayToVoid, code));
+        methods.add(constructor(init, noArgumentVoid, objectConstructor, code));
+
+        return new HelloWorld(ClassFile.classFile(constantPool, newHashSet(ClassAccessFlag.ACC_PUBLIC, ClassAccessFlag.ACC_SUPER), helloWorldClass, objectClass, methods));
     }
 
-    private void writeThisIndex() {
-        writeConstantPoolIndex(helloWorldClass);
+    public static MethodInfo constructor(int init, int noArgumentVoid, int objectConstructor, int code) {
+        List<Instruction> instructions = new ArrayList<>();
+        instructions.add(new aload0());
+        instructions.add(new invokespecial(objectConstructor, 1));
+        instructions.add(new returnvoid());
+        Code_attribute codeAttribute = code(code, instructions);
+        return methodInfo(newHashSet(ACC_PUBLIC), init, noArgumentVoid, codeAttribute);
     }
 
-    private void writeSuperIndex() {
-        writeConstantPoolIndex(objectClass);
-    }
-
-    private void writeClassMethods() {
-        writeNumberOfMethods(2);
-        writeConstructorMethod();
-        writeMainMethod();
-    }
-
-    private void writeMainMethod() {
+    public static MethodInfo mainMethod(int systemOutField, int printStreamPrintln, int helloWorldString, int main, int stringArrayToVoid, int code) {
         List<Instruction> instructions = new ArrayList<>();
         instructions.add(new getstatic(systemOutField));
         instructions.add(new ldc(helloWorldString));
         instructions.add(new invokevirtual(printStreamPrintln, 1, false));
         instructions.add(new returnvoid());
         Code_attribute codeAttribute = code(code, instructions);
-
-        MethodInfo mainMethod = methodInfo(newHashSet(ACC_PUBLIC, ACC_STATIC), main, stringArrayToVoid, codeAttribute);
-
-        mainMethod.writeTo(binaryOutput);
+        return methodInfo(newHashSet(ACC_PUBLIC, ACC_STATIC), main, stringArrayToVoid, codeAttribute);
     }
 
-    private void writeConstructorMethod() {
-        List<Instruction> instructions = new ArrayList<>();
-        instructions.add(new aload0());
-        instructions.add(new invokespecial(objectConstructor, 1));
-        instructions.add(new returnvoid());
-        Code_attribute codeAttribute = code(code, instructions);
-        MethodInfo constructor = methodInfo(newHashSet(ACC_PUBLIC), init, noArgumentVoid, codeAttribute);
-        constructor.writeTo(binaryOutput);
-    }
-
-    private void writeNumberOfMethods(int numberOfMethods) {
-        binaryOutput.writeShort(numberOfMethods);
-    }
-
-    private void writeConstantPoolIndex(int classIndex) {
-        binaryOutput.writeShort(classIndex);
-    }
-
-    private void writeClassFields() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeClassInterfaces() {
-        binaryOutput.writeShort(0);
-    }
-
-    private void writeAccessFlags() {
-        binaryOutput.writeShort(CLASS_PUBLIC_FLAG | CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG);
-    }
-
-    private void writeClassAttributes() {
-        binaryOutput.writeShort(0);
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        classFile.writeTo(binaryOutput);
     }
 }

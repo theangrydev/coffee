@@ -19,14 +19,14 @@
 package io.github.theangrydev.coffee.usecases;
 
 import io.github.theangrydev.coffee.infrastructure.BinaryWriter;
-import io.github.theangrydev.coffee.infrastructure.HelloWorld;
 
 import static io.github.theangrydev.coffee.infrastructure.AdditionProgram.additionProgramWriter;
+import static io.github.theangrydev.coffee.infrastructure.HelloWorld.helloWorld;
 
 public class Compiler {
     public BinaryWriter compile(String codeToCompile) {
         if (codeToCompile.contains("Hello World")) {
-            return new HelloWorld();
+            return helloWorld();
         } else {
             return additionProgramWriter();
         }
