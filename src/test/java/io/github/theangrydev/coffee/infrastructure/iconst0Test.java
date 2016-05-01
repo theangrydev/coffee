@@ -20,32 +20,29 @@ package io.github.theangrydev.coffee.infrastructure;
 
 import org.junit.Test;
 
-/**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aload_n
- */
-public class aload0Test extends TestCase {
+public class iconst0Test extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
     public void hasOpCode0x2a() {
-        new aload0().writeTo(binaryOutput);
-        
-        verify(binaryOutput).writeByte(0x2a);
+        new iconst0().writeTo(binaryOutput);
+
+        verify(binaryOutput).writeByte(0x3);
     }
 
     @Test
     public void isOneByteLong() {
-        assertThat(new aload0().lengthInBytes()).isEqualTo(1);
+        assertThat(new iconst0().lengthInBytes()).isEqualTo(1);
     }
 
     @Test
     public void hasNoOperands() {
-        assertThat(new aload0().operandSizeInBytes()).isEqualTo(0);
+        assertThat(new iconst0().operandSizeInBytes()).isEqualTo(0);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new aload0().resultSizeInBytes()).isEqualTo(1);
+        assertThat(new iconst0().resultSizeInBytes()).isEqualTo(1);
     }
 }
