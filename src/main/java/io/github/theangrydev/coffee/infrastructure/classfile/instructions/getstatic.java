@@ -16,18 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getstatic
  */
-class invokespecial implements Instruction {
-    private final int methodIndex;
-    private final int numberOfArguments;
+public class getstatic implements Instruction {
+    private final int fieldIndex;
 
-    public invokespecial(int methodIndex, int numberOfArguments) {
-        this.methodIndex = methodIndex;
-        this.numberOfArguments = numberOfArguments;
+    public getstatic(int fieldIndex) {
+        this.fieldIndex = fieldIndex;
     }
 
     @Override
@@ -37,17 +37,17 @@ class invokespecial implements Instruction {
 
     @Override
     public int operandSizeInBytes() {
-        return numberOfArguments;
-    }
-
-    @Override
-    public int resultSizeInBytes() {
         return 0;
     }
 
     @Override
+    public int resultSizeInBytes() {
+        return 1;
+    }
+
+    @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0xb7);
-        binaryOutput.writeShort(methodIndex);
+        binaryOutput.writeByte(0xb2);
+        binaryOutput.writeShort(fieldIndex);
     }
 }

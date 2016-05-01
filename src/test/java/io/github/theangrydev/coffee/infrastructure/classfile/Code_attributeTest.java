@@ -19,6 +19,7 @@
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.instructions.Instruction;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;

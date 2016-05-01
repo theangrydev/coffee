@@ -16,29 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aload_n
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial
  */
-class aload0 implements Instruction {
+public class invokespecial implements Instruction {
+    private final int methodIndex;
+    private final int numberOfArguments;
+
+    public invokespecial(int methodIndex, int numberOfArguments) {
+        this.methodIndex = methodIndex;
+        this.numberOfArguments = numberOfArguments;
+    }
+
     @Override
     public int lengthInBytes() {
-        return 1;
+        return 3;
     }
 
     @Override
     public int operandSizeInBytes() {
-        return 0;
+        return numberOfArguments;
     }
 
     @Override
     public int resultSizeInBytes() {
-        return 1;
+        return 0;
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0x2a);
+        binaryOutput.writeByte(0xb7);
+        binaryOutput.writeShort(methodIndex);
     }
 }

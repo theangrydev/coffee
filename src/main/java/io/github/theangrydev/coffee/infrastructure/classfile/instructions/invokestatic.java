@@ -16,29 +16,46 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokestatic
  */
-class iconst1 implements Instruction {
+public class invokestatic implements Instruction {
+    private final int methodIndex;
+    private final int numberOfArguments;
+    private final boolean hasResult;
+
+    public invokestatic(int methodIndex, int numberOfArguments, boolean hasResult) {
+        this.methodIndex = methodIndex;
+        this.numberOfArguments = numberOfArguments;
+        this.hasResult = hasResult;
+    }
+
     @Override
     public int lengthInBytes() {
-        return 1;
+        return 3;
     }
 
     @Override
     public int operandSizeInBytes() {
-        return 0;
+        return numberOfArguments;
     }
 
     @Override
     public int resultSizeInBytes() {
-        return 1;
+        if (hasResult) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0x4);
+        binaryOutput.writeByte(0xb8);
+        binaryOutput.writeShort(methodIndex);
     }
 }

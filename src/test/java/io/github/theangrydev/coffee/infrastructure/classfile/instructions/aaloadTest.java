@@ -16,40 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getstatic
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aaload
  */
-public class getstaticTest extends TestCase {
+public class aaloadTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
-    public void writesOpCode0xb2AndFieldIndex() {
-        int fieldIndex = someUnsignedShort();
-
-        new getstatic(fieldIndex).writeTo(binaryOutput);
-
-        verify(binaryOutput).writeByte(0xb2);
-        verify(binaryOutput).writeShort(fieldIndex);
+    public void hasOpCode0x32() {
+        new aaload().writeTo(binaryOutput);
+        
+        verify(binaryOutput).writeByte(0x32);
     }
 
     @Test
-    public void isThreeBytesLong() {
-        assertThat(new getstatic(someUnsignedShort()).lengthInBytes()).isEqualTo(3);
+    public void isOneByteLong() {
+        assertThat(new aaload().lengthInBytes()).isEqualTo(1);
     }
 
     @Test
-    public void hasNoOperands() {
-        assertThat(new getstatic(someUnsignedShort()).operandSizeInBytes()).isEqualTo(0);
+    public void hasTwoBytesOfOperands() {
+        assertThat(new aaload().operandSizeInBytes()).isEqualTo(2);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new getstatic(someUnsignedShort()).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new aaload().resultSizeInBytes()).isEqualTo(1);
     }
 }

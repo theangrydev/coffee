@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokevirtual
  */
-class invokevirtual implements Instruction {
+public class invokevirtual implements Instruction {
     private final int numberOfArguments;
     private final boolean hasResult;
     private final int methodIndex;

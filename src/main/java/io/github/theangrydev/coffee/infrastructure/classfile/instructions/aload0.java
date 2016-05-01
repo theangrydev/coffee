@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.return
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aload_n
  */
-class returnvoid implements Instruction {
+public class aload0 implements Instruction {
     @Override
     public int lengthInBytes() {
         return 1;
@@ -34,11 +36,11 @@ class returnvoid implements Instruction {
 
     @Override
     public int resultSizeInBytes() {
-        return 0;
+        return 1;
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0xb1);
+        binaryOutput.writeByte(0x2a);
     }
 }

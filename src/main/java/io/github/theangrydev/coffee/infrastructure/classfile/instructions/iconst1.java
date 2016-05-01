@@ -16,21 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i
  */
-class ldc implements Instruction {
-    private final int constantIndex;
-
-    public ldc(int constantIndex) {
-        this.constantIndex = constantIndex;
-    }
-
+public class iconst1 implements Instruction {
     @Override
     public int lengthInBytes() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -45,7 +41,6 @@ class ldc implements Instruction {
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0x12);
-        binaryOutput.writeByte(constantIndex);
+        binaryOutput.writeByte(0x4);
     }
 }

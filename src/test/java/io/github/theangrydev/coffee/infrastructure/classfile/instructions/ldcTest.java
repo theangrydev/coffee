@@ -16,37 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
  */
-public class iconst1Test extends TestCase {
+public class ldcTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
-    public void hasOpCode0x4() {
-        new iconst1().writeTo(binaryOutput);
+    public void writesOpCode0x12AndConstantIndex() {
+        int constantIndex = someUnsignedByte();
 
-        verify(binaryOutput).writeByte(0x4);
+        new ldc(constantIndex).writeTo(binaryOutput);
+
+        verify(binaryOutput).writeByte(0x12);
+        verify(binaryOutput).writeByte(constantIndex);
     }
 
     @Test
-    public void isOneByteLong() {
-        assertThat(new iconst1().lengthInBytes()).isEqualTo(1);
+    public void isTwoBytesLong() {
+        assertThat(new ldc(someUnsignedByte()).lengthInBytes()).isEqualTo(2);
     }
 
     @Test
     public void hasNoOperands() {
-        assertThat(new iconst1().operandSizeInBytes()).isEqualTo(0);
+        assertThat(new ldc(someUnsignedByte()).operandSizeInBytes()).isEqualTo(0);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new iconst1().resultSizeInBytes()).isEqualTo(1);
+        assertThat(new ldc(someUnsignedByte()).resultSizeInBytes()).isEqualTo(1);
     }
 }

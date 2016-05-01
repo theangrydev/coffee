@@ -16,29 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
-/**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i
- */
-class iconst0 implements Instruction {
-    @Override
-    public int lengthInBytes() {
-        return 1;
-    }
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
 
-    @Override
-    public int operandSizeInBytes() {
-        return 0;
-    }
-
-    @Override
-    public int resultSizeInBytes() {
-        return 1;
-    }
-
-    @Override
-    public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0x3);
-    }
+public interface Instruction extends BinaryWriter {
+    int lengthInBytes();
+    int operandSizeInBytes();
+    int resultSizeInBytes();
 }

@@ -16,20 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aaload
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
  */
-class aaload implements Instruction {
+public class ldc implements Instruction {
+    private final int constantIndex;
+
+    public ldc(int constantIndex) {
+        this.constantIndex = constantIndex;
+    }
+
     @Override
     public int lengthInBytes() {
-        return 1;
+        return 2;
     }
 
     @Override
     public int operandSizeInBytes() {
-        return 2;
+        return 0;
     }
 
     @Override
@@ -39,6 +47,7 @@ class aaload implements Instruction {
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(0x32);
+        binaryOutput.writeByte(0x12);
+        binaryOutput.writeByte(constantIndex);
     }
 }

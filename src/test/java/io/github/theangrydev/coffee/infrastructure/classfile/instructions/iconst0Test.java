@@ -16,37 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iadd
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i
  */
-public class iaddTest extends TestCase {
+public class iconst0Test extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
-    public void hasOpCode0x60() {
-        new iadd().writeTo(binaryOutput);
+    public void hasOpCode0x3() {
+        new iconst0().writeTo(binaryOutput);
 
-        verify(binaryOutput).writeByte(0x60);
+        verify(binaryOutput).writeByte(0x3);
     }
 
     @Test
     public void isOneByteLong() {
-        assertThat(new iadd().lengthInBytes()).isEqualTo(1);
+        assertThat(new iconst0().lengthInBytes()).isEqualTo(1);
     }
 
     @Test
-    public void hasTwoBytesOfOperands() {
-        assertThat(new iadd().operandSizeInBytes()).isEqualTo(2);
+    public void hasNoOperands() {
+        assertThat(new iconst0().operandSizeInBytes()).isEqualTo(0);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new iadd().resultSizeInBytes()).isEqualTo(1);
+        assertThat(new iconst0().resultSizeInBytes()).isEqualTo(1);
     }
 }

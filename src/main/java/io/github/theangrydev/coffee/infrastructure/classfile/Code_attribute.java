@@ -18,6 +18,8 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.instructions.Instruction;
+
 import java.util.List;
 
 /**
