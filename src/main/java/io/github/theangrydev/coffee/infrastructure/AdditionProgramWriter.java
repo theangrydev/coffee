@@ -88,7 +88,7 @@ public class AdditionProgramWriter implements BinaryWriter {
         codeAttribute.invokestatic(integerParseInt, 1, true);
         codeAttribute.iadd();
         codeAttribute.invokevirtual(printStreamPrintln, 1, false);
-        codeAttribute.returnvoid();
+        codeAttribute.addInstruction(new returnvoid());
         codeAttribute.writeTo(binaryOutput);
     }
 
@@ -104,7 +104,7 @@ public class AdditionProgramWriter implements BinaryWriter {
         Code_attribute codeAttribute = new Code_attribute(code);
         codeAttribute.addInstruction(new aload0());
         codeAttribute.invokespecial(objectConstructor, 1);
-        codeAttribute.returnvoid();
+        codeAttribute.addInstruction(new returnvoid());
         codeAttribute.writeTo(binaryOutput);
     }
 

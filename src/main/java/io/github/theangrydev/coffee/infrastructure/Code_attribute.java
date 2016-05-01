@@ -113,14 +113,6 @@ public class Code_attribute implements BinaryWriter {
     }
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.return
-     */
-    public void returnvoid() {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0xb1));
-        codeLength++;
-    }
-
-    /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iadd
      */
     public void iadd() {
