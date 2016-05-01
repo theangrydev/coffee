@@ -83,7 +83,7 @@ public class AdditionProgramWriter implements BinaryWriter {
         codeAttribute.addInstruction(new aaload());
         codeAttribute.invokestatic(integerParseInt, 1, true);
         codeAttribute.addInstruction(new aload0());
-        codeAttribute.iconst1();
+        codeAttribute.addInstruction(new iconst1());
         codeAttribute.addInstruction(new aaload());
         codeAttribute.invokestatic(integerParseInt, 1, true);
         codeAttribute.iadd();

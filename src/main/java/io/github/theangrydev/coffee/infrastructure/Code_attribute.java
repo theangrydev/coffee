@@ -67,15 +67,6 @@ public class Code_attribute implements BinaryWriter {
     }
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_i
-     */
-    public void iconst1() {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0x4));
-        codeLength++;
-        operandStackSize.push(1);
-    }
-
-    /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial
      */
     public void invokespecial(int methodIndex, int numberOfArguments) {
