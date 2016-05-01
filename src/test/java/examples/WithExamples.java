@@ -50,4 +50,8 @@ public interface WithExamples {
     default String someString() {
         return "someString" + someInt();
     }
+
+    default boolean someBoolean() {
+        return RANDOM.nextBoolean();
+    }
 }

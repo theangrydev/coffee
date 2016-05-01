@@ -67,19 +67,6 @@ public class Code_attribute implements BinaryWriter {
     }
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokestatic
-     */
-    public void invokestatic(int methodIndex, int numberOfArguments, boolean hasResult) {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0xb8));
-        instructions.add(binaryOutput -> binaryOutput.writeShort(methodIndex));
-        codeLength+= 3;
-        operandStackSize.pop(numberOfArguments);
-        if (hasResult) {
-            operandStackSize.push(1);
-        }
-    }
-
-    /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokevirtual
      */
     public void invokevirtual(int methodIndex, int numberOfArguments, boolean hasResult) {
