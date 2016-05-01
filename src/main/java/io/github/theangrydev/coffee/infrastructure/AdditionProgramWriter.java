@@ -103,7 +103,7 @@ public class AdditionProgramWriter implements BinaryWriter {
     private void writeAdditionProgramConstructorAttribute() {
         Code_attribute codeAttribute = new Code_attribute(code);
         codeAttribute.addInstruction(new aload0());
-        codeAttribute.invokespecial(objectConstructor, 1);
+        codeAttribute.addInstruction(new invokespecial(objectConstructor, 1));
         codeAttribute.addInstruction(new returnvoid());
         codeAttribute.writeTo(binaryOutput);
     }

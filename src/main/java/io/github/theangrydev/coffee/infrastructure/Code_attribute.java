@@ -67,16 +67,6 @@ public class Code_attribute implements BinaryWriter {
     }
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial
-     */
-    public void invokespecial(int methodIndex, int numberOfArguments) {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0xb7));
-        instructions.add(binaryOutput -> binaryOutput.writeShort(methodIndex));
-        codeLength+= 3;
-        operandStackSize.pop(numberOfArguments);
-    }
-
-    /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokestatic
      */
     public void invokestatic(int methodIndex, int numberOfArguments, boolean hasResult) {
@@ -115,4 +105,5 @@ public class Code_attribute implements BinaryWriter {
         binaryOutput.writeShort(EXCEPTION_TABLE_LENGTH);
         binaryOutput.writeShort(ATTRIBUTE_COUNT);
     }
+
 }
