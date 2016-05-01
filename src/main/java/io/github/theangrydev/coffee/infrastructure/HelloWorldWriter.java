@@ -34,7 +34,8 @@ public class HelloWorldWriter implements BinaryWriter {
     private static final int CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG = 0x0020;
 
     private final ConstantPool constantPool = new ConstantPool();
-    private final Magic magic = new Magic();
+    private static final Magic MAGIC = new Magic();
+    private static final Version VERSION = new Version();
 
     private BinaryOutput binaryOutput;
     private int objectClass;
@@ -52,8 +53,8 @@ public class HelloWorldWriter implements BinaryWriter {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         this.binaryOutput = binaryOutput;
-        writeMagicHeader();
-        writeVersion();
+        MAGIC.writeTo(binaryOutput);
+        VERSION.writeTo(binaryOutput);
         writeConstantPool();
         writeAccessFlags();
         writeThisIndex();
@@ -152,15 +153,6 @@ public class HelloWorldWriter implements BinaryWriter {
 
     private void writeAccessFlags() {
         binaryOutput.writeShort(CLASS_PUBLIC_FLAG | CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG);
-    }
-
-    private void writeVersion() {
-        binaryOutput.writeShort(0);
-        binaryOutput.writeShort(52);
-    }
-
-    private void writeMagicHeader() {
-        magic.writeTo(binaryOutput);
     }
 
     private void writeClassAttributes() {
