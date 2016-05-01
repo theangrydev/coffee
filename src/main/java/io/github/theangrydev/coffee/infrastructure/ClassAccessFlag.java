@@ -22,7 +22,7 @@ public enum ClassAccessFlag implements Flag {
     ACC_PUBLIC(0x0001),
     ACC_SUPER(0x0020);
 
-    private final int value ;
+    private final int value;
 
     ClassAccessFlag(int value) {
         this.value = value;
