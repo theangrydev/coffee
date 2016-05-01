@@ -28,7 +28,7 @@ import static io.github.theangrydev.coffee.infrastructure.MethodAccessFlag.ACC_S
 import static io.github.theangrydev.coffee.infrastructure.MethodInfo.*;
 
 @SuppressWarnings("PMD.TooManyMethods") // TODO: refactor
-public class HelloWorldWriter implements BinaryWriter {
+public class HelloWorld implements BinaryWriter {
 
     private static final int CLASS_PUBLIC_FLAG = 0x0001;
     private static final int CLASS_TREAT_SUPER_METHODS_SPECIALLY_FLAG = 0x0020;
