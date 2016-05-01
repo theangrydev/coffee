@@ -18,8 +18,8 @@
  */
 package acceptancetests.then;
 
-import assertions.WithAssertions;
 import acceptancetests.infrastructure.ProgramOutput;
+import assertions.WithAssertions;
 
 public class ThenTheProgramOutput implements WithAssertions {
 

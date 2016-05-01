@@ -21,7 +21,7 @@ package acceptancetests.infrastructure;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
+import static io.github.theangrydev.coffee.infrastructure.classfile.CharacterSet.CHARACTER_SET;
 
 public class InputStreams {
     public static String readInputStream(InputStream inputStream) {

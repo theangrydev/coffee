@@ -16,19 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.usecases;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+import java.util.ArrayList;
+import java.util.List;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.AdditionProgram.additionProgramWriter;
-import static io.github.theangrydev.coffee.infrastructure.classfile.HelloWorld.helloWorld;
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4
+ */
+public class ConstantPool implements BinaryWriter {
+    private final List<BinaryWriter> constants = new ArrayList<>();
 
-public class Compiler {
-    public BinaryWriter compile(String codeToCompile) {
-        if (codeToCompile.contains("Hello World")) {
-            return helloWorld();
-        } else {
-            return additionProgramWriter();
+    public int addConstant(BinaryWriter constant) {
+        constants.add(constant);
+        return constants.size();
+    }
+
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeShort(constants.size() + 1);
+        for (BinaryWriter constant : constants) {
+            constant.writeTo(binaryOutput);
         }
     }
 }

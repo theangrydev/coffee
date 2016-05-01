@@ -16,19 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.usecases;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.return
+ */
+class returnvoid implements Instruction {
+    @Override
+    public int lengthInBytes() {
+        return 1;
+    }
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.AdditionProgram.additionProgramWriter;
-import static io.github.theangrydev.coffee.infrastructure.classfile.HelloWorld.helloWorld;
+    @Override
+    public int operandSizeInBytes() {
+        return 0;
+    }
 
-public class Compiler {
-    public BinaryWriter compile(String codeToCompile) {
-        if (codeToCompile.contains("Hello World")) {
-            return helloWorld();
-        } else {
-            return additionProgramWriter();
-        }
+    @Override
+    public int resultSizeInBytes() {
+        return 0;
+    }
+
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(0xb1);
     }
 }

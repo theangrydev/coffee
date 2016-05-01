@@ -16,19 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.usecases;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
+ */
+public class CONSTANT_Class_info implements BinaryWriter {
+    private static final int TAG = 7;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.AdditionProgram.additionProgramWriter;
-import static io.github.theangrydev.coffee.infrastructure.classfile.HelloWorld.helloWorld;
+    private final int nameIndex;
 
-public class Compiler {
-    public BinaryWriter compile(String codeToCompile) {
-        if (codeToCompile.contains("Hello World")) {
-            return helloWorld();
-        } else {
-            return additionProgramWriter();
-        }
+    public CONSTANT_Class_info(int nameIndex) {
+        this.nameIndex = nameIndex;
+    }
+
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(TAG);
+        binaryOutput.writeShort(nameIndex);
     }
 }

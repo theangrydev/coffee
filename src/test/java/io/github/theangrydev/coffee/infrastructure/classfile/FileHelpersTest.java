@@ -16,26 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.entrypoint;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
-import io.github.theangrydev.coffee.usecases.Compiler;
+import assertions.WithAssertions;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.IOException;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput.fileBinaryOutput;
+import static io.github.theangrydev.coffee.infrastructure.classfile.CharacterSet.CHARACTER_SET;
 import static io.github.theangrydev.coffee.infrastructure.classfile.FileHelpers.readContent;
 
-public class CommandLine {
+public class FileHelpersTest implements WithAssertions {
 
-    public static void main(String... arguments) {
-        String sourceFile = arguments[0];
-        String codeToCompile = readContent(new File(sourceFile));
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
-        Compiler compiler = new Compiler();
-        BinaryWriter binaryWriter = compiler.compile(codeToCompile);
+    @Test
+    public void fileContentCanBeRead() throws IOException {
+        File file = folder.newFile();
+        String expectedContent = "Testing";
+        java.nio.file.Files.write(file.toPath(), expectedContent.getBytes(CHARACTER_SET));
 
-        String binaryFile = sourceFile.replace(".coffee", ".class");
-        binaryWriter.writeTo(fileBinaryOutput(binaryFile));
+        String content = readContent(file);
+        assertThat(content).isEqualTo(expectedContent);
     }
 }

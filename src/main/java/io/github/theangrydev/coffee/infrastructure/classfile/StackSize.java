@@ -16,19 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.usecases;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+public class StackSize {
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.AdditionProgram.additionProgramWriter;
-import static io.github.theangrydev.coffee.infrastructure.classfile.HelloWorld.helloWorld;
+    private int current;
+    private int max;
 
-public class Compiler {
-    public BinaryWriter compile(String codeToCompile) {
-        if (codeToCompile.contains("Hello World")) {
-            return helloWorld();
-        } else {
-            return additionProgramWriter();
+    public StackSize(int initial) {
+        current = initial;
+        max = current;
+    }
+
+    public void push(int numberOfBytes) {
+        current+= numberOfBytes;
+        if (current > max) {
+            max = current;
         }
+    }
+
+    public void pop(int numberOfBytes) {
+        current-= numberOfBytes;
+    }
+
+    public int max() {
+        return max;
     }
 }

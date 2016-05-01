@@ -16,29 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package acceptancetests.infrastructure;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import assertions.WithAssertions;
+import io.github.theangrydev.coffee.infrastructure.TestCase;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.2
+ */
+public class CONSTANT_Methodref_infoTest extends TestCase {
 
-import static acceptancetests.infrastructure.InputStreams.readInputStream;
-import static io.github.theangrydev.coffee.infrastructure.classfile.CharacterSet.CHARACTER_SET;
-
-public class InputStreamsTest implements WithAssertions {
-
-    @Test
-    public void readsInputStreamThatIsNotEmpty() {
-        String content = readInputStream(new ByteArrayInputStream("Hello World".getBytes(CHARACTER_SET)));
-
-        assertThat(content).isEqualTo("Hello World");
-    }
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
-    public void readsInputStreamThatIsEmpty() {
-        String content = readInputStream(new ByteArrayInputStream("".getBytes(CHARACTER_SET)));
+    public void writesTagThenClassIndexThenNameAndTypeIndex() {
+        int tag = 10;
+        int classIndex = someUnsignedShort();
+        int nameAndTypeIndex = someUnsignedShort();
 
-        assertThat(content).isEmpty();
+        new CONSTANT_Methodref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
+
+        verify(binaryOutput).writeByte(tag);
+        verify(binaryOutput).writeShort(classIndex);
+        verify(binaryOutput).writeShort(nameAndTypeIndex);
     }
 }

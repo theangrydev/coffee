@@ -16,19 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.usecases;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.TestCase;
+import org.junit.Test;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.AdditionProgram.additionProgramWriter;
-import static io.github.theangrydev.coffee.infrastructure.classfile.HelloWorld.helloWorld;
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.7
+ */
+public class CONSTANT_Utf8_infoTest extends TestCase {
 
-public class Compiler {
-    public BinaryWriter compile(String codeToCompile) {
-        if (codeToCompile.contains("Hello World")) {
-            return helloWorld();
-        } else {
-            return additionProgramWriter();
-        }
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+
+    @Test
+    public void writesTagThenLengthByesThenUtf8Bytes() {
+        int tag = 1;
+        String string = someString();
+
+        new CONSTANT_Utf8_info(string).writeTo(binaryOutput);
+
+        verify(binaryOutput).writeByte(tag);
+        verify(binaryOutput).writeUTF8(string);
     }
 }

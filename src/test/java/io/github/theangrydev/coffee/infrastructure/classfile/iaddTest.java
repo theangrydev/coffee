@@ -16,29 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package acceptancetests.infrastructure;
+package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import assertions.WithAssertions;
+import io.github.theangrydev.coffee.infrastructure.TestCase;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
+/**
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iadd
+ */
+public class iaddTest extends TestCase {
 
-import static acceptancetests.infrastructure.InputStreams.readInputStream;
-import static io.github.theangrydev.coffee.infrastructure.classfile.CharacterSet.CHARACTER_SET;
-
-public class InputStreamsTest implements WithAssertions {
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
-    public void readsInputStreamThatIsNotEmpty() {
-        String content = readInputStream(new ByteArrayInputStream("Hello World".getBytes(CHARACTER_SET)));
+    public void hasOpCode0x60() {
+        new iadd().writeTo(binaryOutput);
 
-        assertThat(content).isEqualTo("Hello World");
+        verify(binaryOutput).writeByte(0x60);
     }
 
     @Test
-    public void readsInputStreamThatIsEmpty() {
-        String content = readInputStream(new ByteArrayInputStream("".getBytes(CHARACTER_SET)));
+    public void isOneByteLong() {
+        assertThat(new iadd().lengthInBytes()).isEqualTo(1);
+    }
 
-        assertThat(content).isEmpty();
+    @Test
+    public void hasTwoBytesOfOperands() {
+        assertThat(new iadd().operandSizeInBytes()).isEqualTo(2);
+    }
+
+    @Test
+    public void resultIsOneByteLong() {
+        assertThat(new iadd().resultSizeInBytes()).isEqualTo(1);
     }
 }
