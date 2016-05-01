@@ -115,7 +115,7 @@ public class HelloWorldWriter implements BinaryWriter {
 
     private void writeMainMethodAttribute() {
         Code_attribute codeAttribute = new Code_attribute(code);
-        codeAttribute.getstatic(systemOutField);
+        codeAttribute.addInstruction(new getstatic(systemOutField));
         codeAttribute.addInstruction(new ldc(helloWorldString));
         codeAttribute.invokevirtual(printStreamPrintln, 1, false);
         codeAttribute.addInstruction(new returnvoid());

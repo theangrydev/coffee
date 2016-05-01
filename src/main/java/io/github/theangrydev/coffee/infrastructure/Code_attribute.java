@@ -102,16 +102,6 @@ public class Code_attribute implements BinaryWriter {
         }
     }
 
-    /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getstatic
-     */
-    public void getstatic(int fieldIndex) {
-        instructions.add(binaryOutput -> binaryOutput.writeByte(0xb2));
-        instructions.add(binaryOutput -> binaryOutput.writeShort(fieldIndex));
-        codeLength+= 3;
-        operandStackSize.push(1);
-    }
-
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeShort(attributeNameIndex);
@@ -125,5 +115,4 @@ public class Code_attribute implements BinaryWriter {
         binaryOutput.writeShort(EXCEPTION_TABLE_LENGTH);
         binaryOutput.writeShort(ATTRIBUTE_COUNT);
     }
-
 }
