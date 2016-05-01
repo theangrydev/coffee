@@ -18,6 +18,8 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantPool;
+
 import java.util.List;
 import java.util.Set;
 

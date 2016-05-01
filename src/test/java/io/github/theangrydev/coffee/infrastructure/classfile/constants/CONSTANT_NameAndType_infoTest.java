@@ -16,31 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import assertions.WithAssertions;
-import assertions.WithMockito;
+import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6
  */
-public class ConstantPoolTest implements WithAssertions, WithMockito {
-    private final ConstantPool constantPool = new ConstantPool();
+public class CONSTANT_NameAndType_infoTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
-    private final BinaryWriter someConstant = mock(BinaryWriter.class);
-    private final BinaryWriter anotherConstant = mock(BinaryWriter.class);
 
     @Test
-    public void numberOfConstantsPlusOneIsWrittenThenTheConstants() {
-        constantPool.addConstant(someConstant);
-        constantPool.addConstant(anotherConstant);
+    public void writesTagThenNameIndexThenDescriptorIndex() {
+        int tag = 12;
+        int nameIndex = someUnsignedShort();
+        int descriptorIndex = someUnsignedShort();
 
-        constantPool.writeTo(binaryOutput);
+        new CONSTANT_NameAndType_info(nameIndex, descriptorIndex).writeTo(binaryOutput);
 
-        verify(binaryOutput).writeShort(3);
-        verify(someConstant).writeTo(binaryOutput);
-        verify(anotherConstant).writeTo(binaryOutput);
+        verify(binaryOutput).writeByte(tag);
+        verify(binaryOutput).writeShort(nameIndex);
+        verify(binaryOutput).writeShort(descriptorIndex);
     }
 }

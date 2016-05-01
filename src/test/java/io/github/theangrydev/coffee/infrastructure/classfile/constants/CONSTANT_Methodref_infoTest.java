@@ -16,28 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.2
  */
-public class CONSTANT_NameAndType_infoTest extends TestCase {
+public class CONSTANT_Methodref_infoTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
     @Test
-    public void writesTagThenNameIndexThenDescriptorIndex() {
-        int tag = 12;
-        int nameIndex = someUnsignedShort();
-        int descriptorIndex = someUnsignedShort();
+    public void writesTagThenClassIndexThenNameAndTypeIndex() {
+        int tag = 10;
+        int classIndex = someUnsignedShort();
+        int nameAndTypeIndex = someUnsignedShort();
 
-        new CONSTANT_NameAndType_info(nameIndex, descriptorIndex).writeTo(binaryOutput);
+        new CONSTANT_Methodref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(tag);
-        verify(binaryOutput).writeShort(nameIndex);
-        verify(binaryOutput).writeShort(descriptorIndex);
+        verify(binaryOutput).writeShort(classIndex);
+        verify(binaryOutput).writeShort(nameAndTypeIndex);
     }
 }

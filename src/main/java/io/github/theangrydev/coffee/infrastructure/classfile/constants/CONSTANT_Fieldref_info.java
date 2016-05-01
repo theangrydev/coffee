@@ -16,27 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.2
  */
-public class ConstantPool implements BinaryWriter {
-    private final List<BinaryWriter> constants = new ArrayList<>();
+public class CONSTANT_Fieldref_info implements BinaryWriter {
 
-    public int addConstant(BinaryWriter constant) {
-        constants.add(constant);
-        return constants.size();
+    private static final int TAG = 9;
+
+    private final int classIndex;
+    private final int nameAndTypeIndex;
+
+    public CONSTANT_Fieldref_info(int classIndex, int nameAndTypeIndex) {
+        this.classIndex = classIndex;
+        this.nameAndTypeIndex = nameAndTypeIndex;
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeShort(constants.size() + 1);
-        for (BinaryWriter constant : constants) {
-            constant.writeTo(binaryOutput);
-        }
+        binaryOutput.writeByte(TAG);
+        binaryOutput.writeShort(classIndex);
+        binaryOutput.writeShort(nameAndTypeIndex);
     }
 }

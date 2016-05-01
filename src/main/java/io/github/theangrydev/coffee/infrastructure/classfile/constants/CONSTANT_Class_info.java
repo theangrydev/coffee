@@ -16,23 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.constants;
+
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.3
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
  */
-public class CONSTANT_String_info implements BinaryWriter {
-    private static final int TAG = 8;
+public class CONSTANT_Class_info implements BinaryWriter {
+    private static final int TAG = 7;
 
-    private final int stringIndex;
+    private final int nameIndex;
 
-    public CONSTANT_String_info(int stringIndex) {
-        this.stringIndex = stringIndex;
+    public CONSTANT_Class_info(int nameIndex) {
+        this.nameIndex = nameIndex;
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(TAG);
-        binaryOutput.writeShort(stringIndex);
+        binaryOutput.writeShort(nameIndex);
     }
 }

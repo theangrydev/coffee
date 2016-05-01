@@ -16,28 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import io.github.theangrydev.coffee.infrastructure.TestCase;
-import org.junit.Test;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.2
  */
-public class CONSTANT_Fieldref_infoTest extends TestCase {
+public class CONSTANT_Methodref_info implements BinaryWriter {
 
-    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private static final int TAG = 10;
 
-    @Test
-    public void writesTagThenClassIndexThenNameAndTypeIndex() {
-        int tag = 9;
-        int classIndex = someUnsignedShort();
-        int nameAndTypeIndex = someUnsignedShort();
+    private final int classIndex;
+    private final int nameAndTypeIndex;
 
-        new CONSTANT_Fieldref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
+    public CONSTANT_Methodref_info(int classIndex, int nameAndTypeIndex) {
+        this.classIndex = classIndex;
+        this.nameAndTypeIndex = nameAndTypeIndex;
+    }
 
-        verify(binaryOutput).writeByte(tag);
-        verify(binaryOutput).writeShort(classIndex);
-        verify(binaryOutput).writeShort(nameAndTypeIndex);
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(TAG);
+        binaryOutput.writeShort(classIndex);
+        binaryOutput.writeShort(nameAndTypeIndex);
     }
 }

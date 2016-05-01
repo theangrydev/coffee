@@ -16,26 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import io.github.theangrydev.coffee.infrastructure.TestCase;
-import org.junit.Test;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.1
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.3
  */
-public class CONSTANT_Class_infoTest extends TestCase {
+public class CONSTANT_String_info implements BinaryWriter {
+    private static final int TAG = 8;
 
-    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private final int stringIndex;
 
-    @Test
-    public void writesTagThenNameIndex() {
-        int tag = 7;
-        int nameIndex = someUnsignedShort();
+    public CONSTANT_String_info(int stringIndex) {
+        this.stringIndex = stringIndex;
+    }
 
-        new CONSTANT_Class_info(nameIndex).writeTo(binaryOutput);
-
-        verify(binaryOutput).writeByte(tag);
-        verify(binaryOutput).writeShort(nameIndex);
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        binaryOutput.writeByte(TAG);
+        binaryOutput.writeShort(stringIndex);
     }
 }

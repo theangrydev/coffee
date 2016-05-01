@@ -19,6 +19,7 @@
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantPool;
 import org.junit.Test;
 
 import java.util.List;

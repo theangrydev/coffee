@@ -16,27 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.constants;
+
+import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
+import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.2
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.7
  */
-public class CONSTANT_Fieldref_info implements BinaryWriter {
+public class CONSTANT_Utf8_infoTest extends TestCase {
 
-    private static final int TAG = 9;
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
-    private final int classIndex;
-    private final int nameAndTypeIndex;
+    @Test
+    public void writesTagThenLengthByesThenUtf8Bytes() {
+        int tag = 1;
+        String string = someString();
 
-    public CONSTANT_Fieldref_info(int classIndex, int nameAndTypeIndex) {
-        this.classIndex = classIndex;
-        this.nameAndTypeIndex = nameAndTypeIndex;
-    }
+        new CONSTANT_Utf8_info(string).writeTo(binaryOutput);
 
-    @Override
-    public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(TAG);
-        binaryOutput.writeShort(classIndex);
-        binaryOutput.writeShort(nameAndTypeIndex);
+        verify(binaryOutput).writeByte(tag);
+        verify(binaryOutput).writeUTF8(string);
     }
 }
