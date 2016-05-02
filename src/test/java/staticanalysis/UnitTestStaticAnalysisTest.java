@@ -22,11 +22,11 @@ import assertions.WithAssertions;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.FileHelpers.listDirectory;
 import static java.util.stream.Collectors.toList;
 
 public class UnitTestStaticAnalysisTest implements WithAssertions {
@@ -52,5 +52,19 @@ public class UnitTestStaticAnalysisTest implements WithAssertions {
         Path commonPath = unitTest.subpath(2, pathLength - 1);
         Path productionFile = Paths.get("src/main").resolve(commonPath).resolve(productionFileName);
         return !productionFile.toFile().exists();
+    }
+
+    private static List<Path> listDirectory(Path directory) throws IOException {
+        List<Path> files = new ArrayList<>();
+        Files.walkFileTree(directory, new SimpleFileVisitor<Path>(){
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes fileAttributes) throws IOException {
+                if (!fileAttributes.isDirectory()){
+                    files.add(file);
+                }
+                return FileVisitResult.CONTINUE;
+            }
+        });
+        return files;
     }
 }

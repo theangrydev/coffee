@@ -18,7 +18,7 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial

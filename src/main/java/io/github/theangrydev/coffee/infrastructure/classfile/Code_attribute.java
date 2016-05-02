@@ -19,6 +19,8 @@
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
 import io.github.theangrydev.coffee.infrastructure.classfile.instructions.Instruction;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
 import java.util.List;
 

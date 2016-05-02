@@ -16,27 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.programs;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.*;
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.*;
 import io.github.theangrydev.coffee.infrastructure.classfile.instructions.*;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static io.github.theangrydev.coffee.infrastructure.classfile.Code_attribute.code;
 import static io.github.theangrydev.coffee.infrastructure.classfile.MethodInfo.methodInfo;
 
-public class HelloWorld implements BinaryWriter {
+public class AdditionProgram implements BinaryWriter {
 
     private final ClassFile classFile;
 
-    private HelloWorld(ClassFile classFile) {
+    private AdditionProgram(ClassFile classFile) {
         this.classFile = classFile;
     }
 
-    public static HelloWorld helloWorld() {
+    @Override
+    public void writeTo(BinaryOutput binaryOutput) {
+        classFile.writeTo(binaryOutput);
+    }
+
+    public static AdditionProgram additionProgramWriter() {
         ConstantPool constantPool = new ConstantPool();
         int javaLangObject = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Object"));
         int objectClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangObject));
@@ -52,15 +59,22 @@ public class HelloWorld implements BinaryWriter {
         int outPrintStream = constantPool.addConstant(new CONSTANT_NameAndType_info(out, printStreamType));
         int systemOutField = constantPool.addConstant(new CONSTANT_Fieldref_info(systemClass, outPrintStream));
 
+        int javaLangInteger = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Integer"));
+        int integerClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangInteger));
+        int parseInt = constantPool.addConstant(new CONSTANT_Utf8_info("parseInt"));
+        int stringToInt = constantPool.addConstant(new CONSTANT_Utf8_info("(Ljava/lang/String;)I"));
+        int parseIntStringToInt = constantPool.addConstant(new CONSTANT_NameAndType_info(parseInt, stringToInt));
+        int integerParseInt = constantPool.addConstant(new CONSTANT_Methodref_info(integerClass, parseIntStringToInt));
+
         int javaIoPrintStream = constantPool.addConstant(new CONSTANT_Utf8_info("java/io/PrintStream"));
         int printStreamClass = constantPool.addConstant(new CONSTANT_Class_info(javaIoPrintStream));
         int println = constantPool.addConstant(new CONSTANT_Utf8_info("println"));
-        int stringToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("(Ljava/lang/String;)V"));
-        int printlnStringToVoid = constantPool.addConstant(new CONSTANT_NameAndType_info(println, stringToVoid));
-        int printStreamPrintln = constantPool.addConstant(new CONSTANT_Methodref_info(printStreamClass, printlnStringToVoid));
+        int intToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("(I)V"));
+        int printlnIntToVoid = constantPool.addConstant(new CONSTANT_NameAndType_info(println, intToVoid));
+        int printStreamPrintln = constantPool.addConstant(new CONSTANT_Methodref_info(printStreamClass, printlnIntToVoid));
 
-        int helloWorldString = constantPool.addConstant(new CONSTANT_String_info(constantPool.addConstant(new CONSTANT_Utf8_info("Hello World!"))));
-        int helloWorldClass = constantPool.addConstant(new CONSTANT_Class_info(constantPool.addConstant(new CONSTANT_Utf8_info("HelloWorld"))));
+        int additionProgram = constantPool.addConstant(new CONSTANT_Utf8_info("AdditionProgram"));
+        int additionClass = constantPool.addConstant(new CONSTANT_Class_info(additionProgram));
 
         int main = constantPool.addConstant(new CONSTANT_Utf8_info("main"));
         int stringArrayToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("([Ljava/lang/String;)V"));
@@ -68,10 +82,12 @@ public class HelloWorld implements BinaryWriter {
         int code = constantPool.addConstant(new CONSTANT_Utf8_info("Code"));
 
         List<MethodInfo> methods = new ArrayList<>();
-        methods.add(mainMethod(systemOutField, printStreamPrintln, helloWorldString, main, stringArrayToVoid, code));
+        methods.add(mainMethod(systemOutField, integerParseInt, printStreamPrintln, main, stringArrayToVoid, code));
         methods.add(constructor(init, noArgumentVoid, objectConstructor, code));
 
-        return new HelloWorld(ClassFile.classFile(constantPool, newHashSet(ClassAccessFlag.ACC_PUBLIC, ClassAccessFlag.ACC_SUPER), helloWorldClass, objectClass, methods));
+        ClassFile classFile = ClassFile.classFile(constantPool, newHashSet(ClassAccessFlag.ACC_PUBLIC, ClassAccessFlag.ACC_SUPER), additionClass, objectClass, methods);
+
+        return new AdditionProgram(classFile);
     }
 
     public static MethodInfo constructor(int init, int noArgumentVoid, int objectConstructor, int code) {
@@ -79,22 +95,25 @@ public class HelloWorld implements BinaryWriter {
         instructions.add(new aload0());
         instructions.add(new invokespecial(objectConstructor, 1));
         instructions.add(new returnvoid());
-        Code_attribute codeAttribute = code(code, instructions);
+        Code_attribute codeAttribute = Code_attribute.code(code, instructions);
         return methodInfo(newHashSet(MethodAccessFlag.ACC_PUBLIC), init, noArgumentVoid, codeAttribute);
     }
 
-    public static MethodInfo mainMethod(int systemOutField, int printStreamPrintln, int helloWorldString, int main, int stringArrayToVoid, int code) {
+    public static MethodInfo mainMethod(int systemOutField, int integerParseInt, int printStreamPrintln, int main, int stringArrayToVoid, int code) {
         List<Instruction> instructions = new ArrayList<>();
         instructions.add(new getstatic(systemOutField));
-        instructions.add(new ldc(helloWorldString));
+        instructions.add(new aload0());
+        instructions.add(new iconst0());
+        instructions.add(new aaload());
+        instructions.add(new invokestatic(integerParseInt, 1, true));
+        instructions.add(new aload0());
+        instructions.add(new iconst1());
+        instructions.add(new aaload());
+        instructions.add(new invokestatic(integerParseInt, 1, true));
+        instructions.add(new iadd());
         instructions.add(new invokevirtual(printStreamPrintln, 1, false));
         instructions.add(new returnvoid());
-        Code_attribute codeAttribute = code(code, instructions);
+        Code_attribute codeAttribute = Code_attribute.code(code, instructions);
         return methodInfo(newHashSet(MethodAccessFlag.ACC_PUBLIC, MethodAccessFlag.ACC_STATIC), main, stringArrayToVoid, codeAttribute);
-    }
-
-    @Override
-    public void writeTo(BinaryOutput binaryOutput) {
-        classFile.writeTo(binaryOutput);
     }
 }

@@ -20,8 +20,8 @@ package examples;
 
 import java.util.Random;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput.UNSIGNED_BYTE_MAX_VALUE;
-import static io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput.UNSIGNED_SHORT_MAX_VALUE;
+import static io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput.UNSIGNED_BYTE_MAX_VALUE;
+import static io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput.UNSIGNED_SHORT_MAX_VALUE;
 import static java.lang.System.currentTimeMillis;
 
 @SuppressWarnings("PMD.TooManyMethods") // Intentional to contain lots of helpers

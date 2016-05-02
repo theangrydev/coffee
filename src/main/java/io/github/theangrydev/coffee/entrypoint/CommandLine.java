@@ -18,13 +18,13 @@
  */
 package io.github.theangrydev.coffee.entrypoint;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 import io.github.theangrydev.coffee.usecases.Compiler;
 
 import java.io.File;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput.fileBinaryOutput;
-import static io.github.theangrydev.coffee.infrastructure.classfile.FileHelpers.readContent;
+import static io.github.theangrydev.coffee.infrastructure.FileHelpers.readContent;
+import static io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput.fileBinaryOutput;
 
 public class CommandLine {
 

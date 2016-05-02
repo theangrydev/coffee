@@ -37,6 +37,7 @@
         <exclude name="OnlyOneReturn"/><!-- Multiple returns can aid readability and reduce arrow code -->
         <exclude name="DataflowAnomalyAnalysis"/><!-- Too many false positives -->
         <exclude name="AvoidUsingShortType"/><!-- Shorts will be used when e.g. writing class files -->
+        <exclude name="AvoidLiteralsInIfCondition"/><!-- I don't mind this -->
     </rule>
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LoosePackageCoupling"/><!-- This rule would be good but you can only configure class excludes not package excludes -->

@@ -35,7 +35,12 @@ public class ValueTypeTest implements WithAssertions {
 
     @Test
     public void sameHashCodeIfTheFieldsAreEqual() {
-        assertThat(new TestType(1, "one").hashCode()).isEqualTo(new TestType(1, "one").hashCode());
+        assertThat(new TestType(1, "one").hashCode()).isNotEqualTo(new TestType(2, "two").hashCode());
+    }
+
+    @Test
+    public void differentHashCodeIfTheFieldsAreDifferent() {
+        assertThat(new TestType(1, "one").hashCode()).isNotEqualTo(new TestType(2, "two").hashCode());
     }
 
     @Test

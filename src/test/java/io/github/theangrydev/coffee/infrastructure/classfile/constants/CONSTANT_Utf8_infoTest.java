@@ -19,7 +19,7 @@
 package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import org.junit.Test;
 
 /**

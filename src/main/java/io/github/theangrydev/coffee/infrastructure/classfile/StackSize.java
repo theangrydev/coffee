@@ -30,9 +30,7 @@ public class StackSize {
 
     public void push(int numberOfBytes) {
         current+= numberOfBytes;
-        if (current > max) {
-            max = current;
-        }
+        max = Math.max(current, max);
     }
 
     public void pop(int numberOfBytes) {

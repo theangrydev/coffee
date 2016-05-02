@@ -23,17 +23,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import static java.util.Collections.emptySet;
+
 public class ValueType {
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(this, object);
+        return EqualsBuilder.reflectionEquals(this, object, emptySet());
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(this, emptySet());
     }
 
     @Override

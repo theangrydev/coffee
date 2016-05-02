@@ -24,7 +24,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 
 import static acceptancetests.infrastructure.InputStreams.readInputStream;
-import static io.github.theangrydev.coffee.infrastructure.classfile.CharacterSet.CHARACTER_SET;
+import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
 
 public class InputStreamsTest implements WithAssertions {
 
@@ -33,6 +33,13 @@ public class InputStreamsTest implements WithAssertions {
         String content = readInputStream(new ByteArrayInputStream("Hello World".getBytes(CHARACTER_SET)));
 
         assertThat(content).isEqualTo("Hello World");
+    }
+
+    @Test
+    public void readsInputStreamWithNewLines() {
+        String content = readInputStream(new ByteArrayInputStream("Hello\r\nWorld\r\n".getBytes(CHARACTER_SET)));
+
+        assertThat(content).isEqualTo("Hello\r\nWorld\r\n");
     }
 
     @Test

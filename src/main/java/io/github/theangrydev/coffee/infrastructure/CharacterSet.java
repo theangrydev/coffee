@@ -16,20 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package acceptancetests.infrastructure;
+package io.github.theangrydev.coffee.infrastructure;
 
-import java.io.InputStream;
-import java.util.Scanner;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
-import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
-
-public class InputStreams {
-    public static String readInputStream(InputStream inputStream) {
-        Scanner scanner = new Scanner(inputStream, CHARACTER_SET.name()).useDelimiter("\\A");
-        if (scanner.hasNext()) {
-            return scanner.next();
-        } else {
-            return "";
-        }
-    }
+public class CharacterSet {
+    public static final Charset CHARACTER_SET = StandardCharsets.UTF_8;
 }

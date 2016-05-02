@@ -16,11 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.writing;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
-public class CharacterSet {
-    public static final Charset CHARACTER_SET = StandardCharsets.UTF_8;
+public interface BinaryWriter {
+    void writeTo(BinaryOutput binaryOutput);
 }

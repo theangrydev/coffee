@@ -26,6 +26,6 @@ public final class ProgramOutput extends SingleValueType<String> {
     }
 
     public static ProgramOutput programOutput(String output) {
-        return new ProgramOutput(output);
+        return new ProgramOutput(output.trim());
     }
 }

@@ -18,10 +18,10 @@
  */
 package io.github.theangrydev.coffee.usecases;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.AdditionProgram.additionProgramWriter;
-import static io.github.theangrydev.coffee.infrastructure.classfile.HelloWorld.helloWorld;
+import static io.github.theangrydev.coffee.infrastructure.classfile.programs.AdditionProgram.additionProgramWriter;
+import static io.github.theangrydev.coffee.infrastructure.classfile.programs.HelloWorld.helloWorld;
 
 public class Compiler {
     public BinaryWriter compile(String codeToCompile) {

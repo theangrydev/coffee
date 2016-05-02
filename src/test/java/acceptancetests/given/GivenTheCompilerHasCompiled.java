@@ -24,7 +24,7 @@ import yatspec.fluent.ReadOnlyTestItems;
 
 import java.io.File;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.FileHelpers.readContent;
+import static io.github.theangrydev.coffee.infrastructure.FileHelpers.readContent;
 
 public class GivenTheCompilerHasCompiled implements Given {
 

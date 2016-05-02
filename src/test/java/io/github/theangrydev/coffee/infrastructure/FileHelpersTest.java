@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure;
 
 import assertions.WithAssertions;
 import org.junit.Rule;
@@ -26,8 +26,10 @@ import org.junit.rules.TemporaryFolder;
 import java.io.File;
 import java.io.IOException;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.CharacterSet.CHARACTER_SET;
-import static io.github.theangrydev.coffee.infrastructure.classfile.FileHelpers.readContent;
+import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
+import static io.github.theangrydev.coffee.infrastructure.FileHelpers.readContent;
+import static java.io.File.pathSeparator;
+import static java.lang.String.format;
 
 public class FileHelpersTest implements WithAssertions {
 
@@ -42,5 +44,13 @@ public class FileHelpersTest implements WithAssertions {
 
         String content = readContent(file);
         assertThat(content).isEqualTo(expectedContent);
+    }
+
+    @Test
+    public void badFile() {
+        String badFile = pathSeparator + "bad";
+
+        assertThatThrownBy(() -> readContent(new File(badFile)))
+                .hasMessage(format("Could not fetch content of file '%s'", badFile));
     }
 }

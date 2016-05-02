@@ -18,8 +18,8 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6

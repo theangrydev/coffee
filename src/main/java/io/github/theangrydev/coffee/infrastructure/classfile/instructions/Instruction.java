@@ -18,7 +18,7 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
 public interface Instruction extends BinaryWriter {
     int lengthInBytes();

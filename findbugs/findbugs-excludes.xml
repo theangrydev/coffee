@@ -32,6 +32,13 @@
         </Or>
     </Match>
 
+    <!-- These bugs are globally excluded -->
+    <Match>
+        <Or>
+            <BugPattern name="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"/><!-- Things seem to work fine without this and I don't want to depend on rt.jar -->
+        </Or>
+    </Match>
+
     <!-- This is supposed to replace the AssertJ interface -->
     <Match>
         <Class name="assertions.WithAssertions"/>

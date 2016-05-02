@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.classfile.writing;
 
 import assertions.WithAssertions;
 import assertions.WithMockito;
@@ -33,6 +33,11 @@ public class BinaryOutputTest implements WithAssertions, WithMockito, WithExampl
 
     private final DataOutput dataOutput = mock(DataOutput.class);
     private final BinaryOutput binaryOutput = new BinaryOutput(dataOutput);
+
+    @Test
+    public void fileNotFoundRethrownAsRuntimeException() {
+        assertThatThrownBy(() -> BinaryOutput.fileBinaryOutput("bad\u0000")).hasMessage("Could not write to file 'bad\u0000'");
+    }
 
     @Test
     public void maximumByteThatCanBeWrittenIs256() throws IOException {
@@ -56,6 +61,12 @@ public class BinaryOutputTest implements WithAssertions, WithMockito, WithExampl
     public void shortsMustNotBeNegative() throws IOException {
         assertThatThrownBy(() -> binaryOutput.writeShort(-1)).hasMessage("short must not be negative but was -1");
         verifyThat(() -> binaryOutput.writeShort(0)).willMake(dataOutput).writeShort(0);
+    }
+
+    @Test
+    public void intsMustNotBeNegative() throws IOException {
+        assertThatThrownBy(() -> binaryOutput.writeInt(-1)).hasMessage("int must not be negative but was -1");
+        verifyThat(() -> binaryOutput.writeInt(0)).willMake(dataOutput).writeInt(0);
     }
 
     @Test

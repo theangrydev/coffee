@@ -19,31 +19,23 @@
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
 import assertions.WithAssertions;
-import com.googlecode.yatspec.junit.Row;
-import com.googlecode.yatspec.junit.Table;
-import com.googlecode.yatspec.junit.TableRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.valueOf;
-import static java.lang.Integer.parseInt;
+import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.ACC_PUBLIC;
+import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.ACC_STATIC;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6-200-A.1
  */
-@RunWith(TableRunner.class)
 public class MethodAccessFlagTest implements WithAssertions {
-
-    @Table({
-        @Row({"ACC_PUBLIC", "0x0001"}),
-        @Row({"ACC_STATIC", "0x0008"})
-    })
+    //TODO: https://github.com/hcoles/pitest/issues/263
     @Test
-    public void flagValues(String flag, String hexValue) {
-        assertThat(valueOf(flag).value()).isEqualTo(decimalValue(hexValue));
+    public void flagValues() {
+        flagValues(ACC_PUBLIC, 0x0001);
+        flagValues(ACC_STATIC, 0x0008);
     }
 
-    private int decimalValue(String hexadecimalValue) {
-        return parseInt(hexadecimalValue.substring(2), 16);
+    private void flagValues(MethodAccessFlag flag, int hexValue) {
+        assertThat(flag.value()).isEqualTo(hexValue);
     }
 }

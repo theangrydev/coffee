@@ -16,8 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure;
 
-public interface BinaryWriter {
-    void writeTo(BinaryOutput binaryOutput);
+import assertions.WithAssertions;
+import org.junit.Test;
+
+import java.nio.charset.StandardCharsets;
+
+public class CharacterSetTest implements WithAssertions {
+
+    @Test
+    public void characterSetUsedIsUTF8() {
+        assertThat(CharacterSet.CHARACTER_SET).isEqualTo(StandardCharsets.UTF_8);
+    }
 }

@@ -18,8 +18,8 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryOutput;
-import io.github.theangrydev.coffee.infrastructure.classfile.BinaryWriter;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
 import java.util.ArrayList;
 import java.util.List;

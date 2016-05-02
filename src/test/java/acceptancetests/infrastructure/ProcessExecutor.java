@@ -30,7 +30,9 @@ public class ProcessExecutor {
 
     public String execute(List<String> commandLine) {
         ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
-        processBuilder.redirectError(INHERIT);
+        if (!"true".equals(System.getProperty("silent.process.errors"))) {
+            processBuilder.redirectError(INHERIT);
+        }
         String commandString = processBuilder.command().stream().collect(joining(" "));
         try {
             Process process = processBuilder.start();

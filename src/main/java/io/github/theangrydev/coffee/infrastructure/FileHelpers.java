@@ -16,19 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.List;
 
-import static io.github.theangrydev.coffee.infrastructure.classfile.CharacterSet.CHARACTER_SET;
+import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
 import static java.lang.String.format;
 import static java.nio.file.Files.readAllBytes;
 
@@ -38,21 +31,7 @@ public class FileHelpers {
         try {
             return new String(readAllBytes(file.toPath()), CHARACTER_SET);
         } catch (IOException e) {
-            throw new IllegalArgumentException(format("Could not fetch content of file '%s' because it does not exist", file), e);
+            throw new IllegalArgumentException(format("Could not fetch content of file '%s'", file), e);
         }
-    }
-
-    public static List<Path> listDirectory(Path directory) throws IOException {
-        List<Path> files = new ArrayList<>();
-        Files.walkFileTree(directory, new SimpleFileVisitor<Path>(){
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes fileAttributes) throws IOException {
-                if (!fileAttributes.isDirectory()){
-                    files.add(file);
-                }
-                return FileVisitResult.CONTINUE;
-            }
-        });
-        return files;
     }
 }

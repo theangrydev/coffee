@@ -18,6 +18,9 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
+import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
+
 import java.util.Set;
 
 public class MethodInfo implements BinaryWriter {

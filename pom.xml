@@ -53,6 +53,7 @@
         <project.build.sourceEncoding>${project.file.encoding}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${project.file.encoding}</project.reporting.outputEncoding>
         <acceptance.tests>acceptancetests/**/*</acceptance.tests>
+        <skipTests>false</skipTests>
     </properties>
 
     <dependencies>
@@ -194,37 +195,15 @@
         </pluginManagement>
 
         <plugins>
-            <!-- Enforce sensible dependency resolution -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4.1</version>
-                <executions>
-                    <execution>
-                        <id>enforce-sensible-dependency-resolution</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <dependencyConvergence>
-                                    <!-- This ensures that there is no ambiguity in the versions that are used -->
-                                </dependencyConvergence>
-                                <requireUpperBoundDeps>
-                                    <!-- This ensures that the versions used are at least as recent as the transitive versions -->
-                                </requireUpperBoundDeps>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- Unit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
+                    <parallel>classes</parallel>
+                    <threadCount>2</threadCount>
+                    <perCoreThreadCount>true</perCoreThreadCount>
                     <excludes>
                         <exclude>${acceptance.tests}</exclude>
                     </excludes>
@@ -261,6 +240,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
+                    <parallel>classes</parallel>
+                    <threadCount>2</threadCount>
+                    <perCoreThreadCount>true</perCoreThreadCount>
                     <systemProperties>
                         <yatspec.output.dir>${project.build.directory}/failsafe-reports/yatspec</yatspec.output.dir>
                         <run.compiler.jar>true</run.compiler.jar>
@@ -293,6 +275,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <skip>${skipTests}</skip>
                     <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
                     <checkCompileClasspath>true</checkCompileClasspath>
                     <checkRuntimeClasspath>true</checkRuntimeClasspath>
@@ -305,6 +288,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.5</version>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>verify</phase>
@@ -320,6 +306,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.6</version>
                 <configuration>
+                    <skip>${skipTests}</skip>
                     <printFailingErrors>true</printFailingErrors>
                     <rulesets>
                         <ruleset>${project.basedir}/pmd/pmd-ruleset.xml</ruleset>
@@ -342,6 +329,7 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.3</version>
                 <configuration>
+                    <skip>${skipTests}</skip>
                     <includeTests>true</includeTests>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
@@ -356,6 +344,114 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Mutation testing -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.1.9</version>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                    <threads>4</threads>
+                    <withHistory>false</withHistory>
+                    <mutationThreshold>100</mutationThreshold>
+                    <timestampedReports>false</timestampedReports>
+                    <failWhenNoMutations>true</failWhenNoMutations>
+                    <timeoutFactor>1.25</timeoutFactor>
+                    <timeoutConstant>3000</timeoutConstant>
+                    <mutators>
+                        <mutator>INVERT_NEGS</mutator>
+                        <mutator>RETURN_VALS</mutator>
+                        <mutator>MATH</mutator>
+                        <mutator>VOID_METHOD_CALLS</mutator>
+                        <mutator>NEGATE_CONDITIONALS</mutator>
+                        <mutator>CONDITIONALS_BOUNDARY</mutator>
+                        <mutator>INCREMENTS</mutator>
+                        <mutator>REMOVE_CONDITIONALS</mutator>
+                    </mutators>
+                    <parseSurefireConfig>false</parseSurefireConfig>
+                    <targetClasses>
+                        <param>io.github.theangrydev.coffee*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>io.github.theangrydev.coffee*</param>
+                        <param>acceptancetests*</param>
+                    </targetTests>
+                    <jvmArgs>
+                        <jvmArg>-Dsilent.process.errors=true</jvmArg>
+                    </jvmArgs>
+                    <exportLineCoverage>true</exportLineCoverage>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Cycle detection -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>highwheel-maven</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>analyse</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Enforce sensible dependency resolution -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-sensible-dependency-resolution</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <dependencyConvergence>
+                                    <!-- This ensures that there is no ambiguity in the versions that are used -->
+                                </dependencyConvergence>
+                                <requireUpperBoundDeps>
+                                    <!-- This ensures that the versions used are at least as recent as the transitive versions -->
+                                </requireUpperBoundDeps>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>check-there-were-no-package-cycles</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireFilesDontExist>
+                                    <message>There are cycles. See the report at ${project.build.directory}/highwheel/index.html</message>
+                                    <files>
+                                        <file>${project.build.directory}/highwheel/package_tangle_0.html</file>
+                                        <file>${project.build.directory}/highwheel/package_tangle_1.html</file>
+                                        <file>${project.build.directory}/highwheel/class_tangle_0.html</file>
+                                        <file>${project.build.directory}/highwheel/class_tangle_1.html</file>
+                                    </files>
+                                </requireFilesDontExist>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

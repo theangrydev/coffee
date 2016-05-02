@@ -58,17 +58,18 @@ public class ProgramTestInfrastructure {
         return runtimeProcess.run(compilationDirectory, execution);
     }
 
+    @SuppressWarnings("PMD")
     public void compile(String sourceCode) {
         Path sourceCodeFile = compilationDirectory.resolve(sourceCode);
-        if (runCompilerJar()) {
+        if (acrossProcessBoundary()) {
             compilerProcess.compile(sourceCodeFile);
         } else {
             CommandLine.main(sourceCodeFile.toString());
         }
     }
 
-    private boolean runCompilerJar() {
-        return "true".equals(System.getProperty("run.compiler.jar"));
+    private boolean acrossProcessBoundary() {
+        return "true".equals(System.getProperty("across.process.boundary"));
     }
 
     public File sourceCode(String fileName) {

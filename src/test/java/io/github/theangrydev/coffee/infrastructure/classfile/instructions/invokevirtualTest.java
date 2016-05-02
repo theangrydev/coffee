@@ -23,9 +23,9 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutpu
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokestatic
+ * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokevirtual
  */
-public class invokestaticTest extends TestCase {
+public class invokevirtualTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
@@ -33,9 +33,9 @@ public class invokestaticTest extends TestCase {
     public void writesOpCode0xb8AndMethodIndex() {
         int methodIndex = someUnsignedShort();
 
-        new invokestatic(methodIndex, someUnsignedInt(), someBoolean()).writeTo(binaryOutput);
+        new invokevirtual(methodIndex, someUnsignedInt(), someBoolean()).writeTo(binaryOutput);
 
-        verify(binaryOutput).writeByte(0xb8);
+        verify(binaryOutput).writeByte(0xb6);
         verify(binaryOutput).writeShort(methodIndex);
     }
 
@@ -48,14 +48,14 @@ public class invokestaticTest extends TestCase {
     public void hasNumberOfOperandsEqualToConstructorArgument() {
         int numberOfArguments = someUnsignedInt();
 
-        invokestatic invokestatic = new invokestatic(someUnsignedShort(), numberOfArguments, someBoolean());
+        invokevirtual invokevirtual = new invokevirtual(someUnsignedShort(), numberOfArguments, someBoolean());
 
-        assertThat(invokestatic.operandSizeInBytes()).isEqualTo(numberOfArguments);
+        assertThat(invokevirtual.operandSizeInBytes()).isEqualTo(numberOfArguments);
     }
 
     @Test
     public void hasResultWhenResultFlagIsPresent() {
-        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), true).resultSizeInBytes()).isEqualTo(1);
-        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), false).resultSizeInBytes()).isEqualTo(0);
+        assertThat(new invokevirtual(someUnsignedShort(), someUnsignedInt(), true).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new invokevirtual(someUnsignedShort(), someUnsignedInt(), false).resultSizeInBytes()).isEqualTo(0);
     }
 }
