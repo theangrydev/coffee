@@ -307,6 +307,7 @@
                 <version>3.6</version>
                 <configuration>
                     <skip>${skipTests}</skip>
+                    <verbose>true</verbose>
                     <printFailingErrors>true</printFailingErrors>
                     <rulesets>
                         <ruleset>${project.basedir}/pmd/pmd-ruleset.xml</ruleset>

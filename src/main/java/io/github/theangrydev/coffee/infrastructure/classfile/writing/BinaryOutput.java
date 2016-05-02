@@ -45,7 +45,7 @@ public class BinaryOutput {
 
     public void writeByte(int byteToWrite) {
 		Preconditions.checkArgument(byteToWrite >= 0, "byte must not be negative but was %s", byteToWrite);
-		Preconditions.checkArgument(byteToWrite <= UNSIGNED_BYTE_MAX_VALUE, "byte can be at most %s but was %s", 255, byteToWrite);
+		Preconditions.checkArgument(byteToWrite <= UNSIGNED_BYTE_MAX_VALUE, "byte can be at most %s but was %s", UNSIGNED_BYTE_MAX_VALUE, byteToWrite);
         try {
             dataOutput.writeByte(byteToWrite);
         } catch (IOException e) {
