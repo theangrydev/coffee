@@ -85,20 +85,29 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.3.0</version>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Yatspec -->
+        <!-- Acceptance tests -->
         <dependency>
             <groupId>com.googlecode.yatspec</groupId>
             <artifactId>yatspec</artifactId>
             <version>1.23</version>
+            <scope>test</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>io.github.theangrydev</groupId>-->
+            <!--<artifactId>yatspec-fluent</artifactId>-->
+            <!--<version>1.0.5</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
         <!-- Mocking -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>1.10.19</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
