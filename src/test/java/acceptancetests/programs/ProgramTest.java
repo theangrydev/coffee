@@ -23,13 +23,13 @@ import acceptancetests.infrastructure.*;
 import acceptancetests.then.ThenTheProgramOutput;
 import acceptancetests.when.WhenTheProgramIsRun;
 import com.googlecode.yatspec.junit.SpecRunner;
+import io.github.theangrydev.yatspecfluent.FluentTest;
+import io.github.theangrydev.yatspecfluent.ThenFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import yatspec.fluent.FluentTest;
-import yatspec.fluent.ThenFactory;
 
 @RunWith(SpecRunner.class)
 public abstract class ProgramTest extends FluentTest<ProgramExecution, ProgramOutput> {

@@ -19,8 +19,8 @@
 package acceptancetests.when;
 
 import acceptancetests.infrastructure.*;
-import yatspec.fluent.ReadOnlyTestItems;
-import yatspec.fluent.When;
+import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
+import io.github.theangrydev.yatspecfluent.When;
 
 import static acceptancetests.infrastructure.ProgramArguments.programArguments;
 
