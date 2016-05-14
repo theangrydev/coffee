@@ -19,6 +19,8 @@
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Methodref_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import org.junit.Test;
 
@@ -28,34 +30,33 @@ import org.junit.Test;
 public class invokestaticTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private final ConstantIndex<CONSTANT_Methodref_info> methodIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesOpCode0xb8AndMethodIndex() {
-        int methodIndex = someUnsignedShort();
-
         new invokestatic(methodIndex, someUnsignedInt(), someBoolean()).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(0xb8);
-        verify(binaryOutput).writeShort(methodIndex);
+        verify(methodIndex).writeTo(binaryOutput);
     }
 
     @Test
     public void isThreeBytesLong() {
-        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), someBoolean()).lengthInBytes()).isEqualTo(3);
+        assertThat(new invokestatic(methodIndex, someUnsignedInt(), someBoolean()).lengthInBytes()).isEqualTo(3);
     }
 
     @Test
     public void hasNumberOfOperandsEqualToConstructorArgument() {
         int numberOfArguments = someUnsignedInt();
 
-        invokestatic invokestatic = new invokestatic(someUnsignedShort(), numberOfArguments, someBoolean());
+        invokestatic invokestatic = new invokestatic(methodIndex, numberOfArguments, someBoolean());
 
         assertThat(invokestatic.operandSizeInBytes()).isEqualTo(numberOfArguments);
     }
 
     @Test
     public void hasResultWhenResultFlagIsPresent() {
-        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), true).resultSizeInBytes()).isEqualTo(1);
-        assertThat(new invokestatic(someUnsignedShort(), someUnsignedInt(), false).resultSizeInBytes()).isEqualTo(0);
+        assertThat(new invokestatic(methodIndex, someUnsignedInt(), true).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new invokestatic(methodIndex, someUnsignedInt(), false).resultSizeInBytes()).isEqualTo(0);
     }
 }

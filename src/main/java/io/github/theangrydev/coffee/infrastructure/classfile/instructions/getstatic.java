@@ -18,15 +18,17 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Fieldref_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getstatic
  */
 public class getstatic implements Instruction {
-    private final int fieldIndex;
+    private final ConstantIndex<CONSTANT_Fieldref_info> fieldIndex;
 
-    public getstatic(int fieldIndex) {
+    public getstatic(ConstantIndex<CONSTANT_Fieldref_info> fieldIndex) {
         this.fieldIndex = fieldIndex;
     }
 
@@ -48,6 +50,6 @@ public class getstatic implements Instruction {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(0xb2);
-        binaryOutput.writeShort(fieldIndex);
+        fieldIndex.writeTo(binaryOutput);
     }
 }

@@ -18,16 +18,18 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Methodref_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial
  */
 public class invokespecial implements Instruction {
-    private final int methodIndex;
+    private final ConstantIndex<CONSTANT_Methodref_info> methodIndex;
     private final int numberOfArguments;
 
-    public invokespecial(int methodIndex, int numberOfArguments) {
+    public invokespecial(ConstantIndex<CONSTANT_Methodref_info> methodIndex, int numberOfArguments) {
         this.methodIndex = methodIndex;
         this.numberOfArguments = numberOfArguments;
     }
@@ -50,6 +52,6 @@ public class invokespecial implements Instruction {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(0xb7);
-        binaryOutput.writeShort(methodIndex);
+        methodIndex.writeTo(binaryOutput);
     }
 }

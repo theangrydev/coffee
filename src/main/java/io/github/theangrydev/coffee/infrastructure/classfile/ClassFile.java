@@ -18,6 +18,8 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Class_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantPool;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
@@ -39,10 +41,10 @@ public class ClassFile implements BinaryWriter {
     private final List<MethodInfo> methods;
     private final ConstantPool constantPool;
     private final int accessFlags;
-    private final int thisIndex;
-    private final int superIndex;
+    private final ConstantIndex<CONSTANT_Class_info> thisIndex;
+    private final ConstantIndex<CONSTANT_Class_info> superIndex;
 
-    private ClassFile(ConstantPool constantPool, int accessFlags, int thisIndex, int superIndex, List<MethodInfo> methods) {
+    private ClassFile(ConstantPool constantPool, int accessFlags, ConstantIndex<CONSTANT_Class_info> thisIndex, ConstantIndex<CONSTANT_Class_info> superIndex, List<MethodInfo> methods) {
         this.constantPool = constantPool;
         this.accessFlags = accessFlags;
         this.thisIndex = thisIndex;
@@ -50,7 +52,7 @@ public class ClassFile implements BinaryWriter {
         this.methods = methods;
     }
 
-    public static ClassFile classFile(ConstantPool constantPool, Set<ClassAccessFlag> accessFlags, int thisIndex, int superIndex, List<MethodInfo> methods) {
+    public static ClassFile classFile(ConstantPool constantPool, Set<ClassAccessFlag> accessFlags, ConstantIndex<CONSTANT_Class_info> thisIndex, ConstantIndex<CONSTANT_Class_info> superIndex, List<MethodInfo> methods) {
         return new ClassFile(constantPool, Flag.combine(accessFlags), thisIndex, superIndex, methods);
     }
 
@@ -60,8 +62,8 @@ public class ClassFile implements BinaryWriter {
         writeVersion(binaryOutput);
         constantPool.writeTo(binaryOutput);
         binaryOutput.writeShort(accessFlags);
-        binaryOutput.writeShort(thisIndex);
-        binaryOutput.writeShort(superIndex);
+        thisIndex.writeTo(binaryOutput);
+        superIndex.writeTo(binaryOutput);
         binaryOutput.writeShort(NUMBER_OF_CLASS_INTERFACES);
         binaryOutput.writeShort(NUMBER_OF_CLASS_FIELDS);
         binaryOutput.writeShort(methods.size());

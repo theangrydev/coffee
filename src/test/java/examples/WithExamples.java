@@ -18,6 +18,8 @@
  */
 package examples;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.*;
+
 import java.util.Random;
 
 import static io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput.UNSIGNED_BYTE_MAX_VALUE;
@@ -46,5 +48,37 @@ public interface WithExamples {
 
     default boolean someBoolean() {
         return RANDOM.nextBoolean();
+    }
+
+    default ConstantIndex<CONSTANT_Methodref_info> someMethodConstantReference() {
+        return new ConstantIndex<>(someMethodConstant(), someUnsignedInt());
+    }
+
+    default CONSTANT_Methodref_info someMethodConstant() {
+        return new CONSTANT_Methodref_info(someClassInfoConstantReference(), someNameAndTypeConstantReference());
+    }
+
+    default ConstantIndex<CONSTANT_NameAndType_info> someNameAndTypeConstantReference() {
+        return new ConstantIndex<>(someNameAndTypeConstant(), someUnsignedInt());
+    }
+
+    default ConstantIndex<CONSTANT_Class_info> someClassInfoConstantReference() {
+        return new ConstantIndex<>(someClassInfoConstant(), someUnsignedInt());
+    }
+
+    default CONSTANT_Class_info someClassInfoConstant() {
+        return new CONSTANT_Class_info(someUtf8ConstantReference());
+    }
+
+    default CONSTANT_NameAndType_info someNameAndTypeConstant() {
+        return new CONSTANT_NameAndType_info(someUtf8ConstantReference(), someUtf8ConstantReference());
+    }
+
+    default ConstantIndex<CONSTANT_Utf8_info> someUtf8ConstantReference() {
+        return new ConstantIndex<>(someUtf8Constant(), someUnsignedInt());
+    }
+
+    default CONSTANT_Utf8_info someUtf8Constant() {
+        return new CONSTANT_Utf8_info(someString());
     }
 }

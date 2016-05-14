@@ -18,6 +18,8 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Utf8_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.instructions.Instruction;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
@@ -38,7 +40,7 @@ public class Code_attribute implements BinaryWriter {
     private static final int ATTRIBUTE_COUNT = 0;
     private static final int EXCEPTION_TABLE_LENGTH = 0;
 
-    private final int attributeNameIndex;
+    private final ConstantIndex<CONSTANT_Utf8_info> attributeNameIndex;
 
     /**
      * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.9
@@ -57,7 +59,7 @@ public class Code_attribute implements BinaryWriter {
      */
     private final int maxLocalStackSize;
 
-    private Code_attribute(int attributeNameIndex, int codeLength, List<Instruction> instructions, int maxOperandStackSize, int maxLocalStackSize) {
+    private Code_attribute(ConstantIndex<CONSTANT_Utf8_info> attributeNameIndex, int codeLength, List<Instruction> instructions, int maxOperandStackSize, int maxLocalStackSize) {
         this.attributeNameIndex = attributeNameIndex;
         this.codeLength = codeLength;
         this.instructions = instructions;
@@ -65,7 +67,7 @@ public class Code_attribute implements BinaryWriter {
         this.maxLocalStackSize = maxLocalStackSize;
     }
 
-    public static Code_attribute code(int attributeNameIndex, List<Instruction> instructions) {
+    public static Code_attribute code(ConstantIndex<CONSTANT_Utf8_info> attributeNameIndex, List<Instruction> instructions) {
         int codeLength = instructions.stream().mapToInt(Instruction::lengthInBytes).sum();
         int maxOperandStackSize = maxOperandStackSize(instructions);
         int maxLocalStackSize = maxLocalStackSize();
@@ -88,7 +90,7 @@ public class Code_attribute implements BinaryWriter {
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeShort(attributeNameIndex);
+        attributeNameIndex.writeTo(binaryOutput);
         binaryOutput.writeInt(BASE_ATTRIBUTE_LENGTH + codeLength);
         binaryOutput.writeShort(maxOperandStackSize);
         binaryOutput.writeShort(maxLocalStackSize);

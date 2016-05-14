@@ -18,16 +18,19 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ByteConstantIndex;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_String_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
  */
 public class ldc implements Instruction {
-    private final int constantIndex;
+    private final ByteConstantIndex<CONSTANT_String_info> constantIndexIndex;
 
-    public ldc(int constantIndex) {
-        this.constantIndex = constantIndex;
+    public ldc(ByteConstantIndex<CONSTANT_String_info> constantIndexIndex) {
+        this.constantIndexIndex = constantIndexIndex;
     }
 
     @Override
@@ -48,6 +51,6 @@ public class ldc implements Instruction {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(0x12);
-        binaryOutput.writeByte(constantIndex);
+        constantIndexIndex.writeTo(binaryOutput);
     }
 }

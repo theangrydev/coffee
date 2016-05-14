@@ -28,10 +28,10 @@ public class CONSTANT_Fieldref_info implements BinaryWriter {
 
     private static final int TAG = 9;
 
-    private final int classIndex;
-    private final int nameAndTypeIndex;
+    private final ConstantIndex<CONSTANT_Class_info> classIndex;
+    private final ConstantIndex<CONSTANT_NameAndType_info> nameAndTypeIndex;
 
-    public CONSTANT_Fieldref_info(int classIndex, int nameAndTypeIndex) {
+    public CONSTANT_Fieldref_info(ConstantIndex<CONSTANT_Class_info> classIndex, ConstantIndex<CONSTANT_NameAndType_info> nameAndTypeIndex) {
         this.classIndex = classIndex;
         this.nameAndTypeIndex = nameAndTypeIndex;
     }
@@ -39,7 +39,7 @@ public class CONSTANT_Fieldref_info implements BinaryWriter {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(TAG);
-        binaryOutput.writeShort(classIndex);
-        binaryOutput.writeShort(nameAndTypeIndex);
+        classIndex.writeTo(binaryOutput);
+        nameAndTypeIndex.writeTo(binaryOutput);
     }
 }

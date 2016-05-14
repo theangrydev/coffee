@@ -18,33 +18,35 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Utf8_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
-import java.util.Set;
+import java.util.HashSet;
 
 public class MethodInfo implements BinaryWriter {
     private final int accessFlags;
-    private final int nameIndex;
-    private final int descriptorIndex;
+    private final ConstantIndex<CONSTANT_Utf8_info> nameIndex;
+    private final ConstantIndex<CONSTANT_Utf8_info> descriptorIndex;
     private final Code_attribute codeAttribute;
 
-    private MethodInfo(int accessFlags, int nameIndex, int descriptorIndex, Code_attribute codeAttribute) {
+    private MethodInfo(int accessFlags, ConstantIndex<CONSTANT_Utf8_info> nameIndex, ConstantIndex<CONSTANT_Utf8_info> descriptorIndex, Code_attribute codeAttribute) {
         this.accessFlags = accessFlags;
         this.nameIndex = nameIndex;
         this.descriptorIndex = descriptorIndex;
         this.codeAttribute = codeAttribute;
     }
 
-    public static MethodInfo methodInfo(Set<MethodAccessFlag> accessFlags, int nameIndex, int descriptorIndex, Code_attribute codeAttribute) {
+    public static MethodInfo methodInfo(HashSet<MethodAccessFlag> accessFlags, ConstantIndex<CONSTANT_Utf8_info> nameIndex, ConstantIndex<CONSTANT_Utf8_info> descriptorIndex, Code_attribute codeAttribute) {
         return new MethodInfo(Flag.combine(accessFlags), nameIndex, descriptorIndex, codeAttribute);
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeShort(accessFlags);
-        binaryOutput.writeShort(nameIndex);
-        binaryOutput.writeShort(descriptorIndex);
+        nameIndex.writeTo(binaryOutput);
+        descriptorIndex.writeTo(binaryOutput);
         binaryOutput.writeShort(1);
         codeAttribute.writeTo(binaryOutput);
     }

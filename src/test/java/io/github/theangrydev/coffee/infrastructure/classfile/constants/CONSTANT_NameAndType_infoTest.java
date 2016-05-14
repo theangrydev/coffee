@@ -28,17 +28,17 @@ import org.junit.Test;
 public class CONSTANT_NameAndType_infoTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private final ConstantIndex<CONSTANT_Utf8_info> nameIndex = mockGeneric(ConstantIndex.class);
+    private final ConstantIndex<CONSTANT_Utf8_info> descriptorIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesTagThenNameIndexThenDescriptorIndex() {
         int tag = 12;
-        int nameIndex = someUnsignedShort();
-        int descriptorIndex = someUnsignedShort();
 
         new CONSTANT_NameAndType_info(nameIndex, descriptorIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(tag);
-        verify(binaryOutput).writeShort(nameIndex);
-        verify(binaryOutput).writeShort(descriptorIndex);
+        verify(nameIndex).writeTo(binaryOutput);
+        verify(descriptorIndex).writeTo(binaryOutput);
     }
 }

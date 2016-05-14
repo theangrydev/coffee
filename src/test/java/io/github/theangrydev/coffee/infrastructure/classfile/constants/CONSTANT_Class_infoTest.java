@@ -28,15 +28,15 @@ import org.junit.Test;
 public class CONSTANT_Class_infoTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private final ConstantIndex<CONSTANT_Utf8_info> nameIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesTagThenNameIndex() {
         int tag = 7;
-        int nameIndex = someUnsignedShort();
 
         new CONSTANT_Class_info(nameIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(tag);
-        verify(binaryOutput).writeShort(nameIndex);
+        verify(nameIndex).writeTo(binaryOutput);
     }
 }

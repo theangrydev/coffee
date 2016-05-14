@@ -19,6 +19,8 @@
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Methodref_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import org.junit.Test;
 
@@ -28,33 +30,32 @@ import org.junit.Test;
 public class invokespecialtest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private final ConstantIndex<CONSTANT_Methodref_info> methodIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesOpCode0xb7AndMethodIndex() {
-        int methodIndex = someUnsignedShort();
-
         new invokespecial(methodIndex, someUnsignedInt()).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(0xb7);
-        verify(binaryOutput).writeShort(methodIndex);
+        verify(methodIndex).writeTo(binaryOutput);
     }
 
     @Test
     public void isThreeBytesLong() {
-        assertThat(new invokespecial(someUnsignedShort(), someUnsignedInt()).lengthInBytes()).isEqualTo(3);
+        assertThat(new invokespecial(methodIndex, someUnsignedInt()).lengthInBytes()).isEqualTo(3);
     }
 
     @Test
     public void hasNumberOfOperandsEqualToConstructorArgument() {
         int numberOfArguments = someUnsignedInt();
 
-        invokespecial invokespecial = new invokespecial(someUnsignedShort(), numberOfArguments);
+        invokespecial invokespecial = new invokespecial(methodIndex, numberOfArguments);
 
         assertThat(invokespecial.operandSizeInBytes()).isEqualTo(numberOfArguments);
     }
 
     @Test
     public void hasNoResult() {
-        assertThat(new invokespecial(someUnsignedShort(), someUnsignedInt()).resultSizeInBytes()).isEqualTo(0);
+        assertThat(new invokespecial(methodIndex, someUnsignedInt()).resultSizeInBytes()).isEqualTo(0);
     }
 }

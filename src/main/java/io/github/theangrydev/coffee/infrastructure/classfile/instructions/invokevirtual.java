@@ -18,6 +18,8 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Methodref_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
@@ -26,9 +28,9 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutpu
 public class invokevirtual implements Instruction {
     private final int numberOfArguments;
     private final boolean hasResult;
-    private final int methodIndex;
+    private final ConstantIndex<CONSTANT_Methodref_info> methodIndex;
 
-    public invokevirtual(int methodIndex, int numberOfArguments, boolean hasResult) {
+    public invokevirtual(ConstantIndex<CONSTANT_Methodref_info> methodIndex, int numberOfArguments, boolean hasResult) {
         this.numberOfArguments = numberOfArguments;
         this.hasResult = hasResult;
         this.methodIndex = methodIndex;
@@ -56,6 +58,6 @@ public class invokevirtual implements Instruction {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(0xb6);
-        binaryOutput.writeShort(methodIndex);
+        methodIndex.writeTo(binaryOutput);
     }
 }

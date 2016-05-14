@@ -20,7 +20,7 @@ package acceptancetests.given;
 
 import acceptancetests.infrastructure.ProgramTestInfrastructure;
 import io.github.theangrydev.yatspecfluent.Given;
-import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
+import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 
 import java.io.File;
 
@@ -28,13 +28,13 @@ import static io.github.theangrydev.coffee.infrastructure.FileHelpers.readConten
 
 public class GivenTheCompilerHasCompiled implements Given {
 
-    private final ReadOnlyTestItems readOnlyTestItems;
+    private final WriteOnlyTestItems writeOnlyTestItems;
     private final ProgramTestInfrastructure infrastructure;
 
     private String sourceCodeFileName;
 
-    public GivenTheCompilerHasCompiled(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure infrastructure) {
-        this.readOnlyTestItems = readOnlyTestItems;
+    public GivenTheCompilerHasCompiled(WriteOnlyTestItems writeOnlyTestItems, ProgramTestInfrastructure infrastructure) {
+        this.writeOnlyTestItems = writeOnlyTestItems;
         this.infrastructure = infrastructure;
     }
 
@@ -42,7 +42,7 @@ public class GivenTheCompilerHasCompiled implements Given {
     public void prime() {
         File sourceCodeFile = infrastructure.sourceCode(sourceCodeFileName);
         String code = readContent(sourceCodeFile);
-        readOnlyTestItems.addToCapturedInputsAndOutputs(sourceCodeFileName, code);
+        writeOnlyTestItems.addToCapturedInputsAndOutputs(sourceCodeFileName, code);
 
         infrastructure.copyToCompilationDirectory(sourceCodeFile);
         infrastructure.compile(sourceCodeFileName);

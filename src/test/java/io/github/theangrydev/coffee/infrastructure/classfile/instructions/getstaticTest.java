@@ -19,6 +19,8 @@
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Fieldref_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import org.junit.Test;
 
@@ -28,29 +30,28 @@ import org.junit.Test;
 public class getstaticTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private ConstantIndex<CONSTANT_Fieldref_info> fieldIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesOpCode0xb2AndFieldIndex() {
-        int fieldIndex = someUnsignedShort();
-
         new getstatic(fieldIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(0xb2);
-        verify(binaryOutput).writeShort(fieldIndex);
+        verify(fieldIndex).writeTo(binaryOutput);
     }
 
     @Test
     public void isThreeBytesLong() {
-        assertThat(new getstatic(someUnsignedShort()).lengthInBytes()).isEqualTo(3);
+        assertThat(new getstatic(fieldIndex).lengthInBytes()).isEqualTo(3);
     }
 
     @Test
     public void hasNoOperands() {
-        assertThat(new getstatic(someUnsignedShort()).operandSizeInBytes()).isEqualTo(0);
+        assertThat(new getstatic(fieldIndex).operandSizeInBytes()).isEqualTo(0);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new getstatic(someUnsignedShort()).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new getstatic(fieldIndex).resultSizeInBytes()).isEqualTo(1);
     }
 }

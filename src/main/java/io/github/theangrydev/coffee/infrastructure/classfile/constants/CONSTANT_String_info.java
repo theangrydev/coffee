@@ -27,15 +27,15 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWrite
 public class CONSTANT_String_info implements BinaryWriter {
     private static final int TAG = 8;
 
-    private final int stringIndex;
+    private final ConstantIndex<CONSTANT_Utf8_info> stringIndex;
 
-    public CONSTANT_String_info(int stringIndex) {
+    public CONSTANT_String_info(ConstantIndex<CONSTANT_Utf8_info> stringIndex) {
         this.stringIndex = stringIndex;
     }
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(TAG);
-        binaryOutput.writeShort(stringIndex);
+        stringIndex.writeTo(binaryOutput);
     }
 }

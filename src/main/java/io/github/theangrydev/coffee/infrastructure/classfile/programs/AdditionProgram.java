@@ -45,41 +45,41 @@ public class AdditionProgram implements BinaryWriter {
 
     public static AdditionProgram additionProgramWriter() {
         ConstantPool constantPool = new ConstantPool();
-        int javaLangObject = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Object"));
-        int objectClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangObject));
-        int init = constantPool.addConstant(new CONSTANT_Utf8_info("<init>"));
-        int noArgumentVoid = constantPool.addConstant(new CONSTANT_Utf8_info("()V"));
-        int voidConstructor = constantPool.addConstant(new CONSTANT_NameAndType_info(init, noArgumentVoid));
-        int objectConstructor = constantPool.addConstant(new CONSTANT_Methodref_info(objectClass, voidConstructor));
+        ConstantIndex<CONSTANT_Utf8_info> javaLangObject = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Object"));
+        ConstantIndex<CONSTANT_Class_info> objectClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangObject));
+        ConstantIndex<CONSTANT_Utf8_info> init = constantPool.addConstant(new CONSTANT_Utf8_info("<init>"));
+        ConstantIndex<CONSTANT_Utf8_info> noArgumentVoid = constantPool.addConstant(new CONSTANT_Utf8_info("()V"));
+        ConstantIndex<CONSTANT_NameAndType_info> voidConstructor = constantPool.addConstant(new CONSTANT_NameAndType_info(init, noArgumentVoid));
+        ConstantIndex<CONSTANT_Methodref_info> objectConstructor = constantPool.addConstant(new CONSTANT_Methodref_info(objectClass, voidConstructor));
 
-        int javaLangSystem = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/System"));
-        int systemClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangSystem));
-        int out = constantPool.addConstant(new CONSTANT_Utf8_info("out"));
-        int printStreamType = constantPool.addConstant(new CONSTANT_Utf8_info("Ljava/io/PrintStream;"));
-        int outPrintStream = constantPool.addConstant(new CONSTANT_NameAndType_info(out, printStreamType));
-        int systemOutField = constantPool.addConstant(new CONSTANT_Fieldref_info(systemClass, outPrintStream));
+        ConstantIndex<CONSTANT_Utf8_info> javaLangSystem = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/System"));
+        ConstantIndex<CONSTANT_Class_info> systemClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangSystem));
+        ConstantIndex<CONSTANT_Utf8_info> out = constantPool.addConstant(new CONSTANT_Utf8_info("out"));
+        ConstantIndex<CONSTANT_Utf8_info> printStreamType = constantPool.addConstant(new CONSTANT_Utf8_info("Ljava/io/PrintStream;"));
+        ConstantIndex<CONSTANT_NameAndType_info> outPrintStream = constantPool.addConstant(new CONSTANT_NameAndType_info(out, printStreamType));
+        ConstantIndex<CONSTANT_Fieldref_info> systemOutField = constantPool.addConstant(new CONSTANT_Fieldref_info(systemClass, outPrintStream));
 
-        int javaLangInteger = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Integer"));
-        int integerClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangInteger));
-        int parseInt = constantPool.addConstant(new CONSTANT_Utf8_info("parseInt"));
-        int stringToInt = constantPool.addConstant(new CONSTANT_Utf8_info("(Ljava/lang/String;)I"));
-        int parseIntStringToInt = constantPool.addConstant(new CONSTANT_NameAndType_info(parseInt, stringToInt));
-        int integerParseInt = constantPool.addConstant(new CONSTANT_Methodref_info(integerClass, parseIntStringToInt));
+        ConstantIndex<CONSTANT_Utf8_info> javaLangInteger = constantPool.addConstant(new CONSTANT_Utf8_info("java/lang/Integer"));
+        ConstantIndex<CONSTANT_Class_info> integerClass = constantPool.addConstant(new CONSTANT_Class_info(javaLangInteger));
+        ConstantIndex<CONSTANT_Utf8_info> parseInt = constantPool.addConstant(new CONSTANT_Utf8_info("parseInt"));
+        ConstantIndex<CONSTANT_Utf8_info> stringToInt = constantPool.addConstant(new CONSTANT_Utf8_info("(Ljava/lang/String;)I"));
+        ConstantIndex<CONSTANT_NameAndType_info> parseIntStringToInt = constantPool.addConstant(new CONSTANT_NameAndType_info(parseInt, stringToInt));
+        ConstantIndex<CONSTANT_Methodref_info> integerParseInt = constantPool.addConstant(new CONSTANT_Methodref_info(integerClass, parseIntStringToInt));
 
-        int javaIoPrintStream = constantPool.addConstant(new CONSTANT_Utf8_info("java/io/PrintStream"));
-        int printStreamClass = constantPool.addConstant(new CONSTANT_Class_info(javaIoPrintStream));
-        int println = constantPool.addConstant(new CONSTANT_Utf8_info("println"));
-        int intToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("(I)V"));
-        int printlnIntToVoid = constantPool.addConstant(new CONSTANT_NameAndType_info(println, intToVoid));
-        int printStreamPrintln = constantPool.addConstant(new CONSTANT_Methodref_info(printStreamClass, printlnIntToVoid));
+        ConstantIndex<CONSTANT_Utf8_info> javaIoPrintStream = constantPool.addConstant(new CONSTANT_Utf8_info("java/io/PrintStream"));
+        ConstantIndex<CONSTANT_Class_info> printStreamClass = constantPool.addConstant(new CONSTANT_Class_info(javaIoPrintStream));
+        ConstantIndex<CONSTANT_Utf8_info> println = constantPool.addConstant(new CONSTANT_Utf8_info("println"));
+        ConstantIndex<CONSTANT_Utf8_info> intToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("(I)V"));
+        ConstantIndex<CONSTANT_NameAndType_info> printlnIntToVoid = constantPool.addConstant(new CONSTANT_NameAndType_info(println, intToVoid));
+        ConstantIndex<CONSTANT_Methodref_info> printStreamPrintln = constantPool.addConstant(new CONSTANT_Methodref_info(printStreamClass, printlnIntToVoid));
 
-        int additionProgram = constantPool.addConstant(new CONSTANT_Utf8_info("AdditionProgram"));
-        int additionClass = constantPool.addConstant(new CONSTANT_Class_info(additionProgram));
+        ConstantIndex<CONSTANT_Utf8_info> additionProgram = constantPool.addConstant(new CONSTANT_Utf8_info("AdditionProgram"));
+        ConstantIndex<CONSTANT_Class_info> additionClass = constantPool.addConstant(new CONSTANT_Class_info(additionProgram));
 
-        int main = constantPool.addConstant(new CONSTANT_Utf8_info("main"));
-        int stringArrayToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("([Ljava/lang/String;)V"));
+        ConstantIndex<CONSTANT_Utf8_info> main = constantPool.addConstant(new CONSTANT_Utf8_info("main"));
+        ConstantIndex<CONSTANT_Utf8_info> stringArrayToVoid = constantPool.addConstant(new CONSTANT_Utf8_info("([Ljava/lang/String;)V"));
 
-        int code = constantPool.addConstant(new CONSTANT_Utf8_info("Code"));
+        ConstantIndex<CONSTANT_Utf8_info> code = constantPool.addConstant(new CONSTANT_Utf8_info("Code"));
 
         List<MethodInfo> methods = new ArrayList<>();
         methods.add(mainMethod(systemOutField, integerParseInt, printStreamPrintln, main, stringArrayToVoid, code));
@@ -90,7 +90,7 @@ public class AdditionProgram implements BinaryWriter {
         return new AdditionProgram(classFile);
     }
 
-    public static MethodInfo constructor(int init, int noArgumentVoid, int objectConstructor, int code) {
+    public static MethodInfo constructor(ConstantIndex<CONSTANT_Utf8_info> init, ConstantIndex<CONSTANT_Utf8_info> noArgumentVoid, ConstantIndex<CONSTANT_Methodref_info> objectConstructor, ConstantIndex<CONSTANT_Utf8_info> code) {
         List<Instruction> instructions = new ArrayList<>();
         instructions.add(new aload0());
         instructions.add(new invokespecial(objectConstructor, 1));
@@ -99,7 +99,7 @@ public class AdditionProgram implements BinaryWriter {
         return methodInfo(newHashSet(MethodAccessFlag.ACC_PUBLIC), init, noArgumentVoid, codeAttribute);
     }
 
-    public static MethodInfo mainMethod(int systemOutField, int integerParseInt, int printStreamPrintln, int main, int stringArrayToVoid, int code) {
+    public static MethodInfo mainMethod(ConstantIndex<CONSTANT_Fieldref_info> systemOutField, ConstantIndex<CONSTANT_Methodref_info> integerParseInt, ConstantIndex<CONSTANT_Methodref_info> printStreamPrintln, ConstantIndex<CONSTANT_Utf8_info> main, ConstantIndex<CONSTANT_Utf8_info> stringArrayToVoid, ConstantIndex<CONSTANT_Utf8_info> code) {
         List<Instruction> instructions = new ArrayList<>();
         instructions.add(new getstatic(systemOutField));
         instructions.add(new aload0());

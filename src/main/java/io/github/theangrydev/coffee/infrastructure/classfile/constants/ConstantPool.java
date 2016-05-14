@@ -30,9 +30,14 @@ import java.util.List;
 public class ConstantPool implements BinaryWriter {
     private final List<BinaryWriter> constants = new ArrayList<>();
 
-    public int addConstant(BinaryWriter constant) {
+    public <T extends BinaryWriter> ConstantIndex<T> addConstant(T constant) {
         constants.add(constant);
-        return constants.size();
+        return new ConstantIndex<>(constant, constants.size());
+    }
+
+    public <T extends BinaryWriter> ByteConstantIndex<T> addByteConstant(T constant) {
+        constants.add(constant);
+        return new ByteConstantIndex<>(constant, constants.size());
     }
 
     @Override

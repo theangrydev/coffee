@@ -28,10 +28,10 @@ public class CONSTANT_NameAndType_info implements BinaryWriter {
 
     private static final int TAG = 12;
 
-    private final int nameIndex;
-    private final int descriptorIndex;
+    private final ConstantIndex<CONSTANT_Utf8_info> nameIndex;
+    private final ConstantIndex<CONSTANT_Utf8_info> descriptorIndex;
 
-    public CONSTANT_NameAndType_info(int nameIndex, int descriptorIndex) {
+    public CONSTANT_NameAndType_info(ConstantIndex<CONSTANT_Utf8_info> nameIndex, ConstantIndex<CONSTANT_Utf8_info> descriptorIndex) {
         this.nameIndex = nameIndex;
         this.descriptorIndex = descriptorIndex;
     }
@@ -39,7 +39,7 @@ public class CONSTANT_NameAndType_info implements BinaryWriter {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(TAG);
-        binaryOutput.writeShort(nameIndex);
-        binaryOutput.writeShort(descriptorIndex);
+        nameIndex.writeTo(binaryOutput);
+        descriptorIndex.writeTo(binaryOutput);
     }
 }

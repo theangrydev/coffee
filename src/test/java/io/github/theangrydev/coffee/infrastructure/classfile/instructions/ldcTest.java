@@ -19,6 +19,8 @@
 package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ByteConstantIndex;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_String_info;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import org.junit.Test;
 
@@ -28,29 +30,28 @@ import org.junit.Test;
 public class ldcTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private final ByteConstantIndex<CONSTANT_String_info> constantIndex = mockGeneric(ByteConstantIndex.class);
 
     @Test
     public void writesOpCode0x12AndConstantIndex() {
-        int constantIndex = someUnsignedByte();
-
         new ldc(constantIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(0x12);
-        verify(binaryOutput).writeByte(constantIndex);
+        verify(constantIndex).writeTo(binaryOutput);
     }
 
     @Test
     public void isTwoBytesLong() {
-        assertThat(new ldc(someUnsignedByte()).lengthInBytes()).isEqualTo(2);
+        assertThat(new ldc(constantIndex).lengthInBytes()).isEqualTo(2);
     }
 
     @Test
     public void hasNoOperands() {
-        assertThat(new ldc(someUnsignedByte()).operandSizeInBytes()).isEqualTo(0);
+        assertThat(new ldc(constantIndex).operandSizeInBytes()).isEqualTo(0);
     }
 
     @Test
     public void resultIsOneByteLong() {
-        assertThat(new ldc(someUnsignedByte()).resultSizeInBytes()).isEqualTo(1);
+        assertThat(new ldc(constantIndex).resultSizeInBytes()).isEqualTo(1);
     }
 }

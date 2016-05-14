@@ -19,6 +19,8 @@
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Utf8_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.instructions.Instruction;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import org.junit.Test;
@@ -39,6 +41,7 @@ public class Code_attributeTest extends TestCase {
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
     private final Instruction firstInstruction = mock(Instruction.class);
     private final Instruction secondInstruction = mock(Instruction.class);
+    private final ConstantIndex<CONSTANT_Utf8_info> codeAttribute = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesCodeAttribute() {
@@ -50,17 +53,16 @@ public class Code_attributeTest extends TestCase {
         given(secondInstruction.operandSizeInBytes()).willReturn(2);
         given(secondInstruction.resultSizeInBytes()).willReturn(2);
 
-        int attributeNameIndex = someUnsignedShort();
         int codeLength = firstInstruction.lengthInBytes() + secondInstruction.lengthInBytes();
         int attributeLength =  BASE_ATTRIBUTE_LENGTH + codeLength;
         int maxOperandStackSize = (firstInstruction.resultSizeInBytes() - firstInstruction.operandSizeInBytes()) + (secondInstruction.resultSizeInBytes() - secondInstruction.operandSizeInBytes());
         int maxLocalStackSize = 1;
 
-        Code_attribute code = Code_attribute.code(attributeNameIndex, asList(firstInstruction, secondInstruction));
+        Code_attribute code = Code_attribute.code(codeAttribute, asList(firstInstruction, secondInstruction));
 
         code.writeTo(binaryOutput);
 
-        verify(binaryOutput).writeShort(attributeNameIndex);
+        verify(codeAttribute).writeTo(binaryOutput);
         verify(binaryOutput).writeInt(attributeLength);
         verify(binaryOutput).writeShort(maxOperandStackSize);
         verify(binaryOutput).writeShort(maxLocalStackSize);

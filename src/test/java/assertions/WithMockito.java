@@ -30,6 +30,11 @@ public interface WithMockito {
         return BDDMockito.mock(classToMock);
     }
 
+    @SuppressWarnings("unchecked")
+    default <T, S extends T> S mockGeneric(Class<T> genericClassToMock) {
+        return (S) BDDMockito.mock(genericClassToMock);
+    }
+
     default VerifyThat verifyThat(Runnable methodCall) {
         methodCall.run();
         return new VerifyThat();

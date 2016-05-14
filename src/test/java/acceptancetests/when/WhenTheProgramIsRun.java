@@ -19,21 +19,21 @@
 package acceptancetests.when;
 
 import acceptancetests.infrastructure.*;
-import io.github.theangrydev.yatspecfluent.ReadOnlyTestItems;
 import io.github.theangrydev.yatspecfluent.When;
+import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 
 import static acceptancetests.infrastructure.ProgramArguments.programArguments;
 
 public class WhenTheProgramIsRun implements When<ProgramExecution, ProgramOutput> {
 
-    private final ReadOnlyTestItems readOnlyTestItems;
+    private final WriteOnlyTestItems writeOnlyTestItems;
     private final ProgramTestInfrastructure infrastructure;
 
     private ProgramArguments arguments = programArguments("");
     private ProgramEntryPoint entryPoint;
 
-    public WhenTheProgramIsRun(ReadOnlyTestItems readOnlyTestItems, ProgramTestInfrastructure infrastructure) {
-        this.readOnlyTestItems = readOnlyTestItems;
+    public WhenTheProgramIsRun(WriteOnlyTestItems writeOnlyTestItems, ProgramTestInfrastructure infrastructure) {
+        this.writeOnlyTestItems = writeOnlyTestItems;
         this.infrastructure = infrastructure;
     }
 
@@ -54,14 +54,14 @@ public class WhenTheProgramIsRun implements When<ProgramExecution, ProgramOutput
     @Override
     public ProgramExecution request() {
         ProgramExecution programExecution = ProgramExecution.programExecution(entryPoint, arguments);
-        readOnlyTestItems.addToCapturedInputsAndOutputs("Program Execution", programExecution);
+        writeOnlyTestItems.addToCapturedInputsAndOutputs("Program Execution", programExecution);
         return programExecution;
     }
 
     @Override
     public ProgramOutput response(ProgramExecution programExecution) {
         ProgramOutput programOutput = infrastructure.invokeRuntime(programExecution);
-        readOnlyTestItems.addToCapturedInputsAndOutputs("Program Output", programOutput);
+        writeOnlyTestItems.addToCapturedInputsAndOutputs("Program Output", programOutput);
         return programOutput;
     }
 }

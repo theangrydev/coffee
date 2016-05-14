@@ -19,6 +19,8 @@
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
 import io.github.theangrydev.coffee.infrastructure.TestCase;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Class_info;
+import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantPool;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import org.junit.Test;
@@ -39,11 +41,11 @@ public class ClassFileTest extends TestCase {
     private final ConstantPool constantPool = mock(ConstantPool.class);
     private final MethodInfo firstMethod = mock(MethodInfo.class);
     private final MethodInfo secondMethod = mock(MethodInfo.class);
+    private final ConstantIndex<CONSTANT_Class_info> thisIndex = mockGeneric(ConstantIndex.class);
+    private final ConstantIndex<CONSTANT_Class_info> superIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesClassFile() {
-        int thisIndex = someUnsignedShort();
-        int superIndex = someUnsignedShort();
         List<MethodInfo> methods = newArrayList(firstMethod, secondMethod);
         ClassFile classFile = ClassFile.classFile(constantPool, newHashSet(ACC_PUBLIC, ACC_SUPER), thisIndex, superIndex, methods);
 
@@ -53,8 +55,8 @@ public class ClassFileTest extends TestCase {
         verifyVersion();
         verify(constantPool).writeTo(binaryOutput);
         verify(binaryOutput).writeShort(ACC_PUBLIC.value() | ACC_SUPER.value());
-        verify(binaryOutput).writeShort(thisIndex);
-        verify(binaryOutput).writeShort(superIndex);
+        verify(thisIndex).writeTo(binaryOutput);
+        verify(superIndex).writeTo(binaryOutput);
         verify(binaryOutput, times(2)).writeShort(0); // no interfaces or fields
         verify(binaryOutput).writeShort(methods.size());
         verify(firstMethod).writeTo(binaryOutput);

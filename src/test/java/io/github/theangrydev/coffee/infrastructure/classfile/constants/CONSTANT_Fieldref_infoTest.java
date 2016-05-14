@@ -28,17 +28,17 @@ import org.junit.Test;
 public class CONSTANT_Fieldref_infoTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
+    private final ConstantIndex<CONSTANT_Class_info> classIndex = mockGeneric(ConstantIndex.class);
+    private final ConstantIndex<CONSTANT_NameAndType_info> nameAndTypeIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesTagThenClassIndexThenNameAndTypeIndex() {
         int tag = 9;
-        int classIndex = someUnsignedShort();
-        int nameAndTypeIndex = someUnsignedShort();
 
         new CONSTANT_Fieldref_info(classIndex, nameAndTypeIndex).writeTo(binaryOutput);
 
         verify(binaryOutput).writeByte(tag);
-        verify(binaryOutput).writeShort(classIndex);
-        verify(binaryOutput).writeShort(nameAndTypeIndex);
+        verify(classIndex).writeTo(binaryOutput);
+        verify(nameAndTypeIndex).writeTo(binaryOutput);
     }
 }
