@@ -37,12 +37,19 @@ public interface WithMockito {
 
     default VerifyThat verifyThat(Runnable methodCall) {
         methodCall.run();
-        return new VerifyThat();
+        return new VerifyThat(this);
     }
 
     class VerifyThat {
+
+        private final WithMockito withMockito;
+
+        public VerifyThat(WithMockito withMockito) {
+            this.withMockito = withMockito;
+        }
+
         public  <T> T willMake(T mock) {
-            return BDDMockito.verify(mock);
+            return withMockito.verify(mock);
         }
     }
 

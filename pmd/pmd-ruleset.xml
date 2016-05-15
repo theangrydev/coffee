@@ -57,6 +57,7 @@
         <exclude name="TestClassWithoutTestCases"/><!-- This rule assumes test methods start with testXXX -->
         <exclude name="JUnitTestContainsTooManyAsserts"/><!-- Multiple asserts can form one logical assertion -->
         <exclude name="JUnitTestsShouldIncludeAssert"/><!-- This rule doesn't consider verification an assertion -->
+        <exclude name="JUnitAssertionsShouldIncludeMessage"/><!-- This rule clashes with the naming of the AssertJ methods -->
     </rule>
     <rule ref="rulesets/java/logging-java.xml"/>
     <rule ref="rulesets/java/naming.xml">

@@ -18,29 +18,24 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import io.github.theangrydev.coffee.domain.base.ValueType;
+import io.github.theangrydev.coffee.infrastructure.TestCase;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
-import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
+import org.junit.Test;
 
-import static java.lang.String.format;
+public class ConstantIndexTest extends TestCase {
 
-public class ByteConstantIndex<T extends BinaryWriter> extends ValueType implements BinaryWriter {
+    private final int index = someUnsignedByte();
+    private final CONSTANT_Utf8_info constant = new CONSTANT_Utf8_info("something");
+    private final ConstantIndex<CONSTANT_Utf8_info> constantIndex = new ConstantIndex<>(constant, index);
+    private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
 
-    private final T constant;
-    private final int index;
-
-    public ByteConstantIndex(T constant, int index) {
-        this.constant = constant;
-        this.index = index;
+    @Test
+    public void toStringMentionsIndexAndConstant() {
+        assertThat(constantIndex.toString()).containsSequence(String.valueOf(index), constant.toString());
     }
 
-    @Override
-    public void writeTo(BinaryOutput binaryOutput) {
-        binaryOutput.writeByte(index);
-    }
-
-    @Override
-    public String toString() {
-        return format("Constant[%d]: %s", index, constant);
+    @Test
+    public void writesIndexAsAByte() {
+        verifyThat(() -> constantIndex.writeTo(binaryOutput)).willMake(binaryOutput).writeShort(index);
     }
 }

@@ -20,7 +20,6 @@ package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.ByteConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_String_info;
-import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**

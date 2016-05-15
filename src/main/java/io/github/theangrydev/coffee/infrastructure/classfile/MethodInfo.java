@@ -23,7 +23,7 @@ import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantI
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
-import java.util.HashSet;
+import java.util.Set;
 
 public class MethodInfo implements BinaryWriter {
     private final int accessFlags;
@@ -38,7 +38,7 @@ public class MethodInfo implements BinaryWriter {
         this.codeAttribute = codeAttribute;
     }
 
-    public static MethodInfo methodInfo(HashSet<MethodAccessFlag> accessFlags, ConstantIndex<CONSTANT_Utf8_info> nameIndex, ConstantIndex<CONSTANT_Utf8_info> descriptorIndex, Code_attribute codeAttribute) {
+    public static MethodInfo methodInfo(Set<MethodAccessFlag> accessFlags, ConstantIndex<CONSTANT_Utf8_info> nameIndex, ConstantIndex<CONSTANT_Utf8_info> descriptorIndex, Code_attribute codeAttribute) {
         return new MethodInfo(Flag.combine(accessFlags), nameIndex, descriptorIndex, codeAttribute);
     }
 

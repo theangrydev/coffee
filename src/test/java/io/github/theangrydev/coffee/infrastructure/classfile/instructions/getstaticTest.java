@@ -30,7 +30,7 @@ import org.junit.Test;
 public class getstaticTest extends TestCase {
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);
-    private ConstantIndex<CONSTANT_Fieldref_info> fieldIndex = mockGeneric(ConstantIndex.class);
+    private final ConstantIndex<CONSTANT_Fieldref_info> fieldIndex = mockGeneric(ConstantIndex.class);
 
     @Test
     public void writesOpCode0xb2AndFieldIndex() {
