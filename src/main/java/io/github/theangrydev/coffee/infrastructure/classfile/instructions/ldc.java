@@ -27,10 +27,10 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutpu
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
  */
 public class ldc implements Instruction {
-    private final ByteConstantIndex<CONSTANT_String_info> constantIndexIndex;
+    private final ByteConstantIndex<CONSTANT_String_info> constantIndex;
 
-    public ldc(ByteConstantIndex<CONSTANT_String_info> constantIndexIndex) {
-        this.constantIndexIndex = constantIndexIndex;
+    public ldc(ByteConstantIndex<CONSTANT_String_info> constantIndex) {
+        this.constantIndex = constantIndex;
     }
 
     @Override
@@ -51,6 +51,6 @@ public class ldc implements Instruction {
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
         binaryOutput.writeByte(0x12);
-        constantIndexIndex.writeTo(binaryOutput);
+        constantIndex.writeTo(binaryOutput);
     }
 }
