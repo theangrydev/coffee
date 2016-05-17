@@ -22,7 +22,7 @@ import assertions.WithAssertions;
 import org.junit.Test;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static io.github.theangrydev.coffee.infrastructure.classfile.Flag.combine;
+import static io.github.theangrydev.coffee.infrastructure.Flag.combine;
 import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.ACC_PUBLIC;
 import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.ACC_STATIC;
 

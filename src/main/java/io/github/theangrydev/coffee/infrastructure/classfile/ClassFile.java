@@ -18,6 +18,7 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
+import io.github.theangrydev.coffee.infrastructure.Flag;
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_Class_info;
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex;
 import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantPool;
