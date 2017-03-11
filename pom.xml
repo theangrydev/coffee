@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2016 Liam Williams <liam.williams@zoho.com>.
+    Copyright 2016-2017 Liam Williams <liam.williams@zoho.com>.
 
     This file is part of coffee.
 
@@ -484,7 +484,7 @@
                     <properties>
                         <copyright.owner>Liam Williams</copyright.owner>
                         <copyright.owner.email>liam.williams@zoho.com</copyright.owner.email>
-                        <copyright.year>2016</copyright.year>
+                        <copyright.year>2016-2017</copyright.year>
                     </properties>
                     <excludes>
                         <exclude>README.md</exclude>
