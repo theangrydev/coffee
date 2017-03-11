@@ -58,7 +58,7 @@ public class ProgramTestInfrastructure {
         return runtimeProcess.run(compilationDirectory, execution);
     }
 
-    @SuppressWarnings("PMD")
+    @SuppressWarnings("PMD") // TODO: why suprress?
     public void compile(String sourceCode) {
         Path sourceCodeFile = compilationDirectory.resolve(sourceCode);
         if (acrossProcessBoundary()) {

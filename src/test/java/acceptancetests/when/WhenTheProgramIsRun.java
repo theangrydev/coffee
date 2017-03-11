@@ -19,12 +19,12 @@
 package acceptancetests.when;
 
 import acceptancetests.infrastructure.*;
-import io.github.theangrydev.yatspecfluent.When;
-import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
+import io.github.theangrydev.fluentbdd.core.When;
+import io.github.theangrydev.fluentbdd.yatspec.WriteOnlyTestItems;
 
 import static acceptancetests.infrastructure.ProgramArguments.programArguments;
 
-public class WhenTheProgramIsRun implements When<ProgramExecution, ProgramOutput> {
+public class WhenTheProgramIsRun implements When<ProgramOutput> {
 
     private final WriteOnlyTestItems writeOnlyTestItems;
     private final ProgramTestInfrastructure infrastructure;
@@ -52,14 +52,10 @@ public class WhenTheProgramIsRun implements When<ProgramExecution, ProgramOutput
     }
 
     @Override
-    public ProgramExecution request() {
+    public ProgramOutput execute() {
         ProgramExecution programExecution = ProgramExecution.programExecution(entryPoint, arguments);
         writeOnlyTestItems.addToCapturedInputsAndOutputs("Program Execution", programExecution);
-        return programExecution;
-    }
 
-    @Override
-    public ProgramOutput response(ProgramExecution programExecution) {
         ProgramOutput programOutput = infrastructure.invokeRuntime(programExecution);
         writeOnlyTestItems.addToCapturedInputsAndOutputs("Program Output", programOutput);
         return programOutput;

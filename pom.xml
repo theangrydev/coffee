@@ -54,6 +54,9 @@
         <project.reporting.outputEncoding>${project.file.encoding}</project.reporting.outputEncoding>
         <acceptance.tests>acceptancetests/**/*</acceptance.tests>
         <skipTests>false</skipTests>
+
+        <!-- Versions -->
+        <fluent.bdd.version>8.2.2</fluent.bdd.version>
     </properties>
 
     <dependencies>
@@ -96,9 +99,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.theangrydev</groupId>
-            <artifactId>yatspec-fluent</artifactId>
-            <version>1.2.0</version>
+            <groupId>io.github.theangrydev.fluentbdd</groupId>
+            <artifactId>core</artifactId>
+            <version>${fluent.bdd.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.theangrydev.fluentbdd</groupId>
+            <artifactId>yatspec-extensions</artifactId>
+            <version>${fluent.bdd.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -362,7 +371,7 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.1.9</version>
+                <version>1.1.11</version>
                 <configuration>
                     <skip>${skipTests}</skip>
                     <threads>4</threads>

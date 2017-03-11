@@ -18,13 +18,10 @@
  */
 package io.github.theangrydev.coffee.infrastructure.dotnet;
 
-import com.google.common.collect.Sets;
 import io.github.theangrydev.coffee.infrastructure.Flag;
 import io.github.theangrydev.coffee.infrastructure.LongFlag;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
-
-import java.nio.charset.StandardCharsets;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static io.github.theangrydev.coffee.infrastructure.dotnet.COMImageFlag.COMIMAGE_FLAGS_ILONLY;
@@ -37,6 +34,7 @@ import static io.github.theangrydev.coffee.infrastructure.dotnet.TableIndexFlag.
 /**
  * http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf#page=303
  */
+@SuppressWarnings("PMD") //TODO: remove
 public class PEHeaders implements BinaryWriter {
 
     /**

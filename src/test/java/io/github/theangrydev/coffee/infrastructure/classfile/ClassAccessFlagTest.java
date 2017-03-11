@@ -18,7 +18,6 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
 import static io.github.theangrydev.coffee.infrastructure.classfile.ClassAccessFlag.ACC_PUBLIC;
@@ -27,7 +26,7 @@ import static io.github.theangrydev.coffee.infrastructure.classfile.ClassAccessF
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1-200-E.1
  */
-public class ClassAccessFlagTest implements WithAssertions {
+public class ClassAccessFlagTest implements org.assertj.core.api.WithAssertions {
 
     //TODO: https://github.com/hcoles/pitest/issues/263
     @Test

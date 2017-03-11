@@ -18,7 +18,6 @@
  */
 package acceptancetests.infrastructure;
 
-import assertions.WithAssertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +28,7 @@ import java.io.File;
 import static acceptancetests.infrastructure.ProgramEntryPoint.entryPoint;
 import static acceptancetests.infrastructure.ProgramExecution.programExecution;
 
-public class ProgramTestInfrastructureTest implements WithAssertions {
+public class ProgramTestInfrastructureTest implements org.assertj.core.api.WithAssertions {
 
     private final ProgramTestInfrastructure infrastructure = new ProgramTestInfrastructure(new CompilerProcess(), new RuntimeProcess());
 

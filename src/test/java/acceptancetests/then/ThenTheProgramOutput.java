@@ -19,9 +19,8 @@
 package acceptancetests.then;
 
 import acceptancetests.infrastructure.ProgramOutput;
-import assertions.WithAssertions;
 
-public class ThenTheProgramOutput implements WithAssertions {
+public class ThenTheProgramOutput implements org.assertj.core.api.WithAssertions {
 
     private final ProgramOutput programOutput;
 

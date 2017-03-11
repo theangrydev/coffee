@@ -18,10 +18,9 @@
  */
 package io.github.theangrydev.coffee.domain.base;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
-public class ValueTypeTest implements WithAssertions {
+public class ValueTypeTest implements org.assertj.core.api.WithAssertions {
 
     @Test
     public void equalIfTheFieldsAreEqual() {

@@ -18,7 +18,6 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import assertions.WithAssertions;
 import assertions.WithMockito;
 import examples.WithExamples;
 import org.junit.After;
@@ -31,7 +30,7 @@ import java.lang.reflect.Field;
 
 import static java.util.Arrays.stream;
 
-public class TestCase implements WithMockito, WithAssertions, WithExamples {
+public class TestCase implements WithMockito, WithExamples, org.assertj.core.api.WithAssertions {
 
     private final MockUtil mockUtil = new MockUtil();
     private InOrder inOrder;

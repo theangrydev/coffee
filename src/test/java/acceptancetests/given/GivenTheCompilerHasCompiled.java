@@ -19,8 +19,8 @@
 package acceptancetests.given;
 
 import acceptancetests.infrastructure.ProgramTestInfrastructure;
-import io.github.theangrydev.yatspecfluent.Given;
-import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
+import io.github.theangrydev.fluentbdd.core.Given;
+import io.github.theangrydev.fluentbdd.yatspec.WriteOnlyTestItems;
 
 import java.io.File;
 

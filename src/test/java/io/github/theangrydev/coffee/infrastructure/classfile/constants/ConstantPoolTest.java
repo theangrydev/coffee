@@ -18,7 +18,6 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.constants;
 
-import assertions.WithAssertions;
 import assertions.WithMockito;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
@@ -27,7 +26,7 @@ import org.junit.Test;
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4
  */
-public class ConstantPoolTest implements WithAssertions, WithMockito {
+public class ConstantPoolTest implements WithMockito, org.assertj.core.api.WithAssertions {
     private final ConstantPool constantPool = new ConstantPool();
 
     private final BinaryOutput binaryOutput = mock(BinaryOutput.class);

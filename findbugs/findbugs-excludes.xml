@@ -25,6 +25,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://findbugs.sourceforge.net/filter/3.0.0 https://findbugs.googlecode.com/git/findbugs/etc/findbugsfilter.xsd">
 
+    <!-- TODO: temporary excludes -->
+    <Match>
+        <Class name="io.github.theangrydev.coffee.infrastructure.dotnet.PEHeaders"/>
+    </Match>
+
     <!-- These bugs are already tested by the PMD rules -->
     <Match>
         <Or>
@@ -39,12 +44,6 @@
         </Or>
     </Match>
 
-    <!-- This is supposed to replace the AssertJ interface -->
-    <Match>
-        <Class name="assertions.WithAssertions"/>
-        <BugPattern name="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
-    </Match>
-
     <!-- Fields are read reflectively as part of the test -->
     <Match>
         <Class name="io.github.theangrydev.coffee.domain.base.ValueTypeTest$TestType"/>
@@ -56,13 +55,6 @@
         <Class name="acceptancetests.infrastructure.CompilerProcess"/>
         <Method name="compile"/>
         <BugPattern name="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-    </Match>
-
-    <!-- Used by JUnit -->
-    <Match>
-        <Class name="yatspec.fluent.FluentTest"/>
-        <Field name="makeSureThenIsUsed"/>
-        <BugPattern name="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
     <!-- We know Path.getFileName exists because the paths are unit test listings -->
@@ -83,11 +75,5 @@
             <Class name="io.github.theangrydev.coffee.domain.base.ValueTypeTest$TestType"/>
         </Or>
         <BugPattern name="EQ_DOESNT_OVERRIDE_EQUALS"/>
-    </Match>
-
-    <!-- Guaranteed to be non null at this point by program logic -->
-    <Match>
-        <Class name="yatspec.fluent.FluentTest"/>
-        <BugPattern name="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
     </Match>
 </FindBugsFilter>

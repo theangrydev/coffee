@@ -23,8 +23,11 @@ import acceptancetests.infrastructure.*;
 import acceptancetests.then.ThenTheProgramOutput;
 import acceptancetests.when.WhenTheProgramIsRun;
 import com.googlecode.yatspec.junit.SpecRunner;
-import io.github.theangrydev.yatspecfluent.FluentTest;
-import io.github.theangrydev.yatspecfluent.ThenFactory;
+import io.github.theangrydev.fluentbdd.core.FluentBdd;
+import io.github.theangrydev.fluentbdd.core.ThenAssertion;
+import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
+import io.github.theangrydev.fluentbdd.yatspec.FluentYatspec;
+import io.github.theangrydev.fluentbdd.yatspec.WithFluentYatspec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,23 +35,33 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 @RunWith(SpecRunner.class)
-public abstract class ProgramTest extends FluentTest<ProgramExecution, ProgramOutput> {
+public abstract class ProgramTest implements WithFluentBdd<ProgramOutput>, WithFluentYatspec {
+
+    @Rule
+    public final TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    @Rule
+    public final FluentBdd<ProgramOutput> fluentBdd = new FluentBdd<>();
+
+    private final FluentYatspec fluentYatspec = new FluentYatspec();
 
     protected final ProgramTestInfrastructure infrastructure = new ProgramTestInfrastructure(new CompilerProcess(), new RuntimeProcess());
     protected final GivenTheCompilerHasCompiled theCompiler = new GivenTheCompilerHasCompiled(this, infrastructure);
     protected final WhenTheProgramIsRun theProgram = new WhenTheProgramIsRun(this, infrastructure);
-    protected final ThenFactory<ThenTheProgramOutput, ProgramOutput> theProgramOutput = ThenTheProgramOutput::new;
+    protected final ThenAssertion<ThenTheProgramOutput, ProgramOutput> theProgramOutput = ThenTheProgramOutput::new;
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Override
+    public FluentBdd<ProgramOutput> fluentBdd() {
+        return fluentBdd;
+    }
+
+    @Override
+    public FluentYatspec fluentYatspec() {
+        return fluentYatspec;
+    }
 
     @Before
     public void setUp() {
         infrastructure.setUp(temporaryFolder.getRoot().toPath());
-    }
-
-    @After
-    public void tearDown() {
-        temporaryFolder.delete();
     }
 }

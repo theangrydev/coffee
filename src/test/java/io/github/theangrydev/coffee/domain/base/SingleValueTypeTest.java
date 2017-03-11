@@ -18,10 +18,9 @@
  */
 package io.github.theangrydev.coffee.domain.base;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
-public class SingleValueTypeTest implements WithAssertions {
+public class SingleValueTypeTest implements org.assertj.core.api.WithAssertions {
 
     @Test
     public void toStringIsValue() {

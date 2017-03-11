@@ -18,7 +18,6 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import assertions.WithAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -31,7 +30,7 @@ import static io.github.theangrydev.coffee.infrastructure.FileHelpers.readConten
 import static java.io.File.pathSeparator;
 import static java.lang.String.format;
 
-public class FileHelpersTest implements WithAssertions {
+public class FileHelpersTest implements org.assertj.core.api.WithAssertions {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

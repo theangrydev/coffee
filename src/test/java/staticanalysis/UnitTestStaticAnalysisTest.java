@@ -18,7 +18,6 @@
  */
 package staticanalysis;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,7 +28,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class UnitTestStaticAnalysisTest implements WithAssertions {
+public class UnitTestStaticAnalysisTest implements org.assertj.core.api.WithAssertions {
 
     @Test
     public void checkThatUnitTestsAreInTheSamePackageAsTheProductionClasses() throws IOException {

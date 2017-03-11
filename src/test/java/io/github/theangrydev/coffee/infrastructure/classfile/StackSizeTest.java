@@ -18,10 +18,9 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
-public class StackSizeTest implements WithAssertions {
+public class StackSizeTest implements org.assertj.core.api.WithAssertions {
 
     @Test
     public void maxIsInitialBeforeAnyOperations() {

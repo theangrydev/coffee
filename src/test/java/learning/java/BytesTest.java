@@ -18,10 +18,9 @@
  */
 package learning.java;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
-public class BytesTest implements WithAssertions {
+public class BytesTest implements org.assertj.core.api.WithAssertions {
 
     @Test
     public void bytesAreSigned() {

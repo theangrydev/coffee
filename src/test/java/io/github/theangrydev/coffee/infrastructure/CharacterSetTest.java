@@ -18,12 +18,11 @@
  */
 package io.github.theangrydev.coffee.infrastructure;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 
-public class CharacterSetTest implements WithAssertions {
+public class CharacterSetTest implements org.assertj.core.api.WithAssertions {
 
     @Test
     public void characterSetUsedIsUTF8() {

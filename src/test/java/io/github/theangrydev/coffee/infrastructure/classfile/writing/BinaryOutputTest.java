@@ -18,7 +18,6 @@
  */
 package io.github.theangrydev.coffee.infrastructure.classfile.writing;
 
-import assertions.WithAssertions;
 import assertions.WithMockito;
 import examples.WithExamples;
 import org.junit.Test;
@@ -29,7 +28,7 @@ import java.io.IOException;
 /**
  * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4
  */
-public class BinaryOutputTest implements WithAssertions, WithMockito, WithExamples {
+public class BinaryOutputTest implements WithMockito, WithExamples, org.assertj.core.api.WithAssertions {
 
     private final DataOutput dataOutput = mock(DataOutput.class);
     private final BinaryOutput binaryOutput = new BinaryOutput(dataOutput);

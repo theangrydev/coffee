@@ -18,7 +18,6 @@
  */
 package acceptancetests.infrastructure;
 
-import assertions.WithAssertions;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -26,7 +25,7 @@ import java.io.ByteArrayInputStream;
 import static acceptancetests.infrastructure.InputStreams.readInputStream;
 import static io.github.theangrydev.coffee.infrastructure.CharacterSet.CHARACTER_SET;
 
-public class InputStreamsTest implements WithAssertions {
+public class InputStreamsTest implements org.assertj.core.api.WithAssertions {
 
     @Test
     public void readsInputStreamThatIsNotEmpty() {
