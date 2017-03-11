@@ -32,7 +32,6 @@ import static java.util.Arrays.stream;
 
 public class TestCase implements WithMockito, WithExamples, org.assertj.core.api.WithAssertions {
 
-    private final MockUtil mockUtil = new MockUtil();
     private InOrder inOrder;
 
     @Before
@@ -48,7 +47,7 @@ public class TestCase implements WithMockito, WithExamples, org.assertj.core.api
     }
 
     private Object[] allMocks() {
-        return stream(getClass().getDeclaredFields()).map(this::fieldValue).filter(mockUtil::isMock).toArray();
+        return stream(getClass().getDeclaredFields()).map(this::fieldValue).filter(MockUtil::isMock).toArray();
     }
 
     private Object fieldValue(Field field) {

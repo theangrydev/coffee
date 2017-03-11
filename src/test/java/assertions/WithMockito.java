@@ -95,17 +95,17 @@ public interface WithMockito {
     }
 
     default int anyShort() {
-        return BDDMockito.anyShort();
+        return anyInt();
     }
 
     default int anyByte() {
-        return BDDMockito.anyByte();
+        return anyInt();
     }
 
     class GivenAction<T> {
         private final T mock;
 
-        GivenAction(T mock) {
+        public GivenAction(T mock) {
             this.mock = mock;
         }
 
@@ -114,6 +114,11 @@ public interface WithMockito {
         }
     }
 
+    /**
+     * If this method is implemented then {@link #verify} will verify mocks in order.
+     *
+     * @return An {@link InOrder} with all the mocks used in the current test.
+     */
     default InOrder inOrder() {
         return null;
     }
