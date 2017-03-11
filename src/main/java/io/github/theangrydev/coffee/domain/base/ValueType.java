@@ -25,6 +25,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static java.util.Collections.emptySet;
 
+//TODO: probably better to just generate these methods and use equalsverifier to unit test?
 public class ValueType {
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

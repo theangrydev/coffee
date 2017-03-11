@@ -22,25 +22,20 @@ import java.io.IOException;
 import java.util.List;
 
 import static acceptancetests.infrastructure.InputStreams.readInputStream;
-import static java.lang.ProcessBuilder.Redirect.INHERIT;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 
 public class ProcessExecutor {
 
-    public String execute(List<String> commandLine) {
+    public ProgramOutput execute(List<String> commandLine) {
         ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
-        if (!"true".equals(System.getProperty("silent.process.errors"))) {
-            processBuilder.redirectError(INHERIT);
-        }
         String commandString = processBuilder.command().stream().collect(joining(" "));
         try {
             Process process = processBuilder.start();
             int exitCode = process.waitFor();
-            if (exitCode != 0) {
-                throw new IllegalStateException(format("Command '%s' returned exit code %d", commandString, exitCode));
-            }
-            return readInputStream(process.getInputStream());
+            String standardError = readInputStream(process.getErrorStream());
+            String standardOutput = readInputStream(process.getInputStream());
+            return ProgramOutput.programOutput(exitCode, standardOutput, standardError);
         } catch (IOException | InterruptedException e) {
             throw new IllegalStateException(format("Could not execute command '%s'", commandString), e);
         }

@@ -22,7 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static acceptancetests.infrastructure.ProgramOutput.programOutput;
 import static acceptancetests.infrastructure.Streams.concat;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
@@ -34,6 +33,6 @@ public class RuntimeProcess {
     public ProgramOutput run(Path classPath, ProgramExecution execution) {
         String java = Paths.get(System.getProperty("java.home")).resolve("bin").resolve("java").toString();
         List<String> commandLine = concat(asList(java, "-cp", "\"" + classPath + "\"", execution.entryPoint().toString()), execution.arguments().arguments()).collect(toList());
-        return programOutput(processExecutor.execute(commandLine));
+        return processExecutor.execute(commandLine);
     }
 }

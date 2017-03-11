@@ -18,14 +18,20 @@
  */
 package acceptancetests.infrastructure;
 
-import io.github.theangrydev.coffee.domain.base.SingleValueType;
+import io.github.theangrydev.coffee.domain.base.ValueType;
 
-public final class ProgramOutput extends SingleValueType<String> {
-    private ProgramOutput(String output) {
-        super(output);
+public final class ProgramOutput extends ValueType {
+    public final int exitCode;
+    public final String standardOutput;
+    public final String standardError;
+
+    private ProgramOutput(int exitCode, String standardOutput, String standardError) {
+        this.exitCode = exitCode;
+        this.standardOutput = standardOutput;
+        this.standardError = standardError;
     }
 
-    public static ProgramOutput programOutput(String output) {
-        return new ProgramOutput(output.trim());
+    public static ProgramOutput programOutput(int exitCode, String standardOutput, String standardError) {
+        return new ProgramOutput(exitCode, standardOutput.trim(), standardError.trim());
     }
 }

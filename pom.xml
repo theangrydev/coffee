@@ -225,6 +225,9 @@
                     <excludes>
                         <exclude>${acceptance.tests}</exclude>
                     </excludes>
+                    <systemProperties>
+                        <yatspec.output.dir>${project.build.directory}/surefire-reports/yatspec</yatspec.output.dir>
+                    </systemProperties>
                 </configuration>
             </plugin>
 
@@ -263,7 +266,7 @@
                     <perCoreThreadCount>true</perCoreThreadCount>
                     <systemProperties>
                         <yatspec.output.dir>${project.build.directory}/failsafe-reports/yatspec</yatspec.output.dir>
-                        <run.compiler.jar>true</run.compiler.jar>
+                        <across.process.boundary>true</across.process.boundary>
                     </systemProperties>
                     <includes>
                         <include>${acceptance.tests}</include>
@@ -399,9 +402,6 @@
                         <param>io.github.theangrydev.coffee*</param>
                         <param>acceptancetests*</param>
                     </targetTests>
-                    <jvmArgs>
-                        <jvmArg>-Dsilent.process.errors=true</jvmArg>
-                    </jvmArgs>
                     <exportLineCoverage>true</exportLineCoverage>
                 </configuration>
                 <executions>

@@ -51,7 +51,9 @@ public class ProgramTestInfrastructureTest implements org.assertj.core.api.WithA
         ProgramExecution execution = programExecution(entryPoint("AdditionProgram"), ProgramArguments.programArguments("3 4"));
         ProgramOutput programOutput = infrastructure.invokeRuntime(execution);
 
-        assertThat(programOutput).hasToString("7");
+        assertThat(programOutput.exitCode).isEqualTo(0);
+        assertThat(programOutput.standardOutput).isEqualTo("7");
+        assertThat(programOutput.standardError).isEqualTo("");
     }
 
     @Before

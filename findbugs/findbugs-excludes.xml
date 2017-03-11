@@ -69,10 +69,11 @@
         <Or>
             <Class name="io.github.theangrydev.coffee.infrastructure.classfile.constants.ByteConstantIndex"/>
             <Class name="io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantIndex"/>
-            <Class name="acceptancetests.infrastructure.ProgramArguments"/>
-            <Class name="acceptancetests.infrastructure.ProgramExecution"/>
             <Class name="io.github.theangrydev.coffee.domain.base.SingleValueType"/>
             <Class name="io.github.theangrydev.coffee.domain.base.ValueTypeTest$TestType"/>
+            <Class name="acceptancetests.infrastructure.ProgramExecution"/>
+            <Class name="acceptancetests.infrastructure.ProgramArguments"/>
+            <Class name="acceptancetests.infrastructure.ProgramOutput"/>
         </Or>
         <BugPattern name="EQ_DOESNT_OVERRIDE_EQUALS"/>
     </Match>

@@ -19,7 +19,10 @@
 package acceptancetests.programs;
 
 import acceptancetests.given.GivenTheCompilerHasCompiled;
-import acceptancetests.infrastructure.*;
+import acceptancetests.infrastructure.CompilerProcess;
+import acceptancetests.infrastructure.ProgramOutput;
+import acceptancetests.infrastructure.ProgramTestInfrastructure;
+import acceptancetests.infrastructure.RuntimeProcess;
 import acceptancetests.then.ThenTheProgramOutput;
 import acceptancetests.when.WhenTheProgramIsRun;
 import com.googlecode.yatspec.junit.SpecRunner;
@@ -28,7 +31,6 @@ import io.github.theangrydev.fluentbdd.core.ThenAssertion;
 import io.github.theangrydev.fluentbdd.core.WithFluentBdd;
 import io.github.theangrydev.fluentbdd.yatspec.FluentYatspec;
 import io.github.theangrydev.fluentbdd.yatspec.WithFluentYatspec;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
