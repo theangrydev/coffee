@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure;
 
 import assertions.WithAssertions;
 import org.junit.Test;

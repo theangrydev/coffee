@@ -43,9 +43,15 @@ public class BinaryOutput {
         }
     }
 
+    public void writeBytes(int... bytesToWrite) {
+        for (int byteToWrite : bytesToWrite) {
+            writeByte(byteToWrite);
+        }
+    }
+
     public void writeByte(int byteToWrite) {
-		Preconditions.checkArgument(byteToWrite >= 0, "byte must not be negative but was %s", byteToWrite);
-		Preconditions.checkArgument(byteToWrite <= UNSIGNED_BYTE_MAX_VALUE, "byte can be at most %s but was %s", UNSIGNED_BYTE_MAX_VALUE, byteToWrite);
+        Preconditions.checkArgument(byteToWrite >= 0, "byte must not be negative but was %s", byteToWrite);
+        Preconditions.checkArgument(byteToWrite <= UNSIGNED_BYTE_MAX_VALUE, "byte can be at most %s but was %s", UNSIGNED_BYTE_MAX_VALUE, byteToWrite);
         try {
             dataOutput.writeByte(byteToWrite);
         } catch (IOException e) {
@@ -72,11 +78,41 @@ public class BinaryOutput {
         }
     }
 
+    public void writeLong(long longToWrite) {
+        Preconditions.checkArgument(longToWrite >= 0, "long must not be negative but was %s", longToWrite);
+        try {
+            dataOutput.writeLong(longToWrite);
+        } catch (IOException e) {
+            throw new IllegalStateException("Problem writing long", e);
+        }
+    }
+
+    public void writeNullTerminatedASCII(String ascii) {
+        writeASCII(ascii, ascii.length() + 1);
+    }
+
+    public void writeASCII(String ascii, int length) {
+        for (int i = 0; i < ascii.length(); i++) {
+            char character = ascii.charAt(i);
+            Preconditions.checkArgument(character <= UNSIGNED_BYTE_MAX_VALUE, "'%s' is not an ASCII character", character);
+            writeByte(character);
+        }
+        for (int i = ascii.length(); i < length; i++) {
+            writeByte(0);
+        }
+    }
+
     public void writeUTF8(String string) {
         try {
             dataOutput.writeUTF(string);
         } catch (IOException e) {
             throw new IllegalStateException("Problem writing UTF8", e);
+        }
+    }
+
+    public void writeZeroPadding(int numberOfBytes) {
+        for (int i = 0; i < numberOfBytes; i++) {
+            writeByte(0);
         }
     }
 }

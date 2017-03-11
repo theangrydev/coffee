@@ -20,16 +20,19 @@ package io.github.theangrydev.coffee.infrastructure.dotnet;
 
 import com.google.common.collect.Sets;
 import io.github.theangrydev.coffee.infrastructure.Flag;
+import io.github.theangrydev.coffee.infrastructure.LongFlag;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static io.github.theangrydev.coffee.infrastructure.dotnet.COMImageFlag.COMIMAGE_FLAGS_ILONLY;
 import static io.github.theangrydev.coffee.infrastructure.dotnet.FileCharacteristicsFlag.IMAGE_FILE_32BIT_MACHINE;
 import static io.github.theangrydev.coffee.infrastructure.dotnet.FileCharacteristicsFlag.IMAGE_FILE_EXECUTABLE_IMAGE;
 import static io.github.theangrydev.coffee.infrastructure.dotnet.SectionCharacteristicsFlag.*;
 import static io.github.theangrydev.coffee.infrastructure.dotnet.SubSystem.IMAGE_SUBSYSTEM_WINDOWS_CUI;
+import static io.github.theangrydev.coffee.infrastructure.dotnet.TableIndexFlag.TYPE_REF;
 
 /**
  * http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf#page=303
@@ -124,6 +127,8 @@ public class PEHeaders implements BinaryWriter {
     private static final int CLI_METADATA_MAJOR_VERSION = 1;
     private static final int CLI_METADATA_MINOR_VERSION = 1;
     private static final int CLI_METADATA_FLAGS = 0;
+    public static final int TABLE_STREAM_MAJOR_VERSION = 2;
+    public static final int TABLE_STREAM_MINOR_VERSION = 0;
 
     @Override
     public void writeTo(BinaryOutput binaryOutput) {
@@ -185,7 +190,7 @@ public class PEHeaders implements BinaryWriter {
      * http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf#page=305
      */
     private void writeFileCharacteristics(BinaryOutput binaryOutput) {
-        int flags = Flag.combine(Sets.newHashSet(IMAGE_FILE_EXECUTABLE_IMAGE, IMAGE_FILE_32BIT_MACHINE));
+        int flags = Flag.combine(newHashSet(IMAGE_FILE_EXECUTABLE_IMAGE, IMAGE_FILE_32BIT_MACHINE));
         binaryOutput.writeShort(flags);
     }
 
@@ -410,7 +415,7 @@ public class PEHeaders implements BinaryWriter {
         int virtualAddress = 0x2000; //TODO: compute
         int sizeOfRawData = 0x400; //TODO: compute
         int pointerToRawData = 0x200; //TODO: compute
-        int flags = Flag.combine(Sets.newHashSet(IMAGE_SCN_CNT_CODE, IMAGE_SCN_MEM_EXECUTE, IMAGE_SCN_MEM_READ));
+        int flags = Flag.combine(newHashSet(IMAGE_SCN_CNT_CODE, IMAGE_SCN_MEM_EXECUTE, IMAGE_SCN_MEM_READ));
         writeSectionHeader(binaryOutput, virtualSize, virtualAddress, sizeOfRawData, pointerToRawData, flags, ".text");
     }
 
@@ -419,7 +424,7 @@ public class PEHeaders implements BinaryWriter {
         int virtualAddress = 0x4000; //TODO: compute
         int sizeOfRawData = 0x400; //TODO: compute
         int pointerToRawData = 0x600; //TODO: compute
-        int flags = Flag.combine(Sets.newHashSet(IMAGE_SCN_MEM_READ, IMAGE_SCN_CNT_INITIALIZED_DATA));
+        int flags = Flag.combine(newHashSet(IMAGE_SCN_MEM_READ, IMAGE_SCN_CNT_INITIALIZED_DATA));
         writeSectionHeader(binaryOutput, virtualSize, virtualAddress, sizeOfRawData, pointerToRawData, flags, ".rsrc");
     }
 
@@ -428,7 +433,7 @@ public class PEHeaders implements BinaryWriter {
         int virtualAddress = 0x6000; //TODO: compute
         int sizeOfRawData = 0x200; //TODO: compute
         int pointerToRawData = 0xA00; //TODO: compute
-        int flags = Flag.combine(Sets.newHashSet(IMAGE_SCN_MEM_READ, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE));
+        int flags = Flag.combine(newHashSet(IMAGE_SCN_MEM_READ, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE));
         writeSectionHeader(binaryOutput, virtualSize, virtualAddress, sizeOfRawData, pointerToRawData, flags, ".reloc");
     }
 
@@ -457,12 +462,6 @@ public class PEHeaders implements BinaryWriter {
         binaryOutput.writeNullTerminatedASCII("mscoree.dll");
     }
 
-    private void writeHintNameTable(BinaryOutput binaryOutput) {
-        //0x4D0
-        binaryOutput.writeShort(SHORT_PADDING);
-        binaryOutput.writeNullTerminatedASCII("_CorExeMain");
-    }
-
     private void writeImportAddressTable(BinaryOutput binaryOutput) {
         int hintNameTableRVA = 0x22D0;
         binaryOutput.writeInt(hintNameTableRVA);
@@ -470,6 +469,7 @@ public class PEHeaders implements BinaryWriter {
     }
 
     private void writeCLIHeader(BinaryOutput binaryOutput) {
+        // 0x264
         binaryOutput.writeInt(CLI_HEADER_SIZE);
         binaryOutput.writeInt(CLI_HEADER_MAJOR_RUNTIME_VERSION);
         binaryOutput.writeInt(CLI_HEADER_MINOR_RUNTIME_VERSION);
@@ -499,9 +499,84 @@ public class PEHeaders implements BinaryWriter {
 
         binaryOutput.writeASCII("v4.0.30319", versionStringLengthIncludingNullTerminatorRoundedUpToMultipleOfFour);
         binaryOutput.writeShort(CLI_METADATA_FLAGS);
+        writeStreamHeaders(binaryOutput);
+        writeTableStream(binaryOutput);
+    }
+
+    private void writeStreamHeaders(BinaryOutput binaryOutput) {
+        //TODO: write the 5 StreamHdr structures
         int streams = 5;
         binaryOutput.writeShort(streams);
-        //TODO: write the 5 StreamHdr structures
+        writeTablesStreamHeader(binaryOutput);
+        writeStringsHeapStreamHeader(binaryOutput);
+        writeUserStringsHeapStreamHeader(binaryOutput);
+        writeGUIDHeapStreamHeader(binaryOutput);
+        writeBlobHeapStreamHeader(binaryOutput);
+    }
+
+    private void writeTablesStreamHeader(BinaryOutput binaryOutput) {
+        int offset = 0x6C;
+        binaryOutput.writeInt(offset);
+        int size = 0xD0;
+        binaryOutput.writeInt(size);
+        binaryOutput.writeASCII("#~", 4);
+    }
+
+    private void writeStringsHeapStreamHeader(BinaryOutput binaryOutput) {
+        int offset = 0x13C;
+        binaryOutput.writeInt(offset);
+        int size = 0x98;
+        binaryOutput.writeInt(size);
+        binaryOutput.writeASCII("#Strings", 12);
+    }
+
+    private void writeUserStringsHeapStreamHeader(BinaryOutput binaryOutput) {
+        int offset = 0x1D4;
+        binaryOutput.writeInt(offset);
+        int size = 0x20;
+        binaryOutput.writeInt(size);
+        binaryOutput.writeASCII("#US", 3);
+    }
+
+    private void writeGUIDHeapStreamHeader(BinaryOutput binaryOutput) {
+        int offset = 0x1F4;
+        binaryOutput.writeInt(offset);
+        int size = 0x10;
+        binaryOutput.writeInt(size);
+        binaryOutput.writeASCII("#GUID", 8);
+    }
+
+    private void writeBlobHeapStreamHeader(BinaryOutput binaryOutput) {
+        int offset = 0x204;
+        binaryOutput.writeInt(offset);
+        int size = 0x38;
+        binaryOutput.writeInt(size);
+        binaryOutput.writeASCII("#Blob", 8);
+    }
+
+    private void writeTableStream(BinaryOutput binaryOutput) {
+        binaryOutput.writeInt(RESERVED_INT);
+        binaryOutput.writeByte(TABLE_STREAM_MAJOR_VERSION);
+        binaryOutput.writeByte(TABLE_STREAM_MINOR_VERSION);
+        int heapSizes = 0; // 2 byte wide indexes
+        binaryOutput.writeByte(heapSizes);
+        binaryOutput.writeByte(1); // reserved to 1
+        //1=
+        //5=
+        //6=
+        //7=
+
+        //11=
+        //13=
+
+        //35=
+        //39=
+
+        long valid = 0b01000111_00010100_00000000_00000000_00010001_00000000_00000000_00000000L;
+
+        long validFlag = LongFlag.combine(newHashSet(TYPE_REF));
+
+        binaryOutput.writeLong(valid);
     }
 
     private void writeImportTable(BinaryOutput binaryOutput) {
@@ -514,5 +589,11 @@ public class PEHeaders implements BinaryWriter {
         int importAddressTableRVA = 0x2000; //TODO: compute
         binaryOutput.writeInt(importAddressTableRVA);
         binaryOutput.writeZeroPadding(20);
+    }
+
+    private void writeHintNameTable(BinaryOutput binaryOutput) {
+        //0x4D0
+        binaryOutput.writeShort(SHORT_PADDING);
+        binaryOutput.writeNullTerminatedASCII("_CorExeMain");
     }
 }
