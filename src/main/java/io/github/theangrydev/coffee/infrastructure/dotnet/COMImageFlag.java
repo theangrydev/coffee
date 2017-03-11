@@ -16,20 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure.dotnet;
 
 import io.github.theangrydev.coffee.infrastructure.Flag;
 
-/**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6-200-A.1
- */
-public enum MethodAccessFlag implements Flag {
-    ACC_PUBLIC(0x0001),
-    ACC_STATIC(0x0008);
+public enum COMImageFlag implements Flag {
+    COMIMAGE_FLAGS_ILONLY(0x00000001)
+    ;
 
     private final int value;
 
-    MethodAccessFlag(int value) {
+    COMImageFlag(int value) {
         this.value = value;
     }
 

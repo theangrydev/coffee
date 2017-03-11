@@ -16,25 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with coffee.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.theangrydev.coffee.infrastructure.classfile;
+package io.github.theangrydev.coffee.infrastructure;
 
-import io.github.theangrydev.coffee.infrastructure.Flag;
+import java.util.Set;
 
-/**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6-200-A.1
- */
-public enum MethodAccessFlag implements Flag {
-    ACC_PUBLIC(0x0001),
-    ACC_STATIC(0x0008);
-
-    private final int value;
-
-    MethodAccessFlag(int value) {
-        this.value = value;
+public interface Flag {
+    static int combine(Set<? extends Flag> accessFlags) {
+        return accessFlags.stream()
+                .mapToInt(Flag::value)
+                .reduce(0, (flagsSoFar, flagToOr) -> flagsSoFar | flagToOr);
     }
-
-    @Override
-    public int value() {
-        return value;
-    }
+    int value();
 }
