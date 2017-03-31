@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static acceptancetests.infrastructure.InputStreams.readInputStream;
+import static acceptancetests.infrastructure.ProgramOutput.programOutput;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 
@@ -35,7 +36,7 @@ public class ProcessExecutor {
             int exitCode = process.waitFor();
             String standardError = readInputStream(process.getErrorStream());
             String standardOutput = readInputStream(process.getInputStream());
-            return ProgramOutput.programOutput(exitCode, standardOutput, standardError);
+            return programOutput(exitCode, standardOutput, standardError);
         } catch (IOException | InterruptedException e) {
             throw new IllegalStateException(format("Could not execute command '%s'", commandString), e);
         }
