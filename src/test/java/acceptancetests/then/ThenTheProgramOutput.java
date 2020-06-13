@@ -29,8 +29,8 @@ public class ThenTheProgramOutput implements org.assertj.core.api.WithAssertions
     }
 
     public void isEqualTo(String output) {
-        assertThat(programOutput.standardOutput).isEqualTo(output);
         assertThat(programOutput.standardError).isEqualTo("");
+        assertThat(programOutput.standardOutput).isEqualTo(output);
         assertThat(programOutput.exitCode).isEqualTo(0);
     }
 }
