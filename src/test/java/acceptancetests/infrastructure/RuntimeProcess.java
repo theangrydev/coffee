@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 Liam Williams <liam.williams@zoho.com>.
+ * Copyright 2016-2020 Liam Williams <liam.williams@zoho.com>.
  *
  * This file is part of coffee.
  *
@@ -32,7 +32,7 @@ public class RuntimeProcess {
 
     public ProgramOutput run(Path classPath, ProgramExecution execution) {
         String java = Paths.get(System.getProperty("java.home")).resolve("bin").resolve("java").toString();
-        List<String> commandLine = concat(asList(java, "-cp", "\"" + classPath + "\"", execution.entryPoint().toString()), execution.arguments().arguments()).collect(toList());
+        List<String> commandLine = concat(asList(java, "-cp", classPath.toString(), execution.entryPoint().toString()), execution.arguments().arguments()).collect(toList());
         return processExecutor.execute(commandLine);
     }
 }

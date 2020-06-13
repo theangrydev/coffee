@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 Liam Williams <liam.williams@zoho.com>.
+ * Copyright 2016-2020 Liam Williams <liam.williams@zoho.com>.
  *
  * This file is part of coffee.
  *
@@ -24,13 +24,12 @@ import java.util.List;
 import static acceptancetests.infrastructure.InputStreams.readInputStream;
 import static acceptancetests.infrastructure.ProgramOutput.programOutput;
 import static java.lang.String.format;
-import static java.util.stream.Collectors.joining;
 
 public class ProcessExecutor {
 
     public ProgramOutput execute(List<String> commandLine) {
         ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
-        String commandString = processBuilder.command().stream().collect(joining(" "));
+        String commandString = String.join(" ", processBuilder.command());
         try {
             Process process = processBuilder.start();
             int exitCode = process.waitFor();

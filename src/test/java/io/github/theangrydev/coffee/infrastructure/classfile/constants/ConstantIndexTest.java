@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 Liam Williams <liam.williams@zoho.com>.
+ * Copyright 2016-2020 Liam Williams <liam.williams@zoho.com>.
  *
  * This file is part of coffee.
  *
@@ -31,7 +31,7 @@ public class ConstantIndexTest extends TestCase {
 
     @Test
     public void toStringMentionsIndexAndConstant() {
-        assertThat(constantIndex.toString()).containsSequence(String.valueOf(index), constant.toString());
+        assertThat(constantIndex.toString()).containsSubsequence(String.valueOf(index), constant.toString());
     }
 
     @Test
