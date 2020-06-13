@@ -24,7 +24,7 @@ import static io.github.theangrydev.coffee.infrastructure.classfile.ClassAccessF
 import static io.github.theangrydev.coffee.infrastructure.classfile.ClassAccessFlag.ACC_SUPER;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1-200-E.1
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.1-200-E.1
  */
 public class ClassAccessFlagTest implements org.assertj.core.api.WithAssertions {
 

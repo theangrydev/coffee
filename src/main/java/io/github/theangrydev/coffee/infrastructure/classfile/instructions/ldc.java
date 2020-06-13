@@ -23,7 +23,7 @@ import io.github.theangrydev.coffee.infrastructure.classfile.constants.CONSTANT_
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.ldc
  */
 public class ldc implements Instruction {
     private final ByteConstantIndex<CONSTANT_String_info> constantIndex;

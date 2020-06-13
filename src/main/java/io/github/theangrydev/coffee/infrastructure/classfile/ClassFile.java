@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.1
  */
 public class ClassFile implements BinaryWriter {
     private static final int MINOR_VERSION = 0;

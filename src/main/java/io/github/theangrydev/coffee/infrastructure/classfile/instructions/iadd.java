@@ -21,7 +21,7 @@ package io.github.theangrydev.coffee.infrastructure.classfile.instructions;
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iadd
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.iadd
  */
 public class iadd implements Instruction {
     @Override

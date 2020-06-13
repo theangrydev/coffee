@@ -27,8 +27,7 @@ import org.mockito.Mockito;
 import org.mockito.internal.util.MockUtil;
 
 import java.lang.reflect.Field;
-
-import static java.util.Arrays.stream;
+import java.util.Arrays;
 
 public class TestCase implements WithMockito, WithExamples, org.assertj.core.api.WithAssertions {
 
@@ -47,7 +46,7 @@ public class TestCase implements WithMockito, WithExamples, org.assertj.core.api
     }
 
     private Object[] allMocks() {
-        return stream(getClass().getDeclaredFields()).map(this::fieldValue).filter(MockUtil::isMock).toArray();
+        return Arrays.stream(getClass().getDeclaredFields()).map(this::fieldValue).filter(MockUtil::isMock).toArray();
     }
 
     private Object fieldValue(Field field) {

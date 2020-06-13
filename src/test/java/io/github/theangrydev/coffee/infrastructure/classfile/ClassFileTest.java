@@ -33,7 +33,7 @@ import static io.github.theangrydev.coffee.infrastructure.classfile.ClassAccessF
 import static io.github.theangrydev.coffee.infrastructure.classfile.ClassAccessFlag.ACC_SUPER;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.1
  */
 public class ClassFileTest extends TestCase {
 

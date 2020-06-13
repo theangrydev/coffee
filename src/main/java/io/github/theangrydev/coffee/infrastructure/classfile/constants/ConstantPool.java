@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.4
  */
 public class ConstantPool implements BinaryWriter {
     private final List<BinaryWriter> constants = new ArrayList<>();

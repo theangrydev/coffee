@@ -24,7 +24,7 @@ import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccess
 import static io.github.theangrydev.coffee.infrastructure.classfile.MethodAccessFlag.ACC_STATIC;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6-200-A.1
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.6-200-A.1
  */
 public class MethodAccessFlagTest implements org.assertj.core.api.WithAssertions {
     //TODO: https://github.com/hcoles/pitest/issues/263

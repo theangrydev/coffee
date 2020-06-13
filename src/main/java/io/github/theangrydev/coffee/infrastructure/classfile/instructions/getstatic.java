@@ -23,7 +23,7 @@ import io.github.theangrydev.coffee.infrastructure.classfile.constants.ConstantI
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutput;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getstatic
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.getstatic
  */
 public class getstatic implements Instruction {
     private final ConstantIndex<CONSTANT_Fieldref_info> fieldIndex;

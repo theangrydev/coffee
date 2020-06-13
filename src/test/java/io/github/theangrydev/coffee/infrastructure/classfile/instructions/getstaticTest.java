@@ -25,7 +25,7 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutpu
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getstatic
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.getstatic
  */
 public class getstaticTest extends TestCase {
 

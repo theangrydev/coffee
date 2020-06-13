@@ -25,7 +25,7 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutpu
 import org.junit.Test;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokevirtual
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.invokevirtual
  */
 public class invokevirtualTest extends TestCase {
 

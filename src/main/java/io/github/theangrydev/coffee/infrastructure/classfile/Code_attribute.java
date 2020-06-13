@@ -27,7 +27,7 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWrite
 import java.util.List;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.3
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.3
  */
 public class Code_attribute implements BinaryWriter {
     private static final int MAX_OPERAND_STACK_SIZE_LENGTH = 2;
@@ -43,19 +43,19 @@ public class Code_attribute implements BinaryWriter {
     private final ConstantIndex<CONSTANT_Utf8_info> attributeNameIndex;
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.9
+     * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.9
      */
     private final int codeLength;
 
     private final List<Instruction> instructions;
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.2
+     * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.6.2
      */
     private final int maxOperandStackSize;
 
     /**
-     * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1
+     * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.6.1
      */
     private final int maxLocalStackSize;
 

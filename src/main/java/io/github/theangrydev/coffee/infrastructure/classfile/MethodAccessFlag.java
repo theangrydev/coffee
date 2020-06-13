@@ -21,7 +21,7 @@ package io.github.theangrydev.coffee.infrastructure.classfile;
 import io.github.theangrydev.coffee.infrastructure.Flag;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6-200-A.1
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.6-200-A.1
  */
 public enum MethodAccessFlag implements Flag {
     ACC_PUBLIC(0x0001),

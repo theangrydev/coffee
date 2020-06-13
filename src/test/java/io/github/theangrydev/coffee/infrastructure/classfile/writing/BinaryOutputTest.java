@@ -26,7 +26,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4
  */
 public class BinaryOutputTest implements WithMockito, WithExamples, org.assertj.core.api.WithAssertions {
 

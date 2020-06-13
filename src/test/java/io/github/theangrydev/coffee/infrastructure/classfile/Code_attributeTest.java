@@ -28,7 +28,7 @@ import org.junit.Test;
 import static java.util.Arrays.asList;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.3
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.3
  */
 public class Code_attributeTest extends TestCase {
     private static final int MAX_OPERAND_STACK_SIZE_LENGTH = 2;

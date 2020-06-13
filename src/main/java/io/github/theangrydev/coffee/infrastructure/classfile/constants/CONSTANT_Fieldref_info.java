@@ -22,7 +22,7 @@ import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryOutpu
 import io.github.theangrydev.coffee.infrastructure.classfile.writing.BinaryWriter;
 
 /**
- * https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.2
+ * https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.4.2
  */
 public class CONSTANT_Fieldref_info implements BinaryWriter {
 
